@@ -1,0 +1,18 @@
+﻿using LearnStore.Domain.Entities;
+using LearnStore.Domain.Enums;
+using LearnStore.Domain.ValueObjects;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace LearnStore.Domain.Interfaces
+{
+    public interface IOrderRepository
+    {
+        Task<IEnumerable<Order>> GetOrdersAsync(OrderSearchCriteria criteria, CancellationToken cancellationToken);
+        Task SaveOrderAsync(Order order, CancellationToken cancellationToken);
+        Task UpdateOrderStageAsync(Guid orderId, OrderState newStage, CancellationToken cancellationToken);
+        Task<Order> DeleteOrderAsync(Guid orderId, CancellationToken cancellationToken);
+      
+    }
+}

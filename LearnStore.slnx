@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LearnStore.Application/LearnStore.Application.csproj" Id="0b26f8aa-b2e8-4b6d-8fd3-54398de7a751" />
+  <Project Path="LearnStore.Domain/LearnStore.Domain.csproj" />
+  <Project Path="LearnStore.Infrastructur/LearnStore.Infrastructure.csproj" Id="11f7ae32-f3c5-448a-8017-f3916b404d42" />
+  <Project Path="LearnStore.Tests.Unit/LearnStore.Tests.Unit.csproj" Id="df2d457c-85c1-4b8a-b983-f0af9d725572" />
+</Solution>
