@@ -5,8 +5,23 @@ using System.Text;
 
 namespace LearnStore.Application.Mappers
 {
-    public class ProductCategoryMapper
+    public class ProductCategoryMapper : IMapper<ProductCategory, ProductCategoryDto>
     {
+        public ProductCategory ToDomain(ProductCategoryDto productCategoryDto)
+        {
+            ArgumentNullException.ThrowIfNull(productCategoryDto, nameof(productCategoryDto));
+            return new ProductCategory
+            {
+                Id = productCategoryDto.Id,
+                Name = productCategoryDto.Name
+            };
+        }
+
+        public object ToDomain(object dto)
+        {
+            return ToDomain((ProductCategoryDto)dto);
+        }
+
         public ProductCategoryDto ToDto(ProductCategory productCategory)
         {
             ArgumentNullException.ThrowIfNull(productCategory, nameof(productCategory));
@@ -17,14 +32,9 @@ namespace LearnStore.Application.Mappers
             };
         }
 
-        public ProductCategory ToEntity(ProductCategoryDto productCategoryDto)
+        public object ToDto(object domain)
         {
-            ArgumentNullException.ThrowIfNull(productCategoryDto, nameof(productCategoryDto));
-            return new ProductCategory
-            {
-                Id = productCategoryDto.Id,
-                Name = productCategoryDto.Name
-            };
+           return ToDto((ProductCategory)domain);
         }
     }
 }

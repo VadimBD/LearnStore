@@ -6,7 +6,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
 {
     public class PaymentMapperTests
     {
-        private readonly Faker _faker = new();
+        
         private readonly Fixture _fixture = new();
 
         [Fact]
@@ -37,32 +37,32 @@ namespace LearnStore.Tests.Unit.Application.Mappers
         }
 
         [Fact]
-        public void ToEntity_WhenPaymentDtoIsNull_ThrowsArgumentNullException()
+        public void ToDomain_WhenPaymentDtoIsNull_ThrowsArgumentNullException()
         {
             var mapper = new PaymentMapper();
             // Act
-            Action action = () => mapper.ToEntity(null!);
+            Action action = () => mapper.ToDomain(null!);
             // Assert
             action.Should().Throw<ArgumentNullException>().WithParameterName("paymentDto");
 
         }
 
         [Fact]
-        public void ToEntity_WhenPaymentDtoIsValid_ReturnsExpectedEntity()
+        public void ToDomain_WhenPaymentDtoIsValid_ReturnsexpectedDomain()
         {
             var mapper = new PaymentMapper();
             // Arrange
             var paymentDto = _fixture.Create<PaymentDto>();
-            var expectedEntity = new Payment
+            var expectedDomain = new Payment
             {
                 Id = paymentDto.Id,
                 Amount = paymentDto.Amount,
                 PaymentDate = paymentDto.PaymentDate,
             };
             // Act
-            var result = mapper.ToEntity(paymentDto);
+            var result = mapper.ToDomain(paymentDto);
             // Assert
-            result.Should().BeEquivalentTo(expectedEntity);
+            result.Should().BeEquivalentTo(expectedDomain);
         }
 
     }

@@ -1,4 +1,6 @@
-﻿using LearnStore.Application.Mappers;
+﻿
+using LearnStore.Application.Mappers;
+using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,11 +10,21 @@ namespace LearnStore.Tests.Unit.Application.Mappers
     public class ProductMapperTests
     {
         private readonly Faker _faker = new();
-        private readonly Fixture _fixture = new();
+       
+
+        private IEnumerable<IMapper> CreateMappers()
+        {
+            var authorMapper = Substitute.For<IMapper<Author,AuthorDto>>();
+            var sellerMapper = Substitute.For<IMapper<Seller,SellerDto>>();
+            var categoryMapper = Substitute.For<IMapper<ProductCategory,ProductCategoryDto>>();
+            return [authorMapper, sellerMapper, categoryMapper];
+        }
+
         [Fact]
         public void ToDto_WhenProductIsNull_ThrowsArgumentNullException()
         {
-            var mapper = new ProductMapper();
+            var mappers = CreateMappers();
+            var mapper = new ProductMapper(mappers);
             // Act
             Action action = () => mapper.ToDto(null!);
             // Assert
@@ -21,85 +33,103 @@ namespace LearnStore.Tests.Unit.Application.Mappers
         [Fact]
         public void ToDto_WhenProductIsValid_ReturnsExpectedDto()
         {
-            var mapper = new ProductMapper();
-            var authorMapper = new AuthorMapper();
-            var sellerMapper = new SellerMapper();
-            var categoryMapper = new ProductCategoryMapper();
             // Arrange
             var product = new Product()
             {
-                Id = _faker.Random.Int(),
-                Name = _faker.Commerce.ProductName(),
+                Id = 1,
+                Name = "Product1",
                 Author = new() { Id=1},
                 Seller = new() { Id=1},
                 Category = new() { Id=1},
                 IsActive = true,
                 ChildProducts = [new() {Id=1}],
-                Description = _faker.Commerce.ProductDescription(),
-                Price = decimal.Parse(_faker.Commerce.Price(1, 1000))
+                Description = "Test",
+                Price = 10m
             };
             var expectedDto = new ProductDto
             {
                Id = product.Id,
                 Name = product.Name,
-                Author = authorMapper.ToDto(product.Author),
-                Seller = sellerMapper.ToDto(product.Seller),
-                Category = categoryMapper.ToDto(product.Category),
+                Author = new() { Id = 1 },
+                Seller = new() { Id = 1 },
+                Category = new() { Id = 1 },
                 IsActive = product.IsActive,
-                ChildProducts = [..product.ChildProducts.Select(cp => mapper.ToDto(cp))],
+                ChildProducts = [new() { Id = 1 }],
                 Description = product.Description,
                 Price = product.Price
             };
             // Act
+
+            var mappers = CreateMappers();
+            var authorMapper = mappers.OfType<IMapper<Author, AuthorDto>>().First();
+            authorMapper.ToDto(product.Author).Returns(expectedDto.Author);
+            var sellerMapper = mappers.OfType<IMapper<Seller, SellerDto>>().First();
+            sellerMapper.ToDto(product.Seller).Returns(expectedDto.Seller);
+            var categoryMapper = mappers.OfType<IMapper<ProductCategory, ProductCategoryDto>>().First();
+            categoryMapper.ToDto(product.Category).Returns(expectedDto.Category);
+            var mapper = new ProductMapper(mappers);
+
             var result = mapper.ToDto(product);
             // Assert
             result.Should().BeEquivalentTo(expectedDto);
+            authorMapper.Received(1).ToDto(product.Author);
+            sellerMapper.Received(1).ToDto(product.Seller);
+            categoryMapper.Received(1).ToDto(product.Category);
         }
         [Fact]
-        public void ToEntity_WhenProductDtoIsNull_ThrowsArgumentNullException()
+        public void ToDomain_WhenProductDtoIsNull_ThrowsArgumentNullException()
         {
-            var mapper = new ProductMapper();
+            var mappers = CreateMappers();
+            var mapper = new ProductMapper(mappers); ;
             // Act
             Action action = () => mapper.ToEntity(null!);
             // Assert
             action.Should().Throw<ArgumentNullException>().WithParameterName("productDto");
         }
         [Fact]
-        public void ToEntity_WhenProductDtoIsValid_ReturnsExpectedEntity()
+        public void ToDomain_WhenProductDtoIsValid_ReturnsexpectedDomain()
         {
-            var mapper = new ProductMapper();
-            var authorMapper = new AuthorMapper();
-            var sellerMapper = new SellerMapper();
-            var categoryMapper = new ProductCategoryMapper();
+            
             // Arrange
             var productDto = new ProductDto()
             {
-                Id = _faker.Random.Int(),
-                Name = _faker.Commerce.ProductName(),
+                Id = 1,
+                Name = "ProductName",
                 Author = new() { Id = 1 },
                 Seller = new() { Id = 1 },
                 Category = new() { Id = 1 },
                 IsActive = true,
                 ChildProducts = [new() { Id = 1 }],
-                Description = _faker.Commerce.ProductDescription(),
-                Price = decimal.Parse(_faker.Commerce.Price(1, 1000))
+                Description = "Test",
+                Price = 10m
             };
-            var expectedEntity = new Product()
+            var expectedDomain = new Product()
             {
                 Id = productDto.Id,
                 Name = productDto.Name,
-                Author = authorMapper.ToEntity(productDto.Author),
-                Seller = sellerMapper.ToEntity(productDto.Seller),
-                Category = categoryMapper.ToEntity(productDto.Category),
+                Author = new() { Id = 1 },
+                Seller = new() { Id = 1 },
+                Category = new() { Id = 1 },
                 IsActive = productDto.IsActive,
-                ChildProducts = [.. productDto.ChildProducts.Select(cp => mapper.ToEntity(cp))],
+                ChildProducts = [new() { Id = 1 }],
                 Description = productDto.Description,
                 Price = productDto.Price
             };
             // Act
+            var mappers = CreateMappers();
+            var mapper = new ProductMapper(mappers);
+            var authorMapper = mappers.OfType<IMapper<Author, AuthorDto>>().First();
+            authorMapper.ToDomain(productDto.Author).Returns(expectedDomain.Author);
+            var sellerMapper = mappers.OfType<IMapper<Seller, SellerDto>>().First();
+            sellerMapper.ToDomain(productDto.Seller).Returns(expectedDomain.Seller);
+            var categoryMapper = mappers.OfType<IMapper<ProductCategory, ProductCategoryDto>>().First();
+            categoryMapper.ToDomain(productDto.Category).Returns(expectedDomain.Category);
             var result = mapper.ToEntity(productDto);
             // Assert
-            result.Should().BeEquivalentTo(expectedEntity);
+            result.Should().BeEquivalentTo(expectedDomain);
+            authorMapper.Received(1).ToDomain(productDto.Author);
+            sellerMapper.Received(1).ToDomain(productDto.Seller);
+            categoryMapper.Received(1).ToDomain(productDto.Category);
         }
     }
 }

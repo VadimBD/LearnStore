@@ -6,7 +6,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
 {
     public class ProductCategoryMapperTests
     {
-        private readonly Faker _faker = new();
+        
         private readonly Fixture _fixture = new();
         [Fact]
         public void ToDto_WhenProductCategoryIsNull_ThrowsArgumentNullException()
@@ -36,29 +36,29 @@ namespace LearnStore.Tests.Unit.Application.Mappers
         }
 
         [Fact]
-        public void ToEntity_WhenProductCategoryDtoIsNull_ThrowsArgumentNullException()
+        public void ToDomain_WhenProductCategoryDtoIsNull_ThrowsArgumentNullException()
         {
             var mapper = new ProductCategoryMapper();
             // Act
-            Action action = () => mapper.ToEntity(null!);
+            Action action = () => mapper.ToDomain(null!);
             // Assert
             action.Should().Throw<ArgumentNullException>().WithParameterName("productCategoryDto");
         }
         [Fact]
-        public void ToEntity_WhenProductCategoryDtoIsValid_ReturnsExpectedEntity()
+        public void ToDomain_WhenProductCategoryDtoIsValid_ReturnsexpectedDomain()
         {
             var mapper = new ProductCategoryMapper();
             // Arrange
             var productCategoryDto = _fixture.Create<ProductCategoryDto>();
-            var expectedEntity = new ProductCategory
+            var expectedDomain = new ProductCategory
             {
                 Id = productCategoryDto.Id,
                 Name = productCategoryDto.Name,
             };
             // Act
-            var result = mapper.ToEntity(productCategoryDto);
+            var result = mapper.ToDomain(productCategoryDto);
             // Assert
-            result.Should().BeEquivalentTo(expectedEntity);
+            result.Should().BeEquivalentTo(expectedDomain);
         }
     }
 }

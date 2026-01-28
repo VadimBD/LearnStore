@@ -6,7 +6,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
 {
     public class SellerMapperTests
     {
-        private readonly Faker _faker = new();
+       
         private readonly Fixture _fixture = new();
 
         [Fact]
@@ -38,21 +38,21 @@ namespace LearnStore.Tests.Unit.Application.Mappers
             result.Should().BeEquivalentTo(expectedDto);
         }
         [Fact]
-        public void ToEntity_WhenSellerDtoIsNull_ThrowsArgumentNullException()
+        public void ToDomain_WhenSellerDtoIsNull_ThrowsArgumentNullException()
         {
             var mapper = new SellerMapper();
             // Act
-            Action action = () => mapper.ToEntity(null!);
+            Action action = () => mapper.ToDomain(null!);
             // Assert
             action.Should().Throw<ArgumentNullException>().WithParameterName("sellerDto");
         }
         [Fact]
-        public void ToEntity_WhenSellerDtoIsValid_ReturnsExpectedEntity()
+        public void ToDomain_WhenSellerDtoIsValid_ReturnsexpectedDomain()
         {
             var mapper = new SellerMapper();
             // Arrange
             var sellerDto = _fixture.Create<SellerDto>();
-            var expectedEntity = new Seller
+            var expectedDomain = new Seller
             {
                 Id = sellerDto.Id,
                 Name = sellerDto.Name,
@@ -60,9 +60,9 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 PhoneNumber = sellerDto.PhoneNumber
             };
             // Act
-            var result = mapper.ToEntity(sellerDto);
+            var result = mapper.ToDomain(sellerDto);
             // Assert
-            result.Should().BeEquivalentTo(expectedEntity);
+            result.Should().BeEquivalentTo(expectedDomain);
         }
     }
 }

@@ -1,11 +1,28 @@
-﻿using System;
+﻿using LearnStore.Application.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LearnStore.Application.Mappers
 {
-    public class SellerMapper
+    public class SellerMapper: IMapper<Seller, SellerDto>
     {
+        public Seller ToDomain(SellerDto sellerDto)
+        {
+            ArgumentNullException.ThrowIfNull(sellerDto, nameof(sellerDto));
+            return new Seller
+            {
+                Id = sellerDto.Id,
+                Name = sellerDto.Name,
+                EmailAddress = sellerDto.EmailAddress,
+                PhoneNumber = sellerDto.PhoneNumber
+            };
+        }
+
+        public object ToDomain(object dto)
+        {
+            return ToDomain((SellerDto)dto);
+        }
 
         public SellerDto ToDto(Seller seller)
         {
@@ -18,16 +35,10 @@ namespace LearnStore.Application.Mappers
                 PhoneNumber = seller.PhoneNumber
             };
         }
-        public Seller ToEntity(SellerDto sellerDto)
+
+        public object ToDto(object domain)
         {
-            ArgumentNullException.ThrowIfNull(sellerDto, nameof(sellerDto));
-            return new Seller
-            {
-                Id = sellerDto.Id,
-                Name = sellerDto.Name,
-                EmailAddress = sellerDto.EmailAddress,
-                PhoneNumber = sellerDto.PhoneNumber
-            };
+            return ToDto((Seller)domain);
         }
     }
 }

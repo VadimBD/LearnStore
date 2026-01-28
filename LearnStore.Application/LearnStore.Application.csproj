@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Validators\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.1.0" />
     <PackageReference Include="MediatR" Version="14.0.0" />
   </ItemGroup>
@@ -22,10 +16,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="FluentValidation" />
+    <Using Include="LearnStore.Application.Commands" />
     <Using Include="LearnStore.Application.DTO" />
+    <Using Include="LearnStore.Application.Interfaces" />
+    <Using Include="LearnStore.Application.Queries" />
     <Using Include="LearnStore.Domain.Entities" />
     <Using Include="LearnStore.Domain.Enums" />
     <Using Include="LearnStore.Domain.Interfaces" />
+    <Using Include="MediatR" />
+    <Using Include="System.Text" />
   </ItemGroup>
 
 </Project>

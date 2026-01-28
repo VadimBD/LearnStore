@@ -7,14 +7,14 @@ namespace LearnStore.Tests.Unit.Application.Mappers
 {
     public class AuthorMapperTests
     {
-        private readonly Faker _faker = new();
+      
         private readonly Fixture _fixture = new();
         [Fact]
         public void ToDto_WhenAuthorIsNull_ThrowsArgumentNullException()
         {
             var mapper = new AuthorMapper();
             // Act
-            Action action = () => mapper.ToDto(null);
+            Action action = () => mapper.ToDto(null!);
             // Assert
             action.Should().Throw<ArgumentNullException>().WithParameterName("author");
         }
@@ -39,21 +39,21 @@ namespace LearnStore.Tests.Unit.Application.Mappers
 
         }
         [Fact]
-        public void ToEntity_WhenAuthorDtoIsNull_ThrowsArgumentNullException()
+        public void ToDomain_WhenAuthorDtoIsNull_ThrowsArgumentNullException()
         {
             var mapper = new AuthorMapper();
             // Act
-            Action action = () => mapper.ToEntity(null);
+            Action action = () => mapper.ToDomain(null!);
             // Assert
             action.Should().Throw<ArgumentNullException>().WithParameterName("authorDto");
         }
         [Fact]
-        public void ToEntity_WhenAuthorDtoIsValid_ReturnsExpectedEntity()
+        public void ToDomain_WhenAuthorDtoIsValid_ReturnsexpectedDomain()
         {
             var mapper = new AuthorMapper();
             // Arrange
             var authorDto = _fixture.Create<AuthorDto>();
-            var expectedEntity = new Author
+            var expectedDomain = new Author
             {
                 Id = authorDto.Id,
                 FirstName = authorDto.FirstName,
@@ -62,9 +62,9 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Info = authorDto.Info
             };
             // Act
-            var result = mapper.ToEntity(authorDto);
+            var result = mapper.ToDomain(authorDto);
             // Assert
-            result.Should().BeEquivalentTo(expectedEntity);
+            result.Should().BeEquivalentTo(expectedDomain);
         }
     }
 }

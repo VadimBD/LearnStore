@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LearnStore.Application.Interfaces;
+using NSubstitute;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,11 +9,13 @@ namespace LearnStore.Tests.Unit.Application.Mappers
     public class OrderItemMapperTests
     {
         private readonly Faker _faker = new();
-        private readonly Fixture _fixture = new();
+       
         [Fact]
         public void ToDto_WhenOrderItemIsNull_ThrowsArgumentNullException()
         {
-            var mapper = new OrderItemMapper();
+            // Arrange
+            var productMapper = Substitute.For<IMapper<Product, ProductDto>>();
+            var mapper = new OrderItemMapper(productMapper);
             // Act
             Action action = () => mapper.ToDto(null!);
             // Assert
@@ -21,13 +25,14 @@ namespace LearnStore.Tests.Unit.Application.Mappers
         public void ToDto_WhenOrderItemIsValid_ReturnsExpectedDto()
         {
             // Arrange
-            var productMapper = new ProductMapper();
-            var mapper = new OrderItemMapper();
+            // Arrange
+            var productMapper = Substitute.For<IMapper<Product, ProductDto>>();
+            var mapper = new OrderItemMapper(productMapper);
             OrderItem orderItem = new() { 
-            Id = _faker.Random.Int(),
+            Id = 1,
             Product = new() {Id=1},
-            Quantity = _faker.Random.Int(1, 100),
-            PriceAtOrderTime = _faker.Finance.Amount(1, 1000)
+            Quantity = 10,
+            PriceAtOrderTime = 10m
             };
 
             var expectedDto = new OrderItemDto
@@ -46,43 +51,45 @@ namespace LearnStore.Tests.Unit.Application.Mappers
         }
 
         [Fact]
-        public void ToEntity_WhenOrderItemDtoIsNull_ThrowsArgumentNullException()
+        public void ToDomain_WhenOrderItemDtoIsNull_ThrowsArgumentNullException()
         {
-            var mapper = new OrderItemMapper();
+            // Arrange
+            var productMapper = Substitute.For<IMapper<Product, ProductDto>>();
+            var mapper = new OrderItemMapper(productMapper);
             // Act
-            Action action = () => mapper.ToEntity(null!);
+            Action action = () => mapper.ToDomain(null!);
             // Assert
             action.Should().Throw<ArgumentNullException>().WithParameterName("orderItemDto");
         }
         [Fact]
-        public void ToEntity_WhenOrderItemDtoIsValid_ReturnsExpectedEntity()
+        public void ToDomain_WhenOrderItemDtoIsValid_ReturnsexpectedDomain()
         {
-            var mapper = new OrderItemMapper();
+           
+           
             // Arrange
             OrderItemDto orderItemDto = new()
             {
-                Id = _faker.Random.Int(),
+                Id = 1,
                 Product = new() { Id = 1 },
-                Quantity = _faker.Random.Int(1, 100),
-                PriceAtOrderTime = _faker.Finance.Amount(1, 1000)
+                Quantity = 10,
+                PriceAtOrderTime = 10m
             };
-            var expectedEntity = new OrderItem
+            var expectedDomain = new OrderItem
             {
                 Id = orderItemDto.Id,
-                Product = orderItemDto.Product != null ? new Product
-                {
-                    Id = orderItemDto.Product.Id,
-                    Name = orderItemDto.Product.Name,
-                    Description = orderItemDto.Product.Description,
-                    Price = orderItemDto.Product.Price
-                } : null,
+                Product = new() { Id=1},
                 Quantity = orderItemDto.Quantity,
                 PriceAtOrderTime = orderItemDto.PriceAtOrderTime
             };
+            var productMapper = Substitute.For<IMapper<Product, ProductDto>>();
+            productMapper.ToDomain(Arg.Any<ProductDto>()).Returns(expectedDomain.Product);
+                
+            var mapper = new OrderItemMapper(productMapper);
+
             // Act
-            var result = mapper.ToEntity(orderItemDto);
+            var result = mapper.ToDomain(orderItemDto);
             // Assert
-            result.Should().BeEquivalentTo(expectedEntity);
+            result.Should().BeEquivalentTo(expectedDomain);
         }
     }
 }

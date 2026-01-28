@@ -6,7 +6,6 @@ using MediatR;
 
 namespace LearnStore.Application.Queries
 {
-    public class GetProductQuery :  IRequest<ProductDto?>
-    {
-    }
+    public record class GetProductQuery (int ProductId) :  IRequest<ProductDto?>;
+    
 }
