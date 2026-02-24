@@ -1,14 +1,22 @@
-﻿using System;
+﻿using LearnStore.Application.Mappers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LearnStore.Application.UseCases
 {
-    public class GetOrdersHandler : IRequestHandler<GetOrdersQuery, IEnumerable<OrderDto>>
+    public class GetOrdersHandler(IOrderRepository OrderRepository, IMapper<Order,OrderDto>  Mapper) : IRequestHandler<GetOrdersQuery, IEnumerable<OrderDto>>
     {
-        public async Task<IEnumerable<OrderDto>> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<OrderDto>> Handle(GetOrdersQuery query, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(query, nameof(query));
+            var searchCriteria= new OrderSearchCriteria()
+            {
+                OrderId = query.OrderId,
+                CustomerId = query.CustomerId
+            };
+
+            return (await OrderRepository.GetOrdersAsync(searchCriteria, cancellationToken)).Select(o=>Mapper.ToDto(o));
         }
     }
 }

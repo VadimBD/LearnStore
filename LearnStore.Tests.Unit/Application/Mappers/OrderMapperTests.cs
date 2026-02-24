@@ -53,6 +53,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Payments = [new() { Id = Guid.NewGuid() }],
                 State = OrderState.Pending,
             };
+
             var expectedDto = new OrderDto
             {
                 Id = order.Id,

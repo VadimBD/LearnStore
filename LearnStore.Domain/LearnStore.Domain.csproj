@@ -9,7 +9,12 @@
   <ItemGroup>
     <Using Include="LearnStore.Domain.Entities" />
     <Using Include="LearnStore.Domain.Enums" />
+    <Using Include="LearnStore.Domain.Interfaces" />
     <Using Include="LearnStore.Domain.ValueObjects" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

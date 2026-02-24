@@ -9,6 +9,7 @@ namespace LearnStore.Domain.Interfaces
     {
         IEnumerable<Product> Products { get; }
         Task SaveProductAsync(Product product, CancellationToken cancellationToken);
+
         Product? DeleteProduct(Guid productId);
 
         IEnumerable<ProductCategory> Categories { get; }

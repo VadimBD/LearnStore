@@ -8,13 +8,10 @@
 
   <ItemGroup>
     <Compile Remove="DataAccess\**" />
-    <Compile Remove="Extensions\**" />
     <Compile Remove="Implementations\**" />
     <EmbeddedResource Remove="DataAccess\**" />
-    <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Implementations\**" />
     <None Remove="DataAccess\**" />
-    <None Remove="Extensions\**" />
     <None Remove="Implementations\**" />
   </ItemGroup>
 

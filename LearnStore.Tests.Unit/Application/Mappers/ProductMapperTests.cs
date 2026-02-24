@@ -82,7 +82,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
             var mappers = CreateMappers();
             var mapper = new ProductMapper(mappers); ;
             // Act
-            Action action = () => mapper.ToEntity(null!);
+            Action action = () => mapper.ToDomain(null!);
             // Assert
             action.Should().Throw<ArgumentNullException>().WithParameterName("productDto");
         }
@@ -124,7 +124,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
             sellerMapper.ToDomain(productDto.Seller).Returns(expectedDomain.Seller);
             var categoryMapper = mappers.OfType<IMapper<ProductCategory, ProductCategoryDto>>().First();
             categoryMapper.ToDomain(productDto.Category).Returns(expectedDomain.Category);
-            var result = mapper.ToEntity(productDto);
+            var result = mapper.ToDomain(productDto);
             // Assert
             result.Should().BeEquivalentTo(expectedDomain);
             authorMapper.Received(1).ToDomain(productDto.Author);
