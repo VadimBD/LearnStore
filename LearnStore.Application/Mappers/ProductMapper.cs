@@ -38,7 +38,7 @@ namespace LearnStore.Application.Mappers
 
         }
 
-        public Product ToEntity(ProductDto productDto)
+        public Product ToDomain(ProductDto productDto)
         {
             ArgumentNullException.ThrowIfNull(productDto, nameof(productDto));
             return new Product
@@ -49,7 +49,7 @@ namespace LearnStore.Application.Mappers
                 Author = productDto.Author is not null ? _authorMapper.ToDomain(productDto.Author) : null,
                 Seller = productDto.Seller is not null ? _sellerMapper.ToDomain(productDto.Seller) : null,
                 Category = productDto.Category is not null ? _productCategoryMapper.ToDomain(productDto.Category) : null,
-                ChildProducts = [..productDto.ChildProducts.Select(p=>ToEntity(p))],
+                ChildProducts = [..productDto.ChildProducts.Select(p=>ToDomain(p))],
                 IsActive = productDto.IsActive,
                 Price = productDto.Price
             };

@@ -22,7 +22,7 @@ namespace LearnStore.Application.Mappers
         {
 
             ArgumentNullException.ThrowIfNull(orderDto, nameof(orderDto));
-            return new Order
+            return new Order()
             {
                 Id = orderDto.Id,
                 OrderDate = orderDto.OrderDate,

@@ -12,7 +12,7 @@ namespace LearnStore.Application.DTO
         public DateTime Updated { get; set; } = DateTime.UtcNow;
         public ICollection<OrderItemDto> Items { get; set; } = [];
         public CustomerDto? Customer { get; set; }
-        public OrderState State { get; set; } = OrderState.Processing;
+        public OrderState State { get; set; } = OrderState.New;
         public ICollection<PaymentDto> Payments { get; set; } = [];
     }
 }

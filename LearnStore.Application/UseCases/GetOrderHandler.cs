@@ -8,7 +8,7 @@ using System.Text;
 
 namespace LearnStore.Application.UseCases
 {
-    public class GetOrderHandler (IOrderRepository OrderRepository, OrderMapper Mapper) : IRequestHandler<GetOrderQuery, OrderDto?>
+    public class GetOrderHandler (IOrderRepository OrderRepository, IMapper<Order,OrderDto> Mapper) : IRequestHandler<GetOrderQuery, OrderDto?>
     {
         public async Task<OrderDto?> Handle(GetOrderQuery query, CancellationToken cancellationToken)
         {

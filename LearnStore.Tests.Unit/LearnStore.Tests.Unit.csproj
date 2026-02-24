@@ -29,13 +29,20 @@
     <Using Include="AutoFixture" />
     <Using Include="Bogus" />
     <Using Include="FluentAssertions" />
+    <Using Include="FluentValidation" />
+    <Using Include="FluentValidation.Results" />
     <Using Include="LearnStore.Application.Commands" />
     <Using Include="LearnStore.Application.DTO" />
     <Using Include="LearnStore.Application.Interfaces" />
     <Using Include="LearnStore.Application.Mappers" />
+    <Using Include="LearnStore.Application.Queries" />
+    <Using Include="LearnStore.Application.UseCases" />
     <Using Include="LearnStore.Application.Validators" />
     <Using Include="LearnStore.Domain.Entities" />
     <Using Include="LearnStore.Domain.Enums" />
+    <Using Include="LearnStore.Domain.Interfaces" />
+    <Using Include="LearnStore.Domain.ValueObjects" />
+    <Using Include="NSubstitute" />
     <Using Include="Xunit" />
   </ItemGroup>
 

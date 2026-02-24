@@ -6,9 +6,9 @@ namespace LearnStore.Domain.Enums
 {
     public enum OrderState
     {
-        Pending = 0,
-        Processing = 1,
-        Cancelled = 2,
-        Completed = 3
+        New = 0,
+        Pending = 1,
+        Completed = 2,
+        Cancelled = 3
     }
 }
