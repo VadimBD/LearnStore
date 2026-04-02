@@ -16,7 +16,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LearnStore.Domain\LearnStore.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include=" Microsoft.EntityFrameworkCore" />
+    <Using Include="LearnStore.Domain.Entities" />
+    <Using Include="LearnStore.Domain.Enums" />
+    <Using Include="LearnStore.Domain.Interfaces" />
+    <Using Include="LearnStore.Domain.ValueObjects" />
   </ItemGroup>
 
 </Project>
