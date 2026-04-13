@@ -8,7 +8,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
     {
 
         [Fact]
-        public async Task SaveSellerAsync_ThrowArgumentNullException_WhenNullSeller()
+        public async Task SaveSellerAsync_WhenNullSeller_ThrowArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -23,7 +23,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
         [Fact]
 
-        public async Task SaveSellerAsync_UpdatesExistingSeller_WhenSellerIdMatch()
+        public async Task SaveSellerAsync_WhenSellerIdMatch_UpdatesExistingSeller()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -45,7 +45,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveSellerAsync_AddsNewSeller_WhenSellerIdIsZero()
+        public async Task SaveSellerAsync_WhenSellerIdIsZero_AddsNewSeller()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -61,7 +61,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveSellerAsync_ThrowsArgumentNullException_WhenNameIsNull()
+        public async Task SaveSellerAsync_WhenNameIsNull_hrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
 
@@ -75,7 +75,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             await act.Should().ThrowAsync<ArgumentException>().WithParameterName("Name");
         }
         [Fact]
-        public async Task SaveSellerAsync_ThrowsArgumentNullException_WhenPhoneNumberIsNull()
+        public async Task SaveSellerAsync_WhenPhoneNumberIsNull_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -86,7 +86,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
         }
         [Fact]
-        public async Task SaveSellerAsync_ThrowsArgumentNullException_WhenEmailAddressIsNull()
+        public async Task SaveSellerAsync_WhenEmailAddressIsNull_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -97,7 +97,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetSellerAsync_ReturnsSeller_WhenSellerIdIsValid()
+        public async Task GetSellerAsync_WhenSellerIdIsValid_ReturnsSeller()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -116,7 +116,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetSellerAsync_ReturnsEmpty_WhenSellerIdIsInvalid()
+        public async Task GetSellerAsync_WhenSellerIdIsInvalid_ReturnsEmpty()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -133,7 +133,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetSellersAsync_ReturnsNull_WhenSellersCriteriaIsNull() 
+        public async Task GetSellersAsync_WhenSellersCriteriaIsNull_ReturnsNull() 
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -143,7 +143,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetSellersAsync_ReturnsAllSellers_WhenCriteriaIsEmpty() 
+        public async Task GetSellersAsync_WhenCriteriaIsEmpty_ReturnsAllSellers() 
         { 
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -160,7 +160,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             result.Should().Contain(seller2);
         }
         [Fact]
-        public async Task GetSellersAsync_ReturnsSellers_WhenCriteriaValid()
+        public async Task GetSellersAsync_WhenCriteriaValid_ReturnsSellers()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);

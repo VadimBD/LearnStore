@@ -23,7 +23,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenComandNull()
+        public async Task Handle_WhenComandNull_ThrowsArgumentNullException()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
@@ -43,7 +43,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenCustomerNull()
+        public async Task Handle_WhenCustomerNull_ThrowsArgumentNullException()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
@@ -67,7 +67,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_CallsValidationRules_WhenCommandIsNotNull()
+        public async Task Handle_WhenCommandIsNotNull_CallsValidationRules()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
@@ -104,7 +104,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_ThrowsValidationException_WhenValidatorThrowsException()
+        public async Task Handle_WhenCommandIsNotNull_ThrowsValidationExceptionX()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
@@ -145,7 +145,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             exception.Which.Errors.Should().Contain(f => f.PropertyName == "Items" && f.ErrorMessage == "At least one order item is required.");
         }
         [Fact]
-        public  async Task Handle_ReturnsOrderId_WhenCommandIsValid()
+        public  async Task Handle_WhenCommandIsValid_ReturnsOrderId()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var expectedId = Guid.NewGuid();
@@ -189,7 +189,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
         
         [Fact]
-        public async Task Handle_SaveOrder_WhenCommandIsValid()
+        public async Task Handle_WhenCommandIsValid_SaveOrder()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();

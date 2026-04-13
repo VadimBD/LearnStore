@@ -5,7 +5,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
     public class DeleteOrderHandlerTests
     {
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenComandNull()
+        public async Task Handle_WhenComandNull_ThrowsArgumentNullException()
         {
             // Arrange
             var orderRepository = Substitute.For<IOrderRepository>();
@@ -18,7 +18,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_ThrowsArgumentException_WhenOrderIdEmpty()
+        public async Task Handle_WhenOrderIdEmpty_ThrowsArgumentException()
         {
             // Arrange
             var orderRepository = Substitute.For<IOrderRepository>();
@@ -32,7 +32,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_CallsDeleteOrderAsync_WhenQueryIsValid()
+        public async Task Handle_WhenQueryIsValid_CallsDeleteOrderAsync()
         {
             // Arrange
             var orderRepository = Substitute.For<IOrderRepository>();

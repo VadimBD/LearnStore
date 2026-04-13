@@ -1,6 +1,13 @@
 <Solution>
+  <Folder Name="/deploy/">
+    <File Path="deploy/deploy.ps1" />
+    <File Path="deploy/docker-compose.yml" />
+  </Folder>
+  <Project Path="LearnStore.Admin/LearnStore.Admin.csproj" Id="ae7c58e7-5083-426b-8d8a-93afa6fa565c" />
   <Project Path="LearnStore.Application/LearnStore.Application.csproj" Id="0b26f8aa-b2e8-4b6d-8fd3-54398de7a751" />
   <Project Path="LearnStore.Domain/LearnStore.Domain.csproj" />
   <Project Path="LearnStore.Infrastructur/LearnStore.Infrastructure.csproj" Id="11f7ae32-f3c5-448a-8017-f3916b404d42" />
   <Project Path="LearnStore.Tests.Unit/LearnStore.Tests.Unit.csproj" Id="df2d457c-85c1-4b8a-b983-f0af9d725572" />
+  <Project Path="LearnStore.Web.Api/LearnStore.Web.Api.csproj" Id="47fb2cca-23b9-4b95-bc16-d7d08b23193a" />
+  <Project Path="LearnStore.Web.MVC/LearnStore.Web.MVC.csproj" Id="a2c77217-ec4e-496e-a9b4-91c94f8b5b63" />
 </Solution>

@@ -16,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
+    <PackageReference Include="microsoft.EntityFrameworkCore.SQLServer" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +32,9 @@
     <Using Include="LearnStore.Domain.Enums" />
     <Using Include="LearnStore.Domain.Interfaces" />
     <Using Include="LearnStore.Domain.ValueObjects" />
+    <Using Include="LearnStore.Infrastructure.Interfaces" />
+    <Using Include="Microsoft.EntityFrameworkCore.Design" />
+    <Using Include="Microsoft.Extensions.Configuration" />
   </ItemGroup>
 
 </Project>

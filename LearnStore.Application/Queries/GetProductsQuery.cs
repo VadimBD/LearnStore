@@ -12,5 +12,7 @@ namespace LearnStore.Application.Queries
         public bool IsActive { get; init; }
         public decimal Price { get; init; }
 
+        public string ProductName { get; init; }
+
     }
 }

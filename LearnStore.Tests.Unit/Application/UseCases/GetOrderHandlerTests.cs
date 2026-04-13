@@ -3,7 +3,7 @@
     public class GetOrderHandlerTests
     {
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenComandNull()
+        public async Task Handle_WhenQueryIsNull_ThrowsArgumentNullException()
         {
             // Arrange
             var orderRepository = Substitute.For<IOrderRepository>();
@@ -18,7 +18,7 @@
         }
 
         [Fact]
-        public async Task Handle_ThrowsArgumentException_WhenOrderIdEmpty()
+        public async Task Handle_WhenOrderIdEmpty_ThrowsArgumentException()
         {
             // Arrange
             var orderRepository = Substitute.For<IOrderRepository>();
@@ -33,7 +33,7 @@
         }
 
         [Fact]
-        public async Task Handle_CallsGetOrdersAsync_WhenQueryIsValid()
+        public async Task Handle_WhenQueryIsValid_CallsGetOrdersAsync()
         {
 
             // Arrange

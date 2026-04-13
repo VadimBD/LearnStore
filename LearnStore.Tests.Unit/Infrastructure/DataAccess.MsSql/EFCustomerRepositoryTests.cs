@@ -7,7 +7,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
     public class EFCustomerRepositoryTests
     {
         [Fact]
-        public async Task SaveCustomerAsync_ThrowArgumentNullException_WhenNullCustomer() 
+        public async Task SaveCustomerAsync_WhenNullCustomer_ThrowArgumentNullException() 
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -17,7 +17,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveCustomerAsync_UpdatesExistingCustomer_WhenCustomerIdMatch()
+        public async Task SaveCustomerAsync_WhenCustomerIdMatch_UpdatesExistingCustomer()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -37,7 +37,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveCustomerAsync_AddsNewCustomer_WhenCustomerIdIsZero() 
+        public async Task SaveCustomerAsync_WhenCustomerIdIsZero_AddsNewCustomer() 
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -53,7 +53,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveCustomerAsync_ThrowsArgumentNullException_WhenNameIsNull() 
+        public async Task SaveCustomerAsync_WhenNameIsNull_ThrowsArgumentNullException() 
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -65,7 +65,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveCustomerAsync_ThrowsArgumentNullException_WhenPhoneNumberIsNull()
+        public async Task SaveCustomerAsync_WhenPhoneNumberIsNull_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -76,7 +76,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveCustomerAsync_ThrowsArgumentNullException_WhenEmailAddressIsNull() 
+        public async Task SaveCustomerAsync_WhenEmailAddressIsNull_ThrowsArgumentNullException() 
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -87,7 +87,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetCustomerAsync_ReturnsCustomer_WhenCustomerIdIsValid()
+        public async Task GetCustomerAsync_WhenCustomerIdIsValid_ReturnsCustomer()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -105,7 +105,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetCustomerAsync_ReturnsEmpty_WhenCustomerIdIsInvalid()
+        public async Task GetCustomerAsync_WhenCustomerIdIsInvalid_ReturnsEmpty()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -119,7 +119,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetCustomerAsync_ReturnsNull_WhenCustomerCriteriaIsNull()
+        public async Task GetCustomerAsync_WhenCustomerCriteriaIsNull_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -129,7 +129,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetCustomerAsync_ReturnsAllCustomer_WhenCriteriaIsEmpty() 
+        public async Task GetCustomerAsync_WhenCriteriaIsEmpty_ReturnsAllCustomers() 
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -147,7 +147,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetCustomerAsync_ReturnsCustomer_WhenCriteriaValid()
+        public async Task GetCustomerAsync_WhenCriteriaIsValid_ReturnsCustomer()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);

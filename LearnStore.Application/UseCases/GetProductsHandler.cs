@@ -15,6 +15,8 @@ namespace LearnStore.Application.UseCases
 
             if (query.SellerId > 0)
                 filter = filter.Where(p => p.Seller != null && p.Seller.Id == query.SellerId);
+            if (!string.IsNullOrEmpty(query.ProductName))
+                filter = filter.Where(p => p.Name.Contains(query.ProductName));
             if (query.CategoryId > 0)
                 filter = filter.Where(p => p.Category != null && p.Category.Id == query.CategoryId);
             if (query.AuthorId > 0)

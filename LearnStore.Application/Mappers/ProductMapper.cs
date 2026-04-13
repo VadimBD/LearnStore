@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LearnStore.Application.Mappers
 {
-    public class ProductMapper
+    public class ProductMapper : IMapper<Product, ProductDto>
     {
         
         private readonly IMapper<Author,AuthorDto> _authorMapper;
@@ -53,6 +53,16 @@ namespace LearnStore.Application.Mappers
                 IsActive = productDto.IsActive,
                 Price = productDto.Price
             };
+        }
+
+        public object ToDto(object domain)
+        {
+            return ToDto((Product)domain);
+        }
+
+        public object ToDomain(object dto)
+        {
+            return ToDomain((ProductDto)dto);
         }
     }
 }

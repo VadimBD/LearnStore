@@ -5,7 +5,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
     public class EFProductRepositoryTests
     {
         [Fact]
-        public async Task DeleteProductAsync_ReturnsFailureResult_WhenProductIsUsedInOrders()
+        public async Task DeleteProductAsync_WhenProductIsUsedInOrders_ReturnsFailureResult()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -48,7 +48,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task DeleteProductAsync_ReturnsFailureResult_WhenProductNotFound()
+        public async Task DeleteProductAsync_WhenProductNotFound_ReturnsFailureResult()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -59,7 +59,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task DeleteProductAsync_DeletesProduct_WhenNotUsed()
+        public async Task DeleteProductAsync_WhenNotUsed_DeletesProduct()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -76,7 +76,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task DeleteProductAsync_DeletesOnlyMatchingProduct_WhenProductIdIsVlidAndNotUsed()
+        public async Task DeleteProductAsync_WhenProductIdIsValidAndNotUsed_DeletesOnlyMatchingProduct()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -95,7 +95,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveProductAsync_ThrowArgumentNullException_WhenNullProduct()
+        public async Task SaveProductAsync_WhenNullProduct_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -134,7 +134,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             savedProduct.Should().BeEquivalentTo(product);
         }
         [Fact]
-        public async Task SaveProductAsync_AddsNewProduct_WhenProductIdIsZero()
+        public async Task SaveProductAsync_WhenProductIdIsZero_AddsNewProduct()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -154,7 +154,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             savedProduct.Name.Should().Be("New Product");
         }
         [Fact]
-        public async Task SaveProductAsync_ThrowsArgumentNullException_WhenNullCategory()
+        public async Task SaveProductAsync_WhenNullCategory_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -167,7 +167,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
         }
         [Fact]
-        public async Task SaveProductAsync_ThrowsArgumentNullException_WhenNullAuthor()
+        public async Task SaveProductAsync_WhenNullAuthor_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -179,7 +179,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("Author");
         }
         [Fact]
-        public async Task SaveProductAsync_ThrowsArgumentNullException_WhenNullSeller()
+        public async Task SaveProductAsync_WhenNullSeller_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -193,7 +193,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
 
         [Fact]
-        public async Task SaveProducAsync_AddsNewProductAndDoesNotDuplicateRelatedEntities_WhenNewProduct()
+        public async Task SaveProductAsync_WhenNewProduct_AddsNewProductAndDoesNotDuplicateRelatedEntities()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -216,7 +216,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        private void GetProduct_ReturnsProuct_WhenProductIdIsValid()
+        private void GetProduct_WhenProductIdIsValid_ReturnsProduct()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -237,7 +237,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        private void GetProduct_ReturnsNull_WhenProductIdIsInvalid()
+        private void GetProduct_WhenProductIdIsInvalid_ReturnsNull()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -257,7 +257,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        private void GetProducts_ReturnsNull_WhenProductCriteriaIsNull()
+        private void GetProducts_WhenProductCriteriaIsNull_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -286,7 +286,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             result.Should().HaveCount(2);
         }
         [Fact]
-        private void GetProducts_ReturnsProduct_WenCriteriaIsValid()
+        private void GetProducts_WhenCriteriaIsValid_ReturnsProduct()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);

@@ -7,7 +7,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
     public class EFOrderRepositoryTests
     {
         [Fact]
-        public async Task DeleteOrderAsync_RemovesExistingOrder_WhenIdMatches()
+        public async Task DeleteOrderAsync_WhenIdMatches_RemovesExistingOrder()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -38,7 +38,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task DeleteOrderAsync_ReturnsNull_WhenOrderDoesNotExist()
+        public async Task DeleteOrderAsync_WhenOrderDoesNotExist_ReturnsNull()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -51,7 +51,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetOrdersAsync_ReturnsOneOrder_WhenOrderIdMatch()
+        public async Task GetOrdersAsync_WhenOrderIdMatch_ReturnsOneOrder()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -80,7 +80,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetOrdersAsync_ReturnsOrders_WhenCustomerIdMatch()
+        public async Task GetOrdersAsync_WhenCustomerIdMatch_ReturnsOrders()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -139,7 +139,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
 
         [Fact]
-        public async Task GetOrdersAsync_ReturnsAllOrders_WhenNoCriteriaProvided()
+        public async Task GetOrdersAsync_WhenNoCriteriaProvided_ReturnsAllOrders()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -152,7 +152,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetOrdersAsync_ReturnsEmptyList_WhenNoOrdersMatchCriteria()
+        public async Task GetOrdersAsync_WhenNoOrdersMatchCriteria_ReturnsEmptyList()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -165,7 +165,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task GetOrdersAsync_ReturnsOrders_WhenMultipleCriteriaMatch()
+        public async Task GetOrdersAsync_WhenMultipleCriteriaMatch_ReturnsOrders()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
@@ -231,7 +231,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task UpdateOrderStageAsync_UpdatesOrderStageSuccessfully_WhenOrderFound()
+        public async Task UpdateOrderStageAsync_WhenOrderFound_UpdatesOrderStageSuccessfully()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -251,7 +251,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task UpdateOrderStageAsync_DoesNothing_WhenOrderNotFound()
+        public async Task UpdateOrderStageAsync_WhenOrderNotFound_DoesNothing()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -267,7 +267,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveOrderAsync_ThrowsArgumentNullException_WhenOrderIsNull()
+        public async Task SaveOrderAsync_WhenOrderIsNull_ThrowsArgumentNullException()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
@@ -280,7 +280,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveOrderAsync_AddsNewOrder_WhenOrderDoesNotExist()
+        public async Task SaveOrderAsync_WhenOrderDoesNotExist_AddsNewOrder()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -338,7 +338,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        public async Task SaveOrderAsync_UpdatesExistingOrder_WhenOrderIdMatch()
+        public async Task SaveOrderAsync_WhenOrderIdMatch_UpdatesExistingOrder()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
