@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Data.SqlClient;
+using System.Runtime.InteropServices;
 
 namespace LearnStore.Infrastructure.DataAccess.MsSql
 {
@@ -8,7 +9,18 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
         private readonly IDatabaseInitializer _initializer;
         private readonly IConfiguration _configuration;
         private readonly IPasswordProvider _passwordProvider;
-
+        public AppDbContextFactory() 
+        { 
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false)
+                .AddJsonFile($"appsettings.{environment}.json", optional: true)
+                .AddUserSecrets<AppDbContextFactory>(optional: false)
+                .AddEnvironmentVariables()
+                .Build();
+            _passwordProvider=new LocalSecretPasswordProvider(_configuration);
+        }
         public AppDbContextFactory(IDatabaseInitializer initializer, IConfiguration configuration, IPasswordProvider passwordProvider)
         {
             _initializer = initializer ?? throw new ArgumentNullException(nameof(initializer));
@@ -31,7 +43,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             var builder = new SqlConnectionStringBuilder(connectionString);
             var migrationUserName = configuration["MigrationUser:UserName"];
 
-            if (!string.IsNullOrEmpty(migrationUserName) && migrationUserName == builder.UserID && string.IsNullOrEmpty(builder.Password)) 
+            if (!string.IsNullOrEmpty(migrationUserName) && migrationUserName == builder.UserID && string.IsNullOrEmpty(builder.Password) && !builder.IntegratedSecurity) 
             {
                 _initializer.EnsureDatabaseAndUser();
 

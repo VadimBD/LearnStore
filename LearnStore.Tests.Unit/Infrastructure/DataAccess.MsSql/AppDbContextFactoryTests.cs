@@ -137,5 +137,30 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             // Assert
             initializer.Received(1).EnsureDatabaseAndUser();
         }
+
+        [Fact]
+        public void GetConnectionString_WhenMigrationUserIsIntegratedSecurity_ReturnsConnectionStringWithIntegratedSecurity()
+        {
+            var connectionString = "Server=Server;Database=LearnStore;User Id=migration_user;Integrated Security=True;";
+            var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["ConnectionStrings:LernStoreMigration"] = connectionString,
+                ["MigrationUser:UserName"] = "migration_user"
+            }).Build();
+
+            var initializer = Substitute.For<IDatabaseInitializer>();
+            var passwordProvider = Substitute.For<IPasswordProvider>();
+            var factory = new AppDbContextFactory(initializer, config, passwordProvider);
+
+            // Act
+            var context = factory.CreateDbContext([]);
+            var builder = new SqlConnectionStringBuilder(context.Database.GetDbConnection().ConnectionString);
+
+            // Assert
+            builder.ConnectionString.Should().NotBeNullOrEmpty();
+            builder.UserID.Should().Be("migration_user");
+            builder.IntegratedSecurity.Should().BeTrue();
+            builder.Password.Should().BeNullOrEmpty();
+        }
     }
 }

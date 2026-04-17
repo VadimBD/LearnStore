@@ -1,4 +1,6 @@
+using LearnStore.Infrastructure;
 using LearnStore.Infrastructure.DataAccess.MsSql;
+using LearnStore.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -6,6 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+    builder.Services.AddSingleton<IPasswordProvider, LocalSecretPasswordProvider>();
+}
+else
+{
+    builder.Services.AddSingleton<IPasswordProvider, DockerSecretPasswordProvider>();
+}
 
 var app = builder.Build();
 
