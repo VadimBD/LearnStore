@@ -146,10 +146,10 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             savedProduct!.Name.Should().Be(command.Name);
             savedProduct.Description.Should().Be(command.Description);
             savedProduct.Price.Should().Be(command.Price);
-            savedProduct.Author.Id.Should().Be(command.Author.Id);
-            savedProduct.Seller.Id.Should().Be(command.Seller.Id);
-            savedProduct.Category.Id.Should().Be(command.Category.Id);
-            savedProduct.ChildProducts.Count.Should().Be(command.ChildProducts.Count);
+            savedProduct!.Author.Id.Should().Be(command.Author.Id);
+            savedProduct!.Seller.Id.Should().Be(command.Seller.Id);
+            savedProduct!.Category.Id.Should().Be(command.Category.Id);
+            savedProduct!.ChildProducts.Count.Should().Be(command.ChildProducts.Count);
         }
 
         [Fact]

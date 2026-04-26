@@ -1,0 +1,26 @@
+services:
+  migrator:
+    image: localhost:5000/learnstore-migrations:latest
+    environment:
+      DOTNET_ENVIRONMENT: "Production" 
+    secrets:
+      - mssql_sa_password
+      - migrator_password
+      - app_password
+      - identity_password
+      - identitymigrator_password
+    deploy:
+      restart_policy:
+        condition: none
+
+secrets:
+  mssql_sa_password:
+    external: true
+  migrator_password:
+    external: true
+  app_password:
+    external: true
+  identity_password:
+    external: true
+  identitymigrator_password:
+    external: true

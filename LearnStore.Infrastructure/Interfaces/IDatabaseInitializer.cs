@@ -4,8 +4,8 @@ using System.Text;
 
 namespace LearnStore.Infrastructure.Interfaces
 {
-    public interface IDatabaseInitializer
+    public interface IDatabaseInitializer<TContext> where TContext : DbContext
     {
-        void EnsureDatabaseAndUser();
+            void EnsureDatabaseAndUser();
     }
 }

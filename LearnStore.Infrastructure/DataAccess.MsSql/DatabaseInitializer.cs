@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,24 +7,25 @@ using System.Text;
 
 namespace LearnStore.Infrastructure.DataAccess.MsSql
 {
-    public class DatabaseInitializer : IDatabaseInitializer
+    public class DatabaseInitializer<TContext> : IDatabaseInitializer<TContext> where TContext : DbContext
     {
         private readonly IPasswordProvider _passwordProvider;
-        private readonly IConfiguration _configuration;
+        private readonly DatabaseInitializerOptions<TContext> _options;
 
-        public DatabaseInitializer(IPasswordProvider passwordProvider, IConfiguration configuration)
+        public DatabaseInitializer(IPasswordProvider passwordProvider, IConfiguration configuration, IOptions<DatabaseInitializerOptions<TContext>> options)
         {
             _passwordProvider = passwordProvider ?? throw new ArgumentNullException(nameof(passwordProvider));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         }
 
         public void EnsureDatabaseAndUser()
         {
-            var saPassword = _passwordProvider.GetPassword("mssql_sa_password");
+            var saPassword = _passwordProvider.GetPassword(_options.SaPasswordKey);
             if(string.IsNullOrEmpty(saPassword))
                 throw new InvalidOperationException("SA password is required to ensure midration user exists");
-            var connectionString = _configuration.GetConnectionString("LernStoreMigration")
-                ?? throw new InvalidOperationException("Connection string 'LernStoreMigration' not found ");
+
+            var connectionString = _options.ConnectionString
+                ?? throw new InvalidOperationException("Connection string 'LearnStoreMigration' not found ");
             var builder = new SqlConnectionStringBuilder(connectionString)
             {
                 UserID = "SA",
@@ -38,26 +40,26 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             var connection= new SqlConnection(builderForSa.ToString());
 
             EnsureDatabaseExists(builderForSa.ConnectionString, builder.InitialCatalog);
-            EnsureMigrationUserExists(builderForSa.ConnectionString);
-            EnsureAppUserExists(builderForSa.ConnectionString);
+            EnsureMigrationUserExists(builder.ConnectionString);
+            EnsureAppUserExists(builder.ConnectionString);
         }
 
         private void EnsureAppUserExists(string connectionString)
         {
-            var appUserName = _configuration["AppUser:UserName"];
+            var appUserName = _options.AppUserName;
             if (string.IsNullOrEmpty(appUserName))
                 throw new InvalidOperationException("App user name is not configured.");
 
-            var password = _passwordProvider.GetPassword("app_password");
+            var password = _passwordProvider.GetPassword(_options.AppPasswordKey);
             var roles = "EXEC sp_addrolemember 'db_datareader', N'" + appUserName + "'; EXEC sp_addrolemember 'db_datawriter', N'" + appUserName + "';";
             EnsureUserExists(connectionString, appUserName, password, roles);
         }
         private void EnsureMigrationUserExists(string connectionString)
         {
-            var migrationUserName = _configuration["MigrationUser:UserName"];
+            var migrationUserName = _options.MigrationUserName;
             if (string.IsNullOrEmpty(migrationUserName))
                 throw new InvalidOperationException("Migration user name is not configured.");
-            var password = _passwordProvider.GetPassword("migration_password");
+            var password = _passwordProvider.GetPassword(_options.MigrationPasswordKey);
             var roles = "EXEC sp_addrolemember 'db_owner', N'" + migrationUserName + "';";
             EnsureUserExists(connectionString, migrationUserName, password, roles);
         }
@@ -90,5 +92,15 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             connection.Open();
             command.ExecuteNonQuery();
         }
+    }
+
+    public record class DatabaseInitializerOptions<TContext> where TContext : DbContext
+    {
+        public string ConnectionString { get; set; } = string.Empty;
+        public string SaPasswordKey { get; set; } = "mssql_sa_password";
+        public string MigrationUserName { get; set; } = string.Empty;
+        public string AppUserName { get; set; } = string.Empty;
+        public string MigrationPasswordKey { get; set; } = "migrator_password";
+        public string AppPasswordKey { get; set; } = "app_password";
     }
 }

@@ -23,7 +23,7 @@ else
 {
    builder.Services.AddSingleton<IPasswordProvider, DockerSecretPasswordProvider>();
 }
-builder.Services.AddMsSqlDataAccess(connectionString);
+builder.Services.AddMsSqlDataAccess(builder.Configuration);
 
 var app = builder.Build();
 

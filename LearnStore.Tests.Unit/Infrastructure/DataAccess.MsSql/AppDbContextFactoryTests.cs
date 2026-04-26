@@ -11,14 +11,14 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>()).Build();
 
-            var initialaizer = Substitute.For<IDatabaseInitializer>();
+            var initialaizer = Substitute.For<IDatabaseInitializer<AppDbContext>>();
             var passwordProvider = Substitute.For<IPasswordProvider>();
 
             var factory = new AppDbContextFactory(initialaizer, config, passwordProvider);
 
             Action act = () => factory.CreateDbContext([]);
 
-            act.Should().Throw<InvalidOperationException>().WithMessage("Conection string 'LernStoreMigration' not found.");
+            act.Should().Throw<InvalidOperationException>().WithMessage("Conection string 'LearnStoreMigration' not found.");
         }
 
         [Fact]
@@ -27,11 +27,11 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var connectionString = "Server=Server;Database=LearnStore;User Id=other_user;";
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:LernStoreMigration"] = connectionString,
+                ["ConnectionStrings:LearnStoreMigration"] = connectionString,
                 ["MigrationUser:UserName"] = "migration_user"
             }).Build();
 
-            var initialaizer = Substitute.For<IDatabaseInitializer>();
+            var initialaizer = Substitute.For<IDatabaseInitializer<AppDbContext>>();
             var passwordProvider = Substitute.For<IPasswordProvider>();
             var factory = new AppDbContextFactory(initialaizer, config, passwordProvider);
             var context = factory.CreateDbContext([]);
@@ -49,11 +49,11 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var connectionString = "Server=Server;Database=LearnStore;User Id=app_user;";
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:LernStoreMigration"] = connectionString,
+                ["ConnectionStrings:LearnStoreMigration"] = connectionString,
                 ["MigrationUser:UserName"] = "migration_user"
             }).Build();
 
-            var initialaizer = Substitute.For<IDatabaseInitializer>();
+            var initialaizer = Substitute.For<IDatabaseInitializer<AppDbContext>>();
             var passwordProvider = Substitute.For<IPasswordProvider>();
             var factory = new AppDbContextFactory(initialaizer, config, passwordProvider);
             var context = factory.CreateDbContext([]);
@@ -71,10 +71,10 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var connectionString = "Server=Server;Database=LearnStore;User Id=migration_user;Password=secret;";
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:LernStoreMigration"] = connectionString,
+                ["ConnectionStrings:LearnStoreMigration"] = connectionString,
                 ["MigrationUser:UserName"] = "migration_user"
             }).Build();
-            var initialaizer = Substitute.For<IDatabaseInitializer>();
+            var initialaizer = Substitute.For<IDatabaseInitializer<AppDbContext>>();
             var passwordProvider = Substitute.For<IPasswordProvider>();
             var factory = new AppDbContextFactory(initialaizer, config, passwordProvider);
             var context = factory.CreateDbContext([]);
@@ -95,14 +95,14 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:LernStoreMigration"] = connectionString,
+                ["ConnectionStrings:LearnStoreMigration"] = connectionString,
                 ["MigrationUser:UserName"] = "migration_user"
             }).Build();
 
-            var initializer = Substitute.For<IDatabaseInitializer>();
+            var initializer = Substitute.For<IDatabaseInitializer<AppDbContext>>();
 
             var passwordProvider = Substitute.For<IPasswordProvider>();
-            passwordProvider.GetPassword("migration_password").Returns("secret");
+            passwordProvider.GetPassword("migrator_password").Returns("secret");
 
             var factory = new AppDbContextFactory(initializer, config, passwordProvider);
 
@@ -125,12 +125,12 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var connectionString = "Server=Server;Database=LearnStore;User Id=migration_user;";
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:LernStoreMigration"] = connectionString,
+                ["ConnectionStrings:LearnStoreMigration"] = connectionString,
                 ["MigrationUser:UserName"] = "migration_user"
             }).Build();
-            var initializer = Substitute.For<IDatabaseInitializer>();
+            var initializer = Substitute.For<IDatabaseInitializer<AppDbContext>>();
             var passwordProvider = Substitute.For<IPasswordProvider>();
-            passwordProvider.GetPassword("migration_password").Returns("secret");
+            passwordProvider.GetPassword("migrator_password").Returns("secret");
             var factory = new AppDbContextFactory(initializer, config, passwordProvider);
             // Act
             var context = factory.CreateDbContext([]);
@@ -144,11 +144,11 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var connectionString = "Server=Server;Database=LearnStore;User Id=migration_user;Integrated Security=True;";
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:LernStoreMigration"] = connectionString,
+                ["ConnectionStrings:LearnStoreMigration"] = connectionString,
                 ["MigrationUser:UserName"] = "migration_user"
             }).Build();
 
-            var initializer = Substitute.For<IDatabaseInitializer>();
+            var initializer = Substitute.For<IDatabaseInitializer<AppDbContext>>();
             var passwordProvider = Substitute.For<IPasswordProvider>();
             var factory = new AppDbContextFactory(initializer, config, passwordProvider);
 
