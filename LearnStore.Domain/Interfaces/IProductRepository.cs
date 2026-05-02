@@ -10,9 +10,12 @@ namespace LearnStore.Domain.Interfaces
         IEnumerable<Product> Products { get; }
         Task SaveProductAsync(Product product, CancellationToken cancellationToken);
 
-        Product? DeleteProduct(Guid productId);
+        Task<DeleteProductResult> DeleteProductAsync(int productId, CancellationToken cancellationToken);
+        Product? GetProduct(int productId);
+        IEnumerable<Product> GetProduct(ProductSearchCriteria criteria);
 
-        IEnumerable<ProductCategory> Categories { get; }
+
+        IEnumerable <ProductCategory> Categories { get; }
 
     }
 }

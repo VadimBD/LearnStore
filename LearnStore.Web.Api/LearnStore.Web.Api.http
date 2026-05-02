@@ -1,0 +1,6 @@
+@LearnStore.Web.Api_HostAddress = http://localhost:5043
+
+GET {{LearnStore.Web.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

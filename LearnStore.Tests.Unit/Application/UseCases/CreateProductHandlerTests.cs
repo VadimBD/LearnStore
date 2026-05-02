@@ -61,7 +61,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
 
 
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenComandNull()
+        public async Task Handle_WhenComandNull_ThrowsArgumentNullException()
         {
             var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<CreateProductCommand>>();
@@ -75,7 +75,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_CallsValidationRules_WhenCommandIsNotNull()
+        public async Task Handle_WhenCommandIsNotNull_CallsValidationRules()
         {
             var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<CreateProductCommand>>();
@@ -106,7 +106,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_SavesProduct_WhenCommandIsValid()
+        public async Task Handle_WhenCommandIsValid_SavesProduct()
         {
             var productRepository = Substitute.For<IProductRepository>();
 
@@ -146,14 +146,14 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             savedProduct!.Name.Should().Be(command.Name);
             savedProduct.Description.Should().Be(command.Description);
             savedProduct.Price.Should().Be(command.Price);
-            savedProduct.Author.Id.Should().Be(command.Author.Id);
-            savedProduct.Seller.Id.Should().Be(command.Seller.Id);
-            savedProduct.Category.Id.Should().Be(command.Category.Id);
-            savedProduct.ChildProducts.Count.Should().Be(command.ChildProducts.Count);
+            savedProduct!.Author.Id.Should().Be(command.Author.Id);
+            savedProduct!.Seller.Id.Should().Be(command.Seller.Id);
+            savedProduct!.Category.Id.Should().Be(command.Category.Id);
+            savedProduct!.ChildProducts.Count.Should().Be(command.ChildProducts.Count);
         }
 
         [Fact]
-        public async Task Handle_ThrowsValidationException_WhenValidatorThrowsException()
+        public async Task Handle_WhenValidatorThrowsException_ThrowsValidationException()
         {
             var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<CreateProductCommand>>();

@@ -1,0 +1,34 @@
+services:
+  mssql-server:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD_FILE: "/run/secrets/mssql_sa_password" 
+      DOTNET_ENVIRONMENT: "Production"
+    secrets:
+      - mssql_sa_password
+      - migrator_password
+      - app_password
+      - identity_password
+      - identitymigrator_password
+    ports:
+      - "1434:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    deploy:
+      restart_policy:
+        condition: on-failure
+volumes:
+  sql_data:
+   
+secrets:
+  mssql_sa_password:
+    external: true
+  migrator_password:
+    external: true
+  app_password:
+    external: true
+  identity_password:
+    external: true
+  identitymigrator_password:
+    external: true

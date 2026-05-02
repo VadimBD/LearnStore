@@ -1,0 +1,54 @@
+﻿services:
+  mssql-server:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD_FILE: "/run/secrets/mssql_sa_password"
+    secrets:
+      - mssql_sa_password
+      - migrator_password
+      - app_password
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+  api:
+    build: .
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production   
+    secrets:
+      - app_password-   
+      - migrator_password
+      - mssql_sa_password
+    depends_on:
+      - mssql-server
+  admin:
+     build: .
+     environment:
+      ASPNETCORE_ENVIRONMENT: Production   
+     secrets:
+      - app_password-   
+      - migrator_password
+      - mssql_sa_password
+     depends_on:
+      - mssql-server
+  learn-store:
+     build: .
+     environment:
+      ASPNETCORE_ENVIRONMENT: Production   
+     secrets:
+      - app_password-   
+      - migrator_password
+      - mssql_sa_password
+     depends_on:
+      - mssql-server
+volumes:
+  sql_data:
+
+secrets:
+  mssql_sa_password:
+    external: true
+  migrator_password:
+    external: true
+  app_password:
+    external: true

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LearnStore.Database.Migrations": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

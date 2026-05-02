@@ -41,7 +41,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenComandNull()
+        public async Task Handle_WhenComandNull_ThrowsArgumentNullException()
         {
             var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<UpdateProductCommand>>();
@@ -52,7 +52,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_CallsValidationRules_WhenCommandIsNotNull()
+        public async Task Handle_WhenCommandIsNotNull_CallsValidationRules()
         {
             var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<UpdateProductCommand>>();
@@ -85,7 +85,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             Arg.Any<CancellationToken>());
         }
         [Fact]
-        public async Task Handle_UpdatesProduct_WhenCommandIsValid()
+        public async Task Handle_WhenCommandIsValid_UpdatesProduct()
         {
             var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<UpdateProductCommand>>();
@@ -113,7 +113,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
 
 
         [Fact]
-        public async Task Handle_CallsSaveProductAsync_WhenCommandIsValid()
+        public async Task Handle_WhenCommandIsValid_CallsSaveProductAsync()
         {
             var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<UpdateProductCommand>>();

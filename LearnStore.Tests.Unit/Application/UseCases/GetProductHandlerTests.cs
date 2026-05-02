@@ -5,7 +5,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
     public class GetProductHandlerTests
     {
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenQueryIsNull()
+        public async Task Handle_WhenQueryIsNull_ThrowsArgumentNullException()
         {
             // Arrange
             var productRepository = Substitute.For<IProductRepository>();

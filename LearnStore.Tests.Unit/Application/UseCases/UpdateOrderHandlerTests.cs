@@ -36,7 +36,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenComandNull()
+        public async Task Handle_WhenCommandIsNull_ThrowsArgumentNullException()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<UpdateOrderCommand>>();
@@ -52,7 +52,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_ThrowsArgumentNullException_WhenDeliveryCustomerNull()
+        public async Task Handle_WhenDeliveryCustomerNull_ThrowsArgumentNullException()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<UpdateOrderCommand>>();
@@ -74,7 +74,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_CallsValidationRules_WhenCommandIsNotNull()
+        public async Task Handle_WhenCommandIsNotNull_CallsValidationRules()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<UpdateOrderCommand>>();
@@ -100,7 +100,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         }
 
         [Fact]
-        public async Task Handle_ThrowsValidationException_WhenValidatorThrowsException()
+        public async Task Handle_WhenValidatorThrowsException_ThrowsValidationException()
         {
             var orederRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<UpdateOrderCommand>>();
@@ -135,7 +135,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             exception.Which.Errors.Should().ContainSingle(e => e.PropertyName == "Property2" && e.ErrorMessage == "Error message 2");
         }
         [Fact]
-        public async Task Handle_SaveOrder_WhenCommandIsValid()
+        public async Task Handle_WhenCommandIsValid_SaveOrder()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<UpdateOrderCommand>>();

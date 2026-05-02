@@ -11,7 +11,7 @@ namespace LearnStore.Domain.Interfaces
     {
         Task<IEnumerable<Order>> GetOrdersAsync(OrderSearchCriteria criteria, CancellationToken cancellationToken);
         Task SaveOrderAsync(Order order, CancellationToken cancellationToken);
-        Task UpdateOrderStageAsync(Guid orderId, OrderState newStage, CancellationToken cancellationToken);
+        Task<bool> UpdateOrderStageAsync(Guid orderId, OrderState newStage, CancellationToken cancellationToken);
         Task<Order> DeleteOrderAsync(Guid orderId, CancellationToken cancellationToken);
       
     }
