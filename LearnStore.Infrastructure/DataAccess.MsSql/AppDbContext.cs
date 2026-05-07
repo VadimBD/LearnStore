@@ -16,6 +16,10 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
 
         public DbSet<Domain.Entities.Author > Authors { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder builder) 
+        { 
+            base.OnModelCreating(builder);
+            builder.Entity<Customer>().HasMany(c=>c.PurchasedProducts).WithMany();
+        }
     }
 }

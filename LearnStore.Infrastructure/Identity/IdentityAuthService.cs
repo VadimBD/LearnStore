@@ -46,12 +46,12 @@ namespace LearnStore.Infrastructure.Identity
 
             var identityUser = await _userManager.FindByNameAsync(user.Name) ?? await _userManager.FindByEmailAsync(user.Email);
             if (identityUser is null)
-                return new AuthResult(false, "Invalid username or email.");
+                return new AuthResult { IsSuccess = false, Error = "Invalid username or email." };
 
             await _signInManager.SignOutAsync();
             var signInResult = await _signInManager.PasswordSignInAsync(identityUser, password, false, false);
 
-            return signInResult.Succeeded ? new AuthResult(true, null, null, identityUser.Id) : new AuthResult(false, "Invalid password.");
+            return signInResult.Succeeded ? new AuthResult { IsSuccess = true, UserId = identityUser.Id } : new AuthResult { IsSuccess = false, Error = "Invalid password." };
         }
         public async Task LogoutAsync(CancellationToken cancellationToken) => await _signInManager.SignOutAsync();
         public async Task<AuthResult> RegisterAsync(UserDto user, string password, CancellationToken cancellationToken)
@@ -62,8 +62,8 @@ namespace LearnStore.Infrastructure.Identity
             var identityUser = new IdentityUser() { UserName = user.Name, Email = user.Email };
             var result = await _userManager.CreateAsync(identityUser, password);
             if (!result.Succeeded)
-                return new AuthResult(false, string.Join("; ", result.Errors.Select(e => e.Description)));
-            return new AuthResult(result.Succeeded, result.Succeeded ? null : "User registration failed.", null, identityUser.Id);
+                return new AuthResult { IsSuccess = false, Error = string.Join("; ", result.Errors.Select(e => e.Description)) };
+            return new AuthResult { IsSuccess = result.Succeeded, Error = result.Succeeded ? null : "User registration failed.", UserId = identityUser.Id };
         }
 
         public async Task<RoleOperationResult> RemoveRoleFromUserAsync(string userId, string role, CancellationToken cancellationToken)

@@ -55,7 +55,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<UserDto>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())
-                .Returns(new AuthResult(true, null, null, "123"));
+                .Returns(new AuthResult { IsSuccess = true, UserId = "123" });
             var handler = new RegisterHandler(authService, validationRules);
             var command = new RegisterCommand
             {
@@ -85,7 +85,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<UserDto>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())
-                .Returns(new AuthResult(false, "Already exists."));
+                .Returns(new AuthResult { IsSuccess = false, Error = "Already exists." });
             var handler = new RegisterHandler(authService, validationRules);
             var command = new RegisterCommand
             {

@@ -24,7 +24,8 @@ namespace LearnStore.Application.UseCases
             {
                 IsSuccess = result.IsSuccess,
                 Error = result.Error,
-                UserId = result.UserId
+                UserId = result.UserId,
+                Roles = result.Roles
             };
         }
     }

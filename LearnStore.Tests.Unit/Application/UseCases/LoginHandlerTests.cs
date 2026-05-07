@@ -52,7 +52,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<UserDto>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())
-                .Returns(new AuthResult(true, null, null, "123"));
+                .Returns(new AuthResult { IsSuccess = true, UserId = "123" });
             var handler = new LoginHandler(authService, validationRules);
             var command = new LoginCommand
             {
@@ -82,7 +82,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<UserDto>(),
                 Arg.Any<string>(),
                 Arg.Any<CancellationToken>())
-                .Returns(new AuthResult(false, "Invalid credentials."));
+                .Returns(new AuthResult { IsSuccess = false, Error = "Invalid credentials." });
             var handler = new LoginHandler(authService, validationRules);
             var command = new LoginCommand
             {

@@ -5,6 +5,7 @@ using LearnStore.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -34,6 +35,7 @@ namespace LearnStore.Infrastructure.Extensions
             services.AddScoped<IOrderRepository, EFOrderRepository>();
             services.AddScoped<IProductRepository, EFProductRepository>();
             services.AddScoped<ISellerRepository, EFSellerRepository>();
+            services.TryAddSingleton<IPasswordProvider, PasswordProvider>();
 
             services.Configure<DatabaseInitializerOptions<AppDbContext>>(opt =>
             {
@@ -75,6 +77,7 @@ namespace LearnStore.Infrastructure.Extensions
             services.AddScoped<IAuthService, IdentityAuthService>();
             services.AddTransient<IDatabaseInitializer<AppIdentityDbContext>, DatabaseInitializer<AppIdentityDbContext>>();
             services.AddSingleton<IDesignTimeDbContextFactory<AppIdentityDbContext>, AppIdentityDbContextFactory>();
+            services.TryAddSingleton<IPasswordProvider, PasswordProvider>();
         }
 
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)

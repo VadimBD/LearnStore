@@ -17,7 +17,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false)
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
-                .AddUserSecrets<AppDbContextFactory>(optional: false)
+                .AddUserSecrets<AppDbContextFactory>(optional: true)
                 .AddEnvironmentVariables()
                 .Build();
             _passwordProvider= new PasswordProvider(new WindowsUserSecretsProvider(_configuration));
