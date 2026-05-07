@@ -8,6 +8,11 @@ namespace LearnStore.Application.Mappers
 {
     public class CustomerMapper: IMapper<Customer, CustomerDto>
     {
+        private IMapper<Product, ProductDto> _productMapper;
+        public CustomerMapper(IEnumerable<IMapper> mappers)
+        {
+            _productMapper = mappers.OfType<IMapper<Product, ProductDto>>().FirstOrDefault() ?? throw new ArgumentException("Product mapper not found", nameof(mappers));
+        }
         public Customer ToDomain(CustomerDto customerDto)
         {
             ArgumentNullException.ThrowIfNull(customerDto, nameof(customerDto));
@@ -16,7 +21,9 @@ namespace LearnStore.Application.Mappers
                 Id = customerDto.Id,
                 Name = customerDto.Name,
                 EmailAddress = customerDto.EmailAddress,
-                PhoneNumber = customerDto.PhoneNumber
+                PhoneNumber = customerDto.PhoneNumber,
+                PurchasedProducts = customerDto.PurchasedProducts.Select(p => _productMapper.ToDomain(p)).ToList()
+
             };
         }
 
@@ -33,7 +40,8 @@ namespace LearnStore.Application.Mappers
                 Id = customer.Id,
                 Name = customer.Name,
                 EmailAddress = customer.EmailAddress,
-                PhoneNumber = customer.PhoneNumber
+                PhoneNumber = customer.PhoneNumber,
+                PurchasedProducts = customer.PurchasedProducts.Select(p => _productMapper.ToDto(p)).ToList()
             };
         }
 

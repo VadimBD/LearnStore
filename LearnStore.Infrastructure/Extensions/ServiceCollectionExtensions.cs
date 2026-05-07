@@ -1,7 +1,13 @@
-﻿using LearnStore.Infrastructure.DataAccess.MsSql;
+﻿using LearnStore.Application.Interfaces;
+using LearnStore.Infrastructure.Auth;
+using LearnStore.Infrastructure.DataAccess.MsSql;
 using LearnStore.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace LearnStore.Infrastructure.Extensions
 {
@@ -51,7 +57,7 @@ namespace LearnStore.Infrastructure.Extensions
                 if (!builder.IntegratedSecurity && string.IsNullOrEmpty(builder.Password))
                 {
                     var passwordProvider = sp.GetRequiredService<IPasswordProvider>();
-                    var password = passwordProvider.GetPassword(GetConfigOrDefault(configuration, "AppUser:PasswordKey", "app_password"));
+                    var password = passwordProvider.GetPassword(GetConfigOrDefault(configuration, "IdentityUser:PasswordKey", "identity_password"));
                     builder.Password = !string.IsNullOrEmpty(password) ? password : throw new InvalidOperationException("Password for database connection is not provided.");
                 }
                 options.UseSqlServer(builder.ConnectionString);
@@ -66,9 +72,57 @@ namespace LearnStore.Infrastructure.Extensions
                 opt.AppPasswordKey = GetConfigOrDefault(configuration, "IdentityUser:PasswordKey", "identity_password");
             });
 
+            services.AddScoped<IAuthService, IdentityAuthService>();
             services.AddTransient<IDatabaseInitializer<AppIdentityDbContext>, DatabaseInitializer<AppIdentityDbContext>>();
             services.AddSingleton<IDesignTimeDbContextFactory<AppIdentityDbContext>, AppIdentityDbContextFactory>();
+        }
 
+        public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddSingleton<IJwtOptionsProvider, JwtOptionsProvider>();
+
+            services.Configure<JwtOptions>(opt =>
+            {
+                var provider = new JwtOptionsProvider(configuration, services.BuildServiceProvider().GetRequiredService<ISecretProvider>());
+                var options = provider.GetOptions();
+                opt.Issuer = options.Issuer;
+                opt.Audience = options.Audience;
+                opt.Key = options.Key;
+                opt.ExpireHours = options.ExpireHours;
+            });
+            services.AddAuthentication(options =>
+            { 
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                var sp= services.BuildServiceProvider();
+                var jwtOptions = sp.GetRequiredService<IOptions<JwtOptions>>().Value;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtOptions.Issuer,
+                    ValidAudience = jwtOptions.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
+                };
+            });
+        }
+        public static void UseWindowsUserSecrets<TMarker>(this IServiceCollection services, IConfigurationBuilder configuration) where TMarker : class
+        {
+            configuration.AddUserSecrets<TMarker>();
+            services.AddSingleton<ISecretProvider, WindowsUserSecretsProvider>();
+        }
+        public static void UseWindowsUserSecrets(this IServiceCollection services)
+        {
+            services.AddSingleton<ISecretProvider, WindowsUserSecretsProvider>();
+        }
+        public static void UseDockerSecrets(this IServiceCollection services)
+        {
+            services.AddSingleton<ISecretProvider, DockerSecretProvider>();
         }
         private static string GetConfigOrDefault(IConfiguration configuration, string path, string defaultValue)
         {

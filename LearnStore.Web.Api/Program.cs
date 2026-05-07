@@ -17,15 +17,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 var connectionString = builder.Configuration.GetConnectionString("LearnStoreApp") ?? throw new InvalidOperationException("Connection string 'LearnStoreAppUser' not found.");
 if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddUserSecrets<Program>();
-    builder.Services.AddSingleton<IPasswordProvider, LocalSecretPasswordProvider>();
-}
+    builder.Services.UseWindowsUserSecrets<Program>(builder.Configuration);
 else
-{
-    builder.Services.AddSingleton<IPasswordProvider, DockerSecretPasswordProvider>();
-}
+    builder.Services.UseDockerSecrets();
 builder.Services.AddMsSqlDataAccess(builder.Configuration);
+builder.Services.AddIdentity(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 

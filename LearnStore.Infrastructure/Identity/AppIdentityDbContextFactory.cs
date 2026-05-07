@@ -21,7 +21,7 @@ namespace LearnStore.Infrastructure.Identity
             .AddUserSecrets<AppIdentityDbContextFactory>(optional: true)
             .AddEnvironmentVariables()
             .Build();
-            _passwordProvider= new LocalSecretPasswordProvider(_configuration);
+            _passwordProvider= new PasswordProvider(new WindowsUserSecretsProvider(_configuration));
         }
 
         public AppIdentityDbContextFactory(IConfiguration configuration, IPasswordProvider passwordProvider, IDatabaseInitializer<AppIdentityDbContext> databaseInitializer)

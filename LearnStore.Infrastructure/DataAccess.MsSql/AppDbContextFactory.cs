@@ -20,7 +20,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
                 .AddUserSecrets<AppDbContextFactory>(optional: false)
                 .AddEnvironmentVariables()
                 .Build();
-            _passwordProvider=new LocalSecretPasswordProvider(_configuration);
+            _passwordProvider= new PasswordProvider(new WindowsUserSecretsProvider(_configuration));
         }
         public AppDbContextFactory(IDatabaseInitializer<AppDbContext> initializer, IConfiguration configuration, IPasswordProvider passwordProvider)
         {

@@ -25,9 +25,9 @@ var host = Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((context, c
     services.AddHostedService<MigrationService>();
 
     if (context.HostingEnvironment.IsDevelopment())
-        services.AddSingleton<IPasswordProvider, LocalSecretPasswordProvider>();
+        services.UseWindowsUserSecrets();
     else
-        services.AddSingleton<IPasswordProvider, DockerSecretPasswordProvider>();
+        services.UseDockerSecrets();
 }).Build();
 
 await host.RunAsync();

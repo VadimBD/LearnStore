@@ -4,15 +4,15 @@ using System.Text;
 
 namespace LearnStore.Infrastructure
 {
-    public class LocalSecretPasswordProvider : IPasswordProvider
+    public class WindowsUserSecretsProvider : ISecretProvider
     {
         
       private readonly IConfiguration _configuration;
-        public LocalSecretPasswordProvider(IConfiguration configuration)
+        public WindowsUserSecretsProvider(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
-        public string GetPassword(string key)
+        public string GetSecret(string key)
         {
             var value = _configuration[key];
             if (string.IsNullOrEmpty(value))
