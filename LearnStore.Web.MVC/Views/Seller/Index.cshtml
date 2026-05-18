@@ -1,0 +1,49 @@
+@model LearnStore.Web.MVC.Models.SellerViewModel
+
+@{
+    ViewData["Title"] = "Seller details";
+}
+
+<main class="seller-page">
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+        <div>
+            <h1 class="h3 mb-2">@Model.Seller.Name</h1>
+        </div>
+        <div class="mt-3 mt-md-0 d-flex gap-2">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Back to Home</a>
+            <a asp-controller="Seller" asp-action="Edit" asp-route-id="@Model.Seller.Id" class="btn btn-primary">Edit Seller</a>
+        </div>
+    </header>
+
+    <section aria-labelledby="account-balance" class="mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 id="account-balance" class="h6 mb-1">Account Balance</h2>
+                    <p class="mb-0 fs-5">@Model.Seller.AccountBalance.ToString("C")</p>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-primary">Withdraw balance</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section aria-labelledby="products-heading">
+        <h3 id="products-heading" class="h5 mb-3">Products</h3>
+
+        @if (!Model.Products?.Any() ?? true)
+        {
+            <div class="alert alert-info">This seller has no products.</div>
+        }
+        else
+        {
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                @foreach (var product in Model.Products)
+                {
+                    @await Html.PartialAsync("_ProductItem", product)
+                }
+            </div>
+        }
+    </section>
+</main>
