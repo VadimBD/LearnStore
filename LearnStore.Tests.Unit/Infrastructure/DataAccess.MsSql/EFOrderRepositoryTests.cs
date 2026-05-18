@@ -11,7 +11,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var customer = new Customer() { Id = 1, Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
+            var customer = new Customer() { Id = "1", Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
             context.Customers.Add(customer);
             var orderItem = new OrderItem() { Id = 1, Product = new() { Id = 1 }, PriceAtOrderTime = 1223, Quantity = 1 };
             var orderItem2 = new OrderItem() { Id = 2, Product = new() { Id = 2 }, PriceAtOrderTime = 1223, Quantity = 1 };
@@ -55,7 +55,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var customer = new Customer() { Id = 1, Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
+            var customer = new Customer() { Id = "1", Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
             context.Customers.Add(customer);
             var orderItem = new OrderItem() { Id = 1, Product = new() { Id = 1 }, PriceAtOrderTime = 1223, Quantity = 1 };
             var orderItem2 = new OrderItem() { Id = 2, Product = new() { Id = 2 }, PriceAtOrderTime = 1223, Quantity = 1 };
@@ -84,9 +84,9 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var customer = new Customer() { Id = 1, Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
-            var customer2 = new Customer() { Id = 2, Name = "Test2", EmailAddress = "test2", PhoneNumber = "+2312314" };
-            var customer3 = new Customer() { Id = 3, Name = "Test3", EmailAddress = "test3", PhoneNumber = "+2312314" };
+            var customer = new Customer() { Id = "1", Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
+            var customer2 = new Customer() { Id = "2", Name = "Test2", EmailAddress = "test2", PhoneNumber = "+2312314" };
+            var customer3 = new Customer() { Id = "3", Name = "Test3", EmailAddress = "test3", PhoneNumber = "+2312314" };
             context.Customers.AddRange(customer, customer2, customer3);
             var product = new Product() { Id = 1, Name = "TestProduct1" };
             var product2 = new Product() { Id = 2, Name = "TestProduct2" };
@@ -129,11 +129,11 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
             context.SaveChanges();
             var repository = new EFOrderRepository(context);
-            var result = await repository.GetOrdersAsync(new() { CustomerId = 2 }, CancellationToken.None);
+            var result = await repository.GetOrdersAsync(new() { CustomerId = "2" }, CancellationToken.None);
 
             result.Should().NotBeNull();
             result.Should().HaveCount(1);
-            result.Should().ContainSingle(o => o.Customer.Id == 2);
+            result.Should().ContainSingle(o => o.Customer.Id == "2");
         }
 
 
@@ -172,7 +172,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
             using var context = new AppDbContext(options);
 
-            var customer = new Customer { Id = 1, Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
+            var customer = new Customer { Id = "1", Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
             context.Customers.Add(customer);
 
             var product = new Product { Id = 1, Name = "TestProduct1" };
@@ -215,7 +215,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var criteria = new OrderSearchCriteria
             {
                 OrderId = orderId,
-                CustomerId = 1
+                CustomerId = "1"
             };
 
             // Act
@@ -227,43 +227,95 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             result.Should().OnlyContain(o =>
                 o.Id == orderId &&
                 o.Customer != null &&
-                o.Customer.Id == 1);
+                o.Customer.Id == "1");
         }
 
         [Fact]
         public async Task UpdateOrderStageAsync_WhenOrderFound_UpdatesOrderStageSuccessfully()
         {
-            var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
             using var context = new AppDbContext(options);
+
             var repository = new EFOrderRepository(context);
+
             var orderIdTarget = Guid.NewGuid();
             var orderId = Guid.NewGuid();
-            context.Orders.Add(new() { Id = orderIdTarget, State = OrderState.New });
-            context.Orders.Add(new() { Id = orderId, State = OrderState.New });
+
+            var customer = new Customer
+            {
+                Id = "1",
+                Name = "Test",
+                EmailAddress = "test@test.com",
+                PhoneNumber = "123"
+            };
+
+            context.Customers.Add(customer);
+
+            context.Orders.Add(new Order
+            {
+                Id = orderIdTarget,
+                State = OrderState.New,
+                Customer = customer
+            });
+
+            context.Orders.Add(new Order
+            {
+                Id = orderId,
+                State = OrderState.New,
+                Customer = customer
+            });
+
             context.SaveChanges();
-            await repository.UpdateOrderStageAsync(orderIdTarget, OrderState.Completed, CancellationToken.None);
+
+            await repository.UpdateOrderStageAsync(
+                orderIdTarget,
+                OrderState.Completed,
+                CancellationToken.None);
+
             var updatedOrder = context.Orders.Find(orderIdTarget);
+
             updatedOrder.Should().NotBeNull();
             updatedOrder!.State.Should().Be(OrderState.Completed);
+
             var order = context.Orders.Find(orderId);
+
             order.Should().NotBeNull();
             order!.State.Should().Be(OrderState.New);
         }
-
         [Fact]
         public async Task UpdateOrderStageAsync_WhenOrderNotFound_DoesNothing()
         {
-            var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
             using var context = new AppDbContext(options);
+
             var repository = new EFOrderRepository(context);
+
             var orderId = Guid.NewGuid();
-            context.Orders.Add(new() { Id = orderId, State = OrderState.New });
+
+            context.Orders.Add(new Order
+            {
+                Id = orderId,
+                Customer = new Customer { Id = "1", Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" },
+                State = OrderState.New
+            });
+
             context.SaveChanges();
-            await repository.UpdateOrderStageAsync(Guid.NewGuid(), OrderState.Completed, CancellationToken.None);
+
+            await repository.UpdateOrderStageAsync(
+                Guid.NewGuid(),
+                OrderState.Completed,
+                CancellationToken.None);
+
             var order = context.Orders.Find(orderId);
+
             order.Should().NotBeNull();
             order!.State.Should().Be(OrderState.New);
-
         }
 
         [Fact]
@@ -289,7 +341,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             using var context = new AppDbContext(options);
 
 
-            var customer = new Customer { Id = 1, Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
+            var customer = new Customer { Id = "1", Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
             context.Customers.Add(customer);
 
 
@@ -343,7 +395,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
 
-            var customer = new Customer { Id = 1, Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
+            var customer = new Customer { Id = "1", Name = "Test", EmailAddress = "test", PhoneNumber = "+2312314" };
 
             context.Customers.Add(customer);
 
@@ -422,7 +474,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
             var customer = new Customer
             {
-                Id = 1,
+                Id = "1",
                 Name = "Customer1",
                 EmailAddress = "email@test.com",
                 PhoneNumber = "123"
@@ -454,7 +506,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
                 Customer = new Customer
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "Customer1",
                     EmailAddress = "email@test.com",
                     PhoneNumber = "123"

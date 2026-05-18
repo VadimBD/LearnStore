@@ -84,7 +84,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             var handler = new CreateOrderHandler(orderRepository, validator, GetMappers());
             var command = new CreateOrderCommand
             {
-                Customer = new CustomerDto { Id = 1 },
+                Customer = new CustomerDto { Id = "1" },
                 Items = new List<OrderItemDto>
             {
                 new OrderItemDto
@@ -125,7 +125,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
 
             var command = new CreateOrderCommand
             {
-                Customer = new CustomerDto { Id = 1 },
+                Customer = new CustomerDto { Id = "1" },
                 Items = new List<OrderItemDto>
             {
                 new OrderItemDto
@@ -168,7 +168,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
 
             var command = new CreateOrderCommand
             {
-                Customer = new CustomerDto { Id = 1 },
+                Customer = new CustomerDto { Id = "1" },
                 Items = new List<OrderItemDto>
             {
                 new OrderItemDto
@@ -203,7 +203,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
 
             var command = new CreateOrderCommand
             {
-                Customer = new CustomerDto { Id = 1 },
+                Customer = new CustomerDto { Id = "1" },
                 Items = new List<OrderItemDto>
             {
                 new OrderItemDto

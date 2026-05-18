@@ -52,7 +52,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Customer = new()
                 {
-                    Id = 0
+                    Id = string.Empty
                 },
                 Items = [new OrderItemDto
               {
@@ -80,7 +80,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Customer = new()
                 {
-                    Id = 1
+                    Id = "1"
                 },
                 Items = []
             };
@@ -99,7 +99,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Customer = new()
                 {
-                    Id = 1
+                    Id = "1"
                 },
                 Items = [new OrderItemDto
               {
@@ -127,7 +127,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Customer = new()
                 {
-                    Id = 1
+                    Id = "1"
                 },
                 Items = [new OrderItemDto
               {
@@ -151,7 +151,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Customer = new()
                 {
-                    Id = 1
+                    Id = "1"
                 },
                 Items = [new OrderItemDto
               {
@@ -178,7 +178,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Customer = new()
                 {
-                    Id = 1
+                    Id = "1"
                 },
                 Items = [new OrderItemDto
               {
@@ -206,7 +206,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Customer = new()
                 {
-                    Id = 1
+                    Id = "1"
                 },
                 Items = [new OrderItemDto
               {

@@ -13,7 +13,7 @@ namespace LearnStore.Application.UseCases
 
             var filter = ProductRepository.Products.AsQueryable();
 
-            if (query.SellerId > 0)
+            if (!string.IsNullOrEmpty(query.SellerId))
                 filter = filter.Where(p => p.Seller != null && p.Seller.Id == query.SellerId);
             if (!string.IsNullOrEmpty(query.ProductName))
                 filter = filter.Where(p => p.Name.Contains(query.ProductName));

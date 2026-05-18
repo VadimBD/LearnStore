@@ -93,7 +93,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Description = "Test Description",
                 Price = 10.0m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 1 }]
             };
@@ -127,7 +127,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Description = "Test Description",
                 Price = 10.0m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 1 }]
             };
@@ -176,7 +176,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Description = "Test Description",
                 Price = 10.0m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 1 }]
             };

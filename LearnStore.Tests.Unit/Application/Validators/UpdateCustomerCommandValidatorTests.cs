@@ -16,13 +16,13 @@ namespace LearnStore.Tests.Unit.Application.Validators
             _fixture.Customizations.Add(new RandomNumericSequenceGenerator(1, 100));
         }
         [Fact]
-        public void Validate_WhenIdIsLessThanOrEqualToZero_ReturnsValidationErrors()
+        public void Validate_WhenIdIsEmpty_ReturnsValidationErrors()
         {
             // Arrange
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = 0,
+                Id = string.Empty,
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -40,7 +40,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -58,7 +58,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = "invalid-email",
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -76,7 +76,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "invalid-phone"
@@ -94,7 +94,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = string.Empty,
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -112,7 +112,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = string.Empty
@@ -130,7 +130,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = string.Empty,
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -148,7 +148,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = "   ",
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -166,7 +166,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "   "
@@ -184,7 +184,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = "   ",
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -202,7 +202,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+12345678901234567" // 17 digits, exceeding E.164 limit
@@ -220,7 +220,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+1" // Too short to be valid
@@ -238,7 +238,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = "userdomain.com", // Missing '@' symbol
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -256,7 +256,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = "user@", // Missing domain part
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -274,7 +274,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateCustomerCommandValidator();
             var command = new UpdateCustomerCommand()
             {
-                Id = _fixture.Create<int>(),
+                Id = "1",
                 Name = _faker.Name.FullName(),
                 EmailAddress = "@domain.com", // Missing username part
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")

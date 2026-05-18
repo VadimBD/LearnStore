@@ -11,7 +11,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
         {
             ArgumentNullException.ThrowIfNull(criteria, nameof(criteria));
             IQueryable<Seller> query = _context.Sellers.AsQueryable();
-            if (criteria.Id > 0)
+            if (!string.IsNullOrWhiteSpace(criteria.Id))
                 query = query.Where(s => s.Id == criteria.Id);
             if (!string.IsNullOrWhiteSpace(criteria.Name))
                 query = query.Where(s => s.Name.Contains(criteria.Name));

@@ -26,7 +26,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = 10.00m,
                 Author = new() { Id=1},
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id=2}],
                 IsActive = true
@@ -48,7 +48,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = 10.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 2 }],
                 IsActive = true
@@ -71,7 +71,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = -5.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 2 }],
                 IsActive = true
@@ -93,7 +93,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = 10.00m,
                 Author = null,
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 2 }],
                 IsActive = true
@@ -137,7 +137,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = 10.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = null,
                 ChildProducts = [new() { Id = 2 }],
                 IsActive = true
@@ -159,7 +159,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = 10.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = null!,
                 IsActive = true
@@ -181,7 +181,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = string.Empty,
                 Price = 10.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 2 }],
                 IsActive = true
@@ -203,7 +203,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = 10.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 2 }],
                 IsActive = true
@@ -225,7 +225,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "   ",
                 Price = 10.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 2 }],
                 IsActive = true
@@ -247,7 +247,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = 0.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [new() { Id = 2 }],
                 IsActive = true
@@ -269,7 +269,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Description = "Test",
                 Price = 10.00m,
                 Author = new() { Id = 1 },
-                Seller = new() { Id = 1 },
+                Seller = new() { Id = "1" },
                 Category = new() { Id = 1 },
                 ChildProducts = [],
                 IsActive = true

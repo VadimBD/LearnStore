@@ -73,7 +73,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
             Order order = new()
             {
                 Id = new(),
-                Customer = new() { Id = 1 },
+                Customer = new() { Id = "1" },
                 OrderDate = DateTime.Now,
                 Inserted = DateTime.Now,
                 Updated = DateTime.Now,
@@ -91,7 +91,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Items = [new OrderItemDto() {Id=1}],
                 Payments = [new PaymentDto() { Id=order.Payments.First().Id}],
                 State = order.State,
-                Customer =new CustomerDto() {Id=1},
+                Customer =new CustomerDto() {Id="1"},
             };
 
             var registry = CreateRegistry();
@@ -133,7 +133,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
             OrderDto orderDto = new()
             {
                 Id = new(),
-                Customer = new() { Id = 1 },
+                Customer = new() { Id = "1" },
                 OrderDate = DateTime.Now,
                 Inserted = DateTime.Now,
                 Updated = DateTime.Now,
@@ -150,7 +150,7 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Items = [new() { Id = 1 }],
                 Payments = [new Payment() { Id = orderDto.Payments.First().Id }],
                 State = orderDto.State,
-                Customer = new Customer() { Id = 1 },
+                Customer = new Customer() { Id = "1" },
             };
             // Act
             var customerMapper = registry.Get<Customer, CustomerDto>();

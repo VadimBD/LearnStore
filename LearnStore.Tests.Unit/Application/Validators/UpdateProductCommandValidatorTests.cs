@@ -29,7 +29,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 IsActive = true,
 
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=2}],
             };
@@ -52,7 +52,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = _faker.Random.Decimal(1, 100),
                 IsActive = true,
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=2}],
             };
@@ -75,7 +75,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = 0, // Invalid price
                 IsActive = true,
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=2}],
             };
@@ -98,7 +98,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = _faker.Random.Decimal(1, 100),
                 IsActive = true,
                 Author = null, // Invalid Author
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=2}],
             };
@@ -121,7 +121,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = _faker.Random.Decimal(1, 100),
                 IsActive = true,
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=0}], // Invalid Child Product Id
             };
@@ -144,7 +144,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = _faker.Random.Decimal(1, 100),
                 IsActive = true,
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = null, // Invalid Category
                 ChildProducts = [new() { Id=2}],
             };
@@ -191,7 +191,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = _faker.Random.Decimal(1, 100),
                 IsActive = true,
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=2}],
             };
@@ -214,7 +214,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = _faker.Random.Decimal(1, 100),
                 IsActive = true,
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=2}],
             };
@@ -237,7 +237,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = _faker.Random.Decimal(1, 100),
                 IsActive = true,
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=2}],
             };
@@ -260,7 +260,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
                 Price = _faker.Random.Decimal(1, 100),
                 IsActive = true,
                 Author = new (){ Id = 10,},
-                Seller = new (){ Id = 10,},
+                Seller = new (){ Id = "10",},
                 Category = new (){ Id = 10,},
                 ChildProducts = [new() { Id=2}],
             };

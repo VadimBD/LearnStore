@@ -28,8 +28,8 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             if (criteria.OrderId.HasValue)
                 query = query.Where(o => o.Id == criteria.OrderId.Value);
 
-            if (criteria.CustomerId.HasValue)
-                query = query.Where(o => o.Customer != null && o.Customer.Id == criteria.CustomerId.Value);
+            if (!string.IsNullOrWhiteSpace(criteria.CustomerId))
+                query = query.Where(o => o.Customer != null && o.Customer.Id == criteria.CustomerId);
 
             return query.ToList();
         }

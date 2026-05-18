@@ -20,7 +20,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
         {
             // Arrange
             var validator = new DeleteSellerCommandValidator();
-            var command = new DeleteSellerCommand(0);
+            var command = new DeleteSellerCommand(string.Empty);
             
             // Act
             var result = validator.Validate(command);
@@ -33,7 +33,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
         {
             // Arrange
             var validator = new DeleteSellerCommandValidator();
-            var command = new DeleteSellerCommand(10);
+            var command = new DeleteSellerCommand("10");
             // Act
             var result = validator.Validate(command);
             // Assert

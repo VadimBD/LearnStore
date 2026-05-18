@@ -29,18 +29,18 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
 
-            var seller = new Seller { Id = 1, Name = "Seller 1" ,PhoneNumber = "test",EmailAddress = "test@test.com"};
-            var seller2 = new Seller { Id = 2, Name = "Seller 2",PhoneNumber = "test",EmailAddress = "test@test.com"};
+            var seller = new Seller { Id = "1", Name = "Seller 1" ,PhoneNumber = "test",EmailAddress = "test@test.com"};
+            var seller2 = new Seller { Id = "2", Name = "Seller 2",PhoneNumber = "test",EmailAddress = "test@test.com"};
             context.Sellers.Add(seller);
             context.Sellers.Add(seller2);
             context.SaveChanges();
 
             var context2 = new AppDbContext(options);
             var repository = new EFSellerRepository(context2);
-            var updatedSeller = new Seller { Id = 1, Name = "Updated Seller 1" , PhoneNumber = "test" , EmailAddress = "test@test.com" };
+            var updatedSeller = new Seller { Id = "1", Name = "Updated Seller 1" , PhoneNumber = "test" , EmailAddress = "test@test.com" };
             await repository.SaveSellerAsync(updatedSeller, CancellationToken.None);
 
-            var savedSeller = await context2.Sellers.FindAsync(1);
+            var savedSeller = await context2.Sellers.FindAsync("1");
             savedSeller.Should().NotBeNull();
             savedSeller!.Name.Should().Be("Updated Seller 1");
         }
@@ -69,7 +69,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             using var context = new AppDbContext(options);
             var repository = new EFSellerRepository(context);
 
-            var seller = new Seller { Id = 1, EmailAddress = "test", PhoneNumber = "+232144124" };
+            var seller = new Seller { Id = "1", EmailAddress = "test", PhoneNumber = "+232144124" };
 
             Func<Task> act = () => repository.SaveSellerAsync(seller, CancellationToken.None);
 
@@ -81,7 +81,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFSellerRepository(context);
-            var seller = new Seller { Id = 1, Name = "test", EmailAddress = "test" };
+            var seller = new Seller { Id = "1", Name = "test", EmailAddress = "test" };
             Func<Task> act = () => repository.SaveSellerAsync(seller, CancellationToken.None);
             await act.Should().ThrowAsync<ArgumentException>().WithParameterName("PhoneNumber");
 
@@ -92,7 +92,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFSellerRepository(context);
-            var seller = new Seller { Id = 1, Name = "test", PhoneNumber = "+232144124" };
+            var seller = new Seller { Id = "1", Name = "test", PhoneNumber = "+232144124" };
             Func<Task> act = () => repository.SaveSellerAsync(seller, CancellationToken.None);
             await act.Should().ThrowAsync<ArgumentException>().WithParameterName("EmailAddress");
         }
@@ -103,13 +103,13 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
 
-            var seller = new Seller { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
-            var seller2 = new Seller { Id = 2, Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var seller = new Seller { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var seller2 = new Seller { Id = "2", Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
             context.Sellers.Add(seller);
             context.Sellers.Add(seller2);
             context.SaveChanges();
             var repository = new EFSellerRepository(context);
-            var criteria = new SellerSearchCriteria { Id = 2 };
+            var criteria = new SellerSearchCriteria { Id = "2" };
 
             var result = await repository.GetSellerAsync(criteria, CancellationToken.None);
             result.Should().NotBeNull();
@@ -121,12 +121,12 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var seller = new Seller { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var seller = new Seller { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
             
             context.Sellers.Add(seller);
             context.SaveChanges();
             var repository = new EFSellerRepository(context);
-            var criteria = new SellerSearchCriteria { Id = 999 };
+            var criteria = new SellerSearchCriteria { Id = "999" };
 
             var result = await repository.GetSellerAsync(criteria, CancellationToken.None);
            
@@ -148,8 +148,8 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         { 
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var seller1 = new Seller { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
-            var seller2 = new Seller { Id = 2, Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var seller1 = new Seller { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var seller2 = new Seller { Id = "2", Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
             context.Sellers.Add(seller1);
             context.Sellers.Add(seller2);
             context.SaveChanges();
@@ -165,14 +165,14 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var seller1 = new Seller { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
-            var seller2 = new Seller { Id = 2, Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var seller1 = new Seller { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var seller2 = new Seller { Id = "2", Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
 
             context.Sellers.Add(seller1);
             context.Sellers.Add(seller2);
             context.SaveChanges();
             var repository = new EFSellerRepository(context);
-            var criteria = new SellerSearchCriteria { Name = "Seller 1", Id = 1 };
+            var criteria = new SellerSearchCriteria { Name = "Seller 1", Id = "1" };
             var result = await repository.GetSellerAsync(criteria, CancellationToken.None);
             result.Should().NotBeNull();
             result.Should().Contain(seller1);

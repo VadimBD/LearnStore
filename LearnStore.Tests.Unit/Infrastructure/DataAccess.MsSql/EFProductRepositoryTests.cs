@@ -116,8 +116,8 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var category2 = new ProductCategory { Id = 2, Name = "Category 2" };
             var author1 = new Author { Id = 1, FirstName = "Name1" };
             var author2 = new Author { Id = 2, FirstName = "Name2" };
-            var seller1 = new Seller { Id = 1, Name = "Seller1" };
-            var seller2 = new Seller { Id = 2, Name = "Seller2" };
+            var seller1 = new Seller { Id = "1", Name = "Seller1" };
+            var seller2 = new Seller { Id = "2", Name = "Seller2" };
             var product1 = new Product { Id = 1, Name = "Product 1", Category = category1, Author = author1, Seller = seller1 };
             var product2 = new Product { Id = 2, Name = "Product 2", Category = category1, Author = author1, Seller = seller1 };
             context.ProductCategories.AddRange([category1, category2]);
@@ -126,7 +126,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
 
             using var context2 = new AppDbContext(options);
             var repsitory = new EFProductRepository(context2);
-            var product = new Product() { Id = 2, Name = "Product 2", Category = new() { Id = 2 }, Author = new() { Id = 2 }, Seller = new() { Id = 2 }, Description = "Description", Price = 10M };
+            var product = new Product() { Id = 2, Name = "Product 2", Category = new() { Id = 2 }, Author = new() { Id = 2 }, Seller = new() { Id = "2" }, Description = "Description", Price = 10M };
             await repsitory.SaveProductAsync(product, CancellationToken.None);
 
             var savedProduct = context2.Products.Find(product.Id);
@@ -140,14 +140,14 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             using var context = new AppDbContext(options);
             var category = new ProductCategory { Id = 1, Name = "Category 1" };
             var author = new Author { Id = 1, FirstName = "Name1" };
-            var seller = new Seller { Id = 1, Name = "Seller1" };
+            var seller = new Seller { Id = "1", Name = "Seller1" };
             context.ProductCategories.Add(category);
             context.Authors.Add(author);
             context.Sellers.Add(seller);
             context.SaveChanges();
             using var context2 = new AppDbContext(options);
             var repository = new EFProductRepository(context2);
-            var product = new Product() { Id = 0, Name = "New Product", Category = new() { Id = 1 }, Author = new() { Id = 1 }, Seller = new() { Id = 1 }, Description = "Description", Price = 10M };
+            var product = new Product() { Id = 0, Name = "New Product", Category = new() { Id = 1 }, Author = new() { Id = 1 }, Seller = new() { Id = "1" }, Description = "Description", Price = 10M };
             await repository.SaveProductAsync(product, CancellationToken.None);
             var savedProduct = context2.Products.FirstOrDefault(p => p.Name == "New Product");
             savedProduct.Should().NotBeNull();
@@ -159,7 +159,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFProductRepository(context);
-            var product = new Product() { Id = 1, Name = "Product 1", Category = null, Author = new() { Id = 1 }, Seller = new() { Id = 1 }, Description = "Description", Price = 10M };
+            var product = new Product() { Id = 1, Name = "Product 1", Category = null, Author = new() { Id = 1 }, Seller = new() { Id = "1" }, Description = "Description", Price = 10M };
             //Act
             Func<Task> act = () => repository.SaveProductAsync(product, CancellationToken.None);
             //assert
@@ -172,7 +172,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFProductRepository(context);
-            var product = new Product() { Id = 1, Name = "Product 1", Category = new() { Id = 1 }, Author = null, Seller = new() { Id = 1 }, Description = "Description", Price = 10M };
+            var product = new Product() { Id = 1, Name = "Product 1", Category = new() { Id = 1 }, Author = null, Seller = new() { Id = "1" }, Description = "Description", Price = 10M };
             //Act
             Func<Task> act = () => repository.SaveProductAsync(product, CancellationToken.None);
             //assert
@@ -199,13 +199,13 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             using var context = new AppDbContext(options);
             var category = new ProductCategory { Id = 1, Name = "Category 1" };
             var author = new Author { Id = 1, FirstName = "Name1" };
-            var seller = new Seller { Id = 1, Name = "Seller1" };
+            var seller = new Seller { Id = "1", Name = "Seller1" };
             context.ProductCategories.Add(category);
             context.Authors.Add(author);
             context.Sellers.Add(seller);
             context.SaveChanges();
 
-            var product = new Product() { Id = 0, Name = "New Product", Category = new() { Id = 1 }, Author = new() { Id = 1 }, Seller = new() { Id = 1 }, Description = "Description", Price = 10M };
+            var product = new Product() { Id = 0, Name = "New Product", Category = new() { Id = 1 }, Author = new() { Id = 1 }, Seller = new() { Id = "1" }, Description = "Description", Price = 10M };
             using var context2 = new AppDbContext(options);
             var repository = new EFProductRepository(context2);
             await repository.SaveProductAsync(product, CancellationToken.None);
@@ -222,7 +222,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             using var context = new AppDbContext(options);
             var category = new ProductCategory { Id = 1, Name = "Category 1" };
             var author = new Author { Id = 1, FirstName = "Name1" };
-            var seller = new Seller { Id = 1, Name = "Seller1" };
+            var seller = new Seller { Id = "1", Name = "Seller1" };
             var product = new Product { Id = 1, Name = "Product 1", Category = category, Author = author, Seller = seller };
             context.ProductCategories.Add(category);
             context.Authors.Add(author);
@@ -243,7 +243,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             using var context = new AppDbContext(options);
             var category = new ProductCategory { Id = 1, Name = "Category 1" };
             var author = new Author { Id = 1, FirstName = "Name1" };
-            var seller = new Seller { Id = 1, Name = "Seller1" };
+            var seller = new Seller { Id = "1", Name = "Seller1" };
             var product = new Product { Id = 1, Name = "Product 1", Category = category, Author = author, Seller = seller };
             context.ProductCategories.Add(category);
             context.Authors.Add(author);
@@ -272,7 +272,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             using var context = new AppDbContext(options);
             var category = new ProductCategory { Id = 1, Name = "Category 1" };
             var author = new Author { Id = 1, FirstName = "Name1" };
-            var seller = new Seller { Id = 1, Name = "Seller1" };
+            var seller = new Seller { Id = "1", Name = "Seller1" };
             var product1 = new Product { Id = 1, Name = "Product 1", Category = category, Author = author, Seller = seller };
             var product2 = new Product { Id = 2, Name = "Product 2", Category = category, Author = author, Seller = seller };
             context.ProductCategories.Add(category);
@@ -293,8 +293,8 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var author1 = new Author { Id = 1, FirstName = "Name1" };
             var author2 = new Author { Id = 2, FirstName = "Name2" };
 
-            var seller1 = new Seller { Id = 1, Name = "Seller1" };
-            var seller2 = new Seller { Id = 2, Name = "Seller2" };
+            var seller1 = new Seller { Id = "1", Name = "Seller1" };
+            var seller2 = new Seller { Id = "2", Name = "Seller2" };
 
             var productCategory1 = new ProductCategory { Id = 1, Name = "Category 1" };
             var productCategory2 = new ProductCategory { Id = 2, Name = "Category 2" };
@@ -311,7 +311,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             context.Products.Add(product2);
             context.SaveChanges();
             var repository = new EFProductRepository(context);
-            var criteria = new ProductSearchCriteria { Name = "Product 2", Author = new() { Id=2} , Seller = new() { Id=2}, Category=new() { Id=2} };
+            var criteria = new ProductSearchCriteria { Name = "Product 2", Author = new() { Id=2} , Seller = new() { Id="2"}, Category=new() { Id=2} };
             var result = repository.GetProduct(criteria);
             result.Should().NotBeNull();
             result.Should().HaveCount(1);

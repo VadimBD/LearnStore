@@ -9,7 +9,7 @@ namespace LearnStore.Application.Validators.SellerValidators
     {
         public UpdateSellerCommandValidator()
         {
-            RuleFor(s => s.Id).GreaterThan(0);
+            RuleFor(s => s.Id).NotEmpty();
             RuleFor(s => s.Name).Cascade(CascadeMode.Stop).NotEmpty();
             RuleFor(s => s.EmailAddress).Cascade(CascadeMode.Stop).NotEmpty().EmailAddress();
             RuleFor(s => s.PhoneNumber).Cascade(CascadeMode.Stop).NotEmpty().Matches(@"^\+?[1-9]\d{1,14}$"); ;

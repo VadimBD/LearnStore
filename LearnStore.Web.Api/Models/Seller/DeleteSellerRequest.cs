@@ -1,6 +1,6 @@
 ﻿namespace LearnStore.Web.Api.Models.Seller
 {
-    public class DeleteSellerRequest(int SellerId)
+    public class DeleteSellerRequest(string SellerId)
     {
     }
 }

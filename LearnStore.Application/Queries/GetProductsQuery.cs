@@ -6,7 +6,7 @@ namespace LearnStore.Application.Queries
 {
     public class GetProductsQuery : IRequest<IEnumerable<ProductDto>>
     {
-        public int SellerId { get; init; }
+        public string SellerId { get; init; }
         public int CategoryId { get; init; }
         public int AuthorId { get; init; }
         public bool IsActive { get; init; }

@@ -131,7 +131,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             {
                 Id = Guid.NewGuid(),
                 Items = [new() { Id = 1 }],
-                Customer = new() { Id = 1 },
+                Customer = new() { Id = "1" },
                 Payments = [new() { Id = Guid.NewGuid() }]
             };
 
@@ -166,7 +166,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             {
                 Id = Guid.NewGuid(),
                 Items = [new() { Id = 1 }],
-                Customer = new() { Id = 1 },
+                Customer = new() { Id = "1" },
                 Payments = [new() { Id = Guid.NewGuid() }]
             };
 
@@ -192,7 +192,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             {
                 Id = Guid.NewGuid(),
                 Items = [new() { Id = 1 }],
-                Customer = new() { Id = 1 },
+                Customer = new() { Id = "1" },
                 Payments = [new() { Id = Guid.NewGuid() }]
             };
             await handler.Handle(command, CancellationToken.None);

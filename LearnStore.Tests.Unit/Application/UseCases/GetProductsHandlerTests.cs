@@ -155,10 +155,10 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         {
             var productRepository = Substitute.For<IProductRepository>();
             productRepository.Products.Returns([
-                new Product { Id = 1, Name = "Apple iPhone", Description = "Test Description", Price = 10.0m, IsActive=true, Category=new ProductCategory { Id = 1, Name = "Category1" },Seller=new Seller { Id = 1, Name = "Seller1" } },
-                new Product { Id = 2, Name = "Samsung Galaxy", Description = "Test Description", Price = 20.0m, IsActive=false, Category=new ProductCategory { Id = 2, Name = "Category2" },Seller=new Seller { Id = 2, Name = "Seller2" } },
-                new Product { Id = 3, Name = "Google Pixel", Description = "Test Description", Price = 30.0m, IsActive=true, Category=new ProductCategory { Id = 1, Name = "Category1" },Seller=new Seller { Id = 3, Name = "Seller3" } },
-                new Product { Id = 4, Name = "Apple MacBook", Description = "Test Description", Price = 40.0m, IsActive=false, Category=new ProductCategory { Id = 3, Name = "Category3" },Seller=new Seller { Id = 4, Name = "Seller4" } }
+                new Product { Id = 1, Name = "Apple iPhone", Description = "Test Description", Price = 10.0m, IsActive=true, Category=new ProductCategory { Id = 1, Name = "Category1" },Seller=new Seller { Id = "1", Name = "Seller1" } },
+                new Product { Id = 2, Name = "Samsung Galaxy", Description = "Test Description", Price = 20.0m, IsActive=false, Category=new ProductCategory { Id = 2, Name = "Category2" },Seller=new Seller { Id = "2", Name = "Seller2" } },
+                new Product { Id = 3, Name = "Google Pixel", Description = "Test Description", Price = 30.0m, IsActive=true, Category=new ProductCategory { Id = 1, Name = "Category1" },Seller=new Seller { Id = "3", Name = "Seller3" } },
+                new Product { Id = 4, Name = "Apple MacBook", Description = "Test Description", Price = 40.0m, IsActive=false, Category=new ProductCategory { Id = 3, Name = "Category3" },Seller=new Seller { Id = "4", Name = "Seller4" } }
             ]);
             var productMapper = GetProductMapper();
             var handler = new GetProductsHandler(productRepository, productMapper);
@@ -167,7 +167,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 ProductName = "Apple", 
                 IsActive = true, 
                 Price = 10.0m ,
-                SellerId = 1
+                SellerId = "1"
             };
             var result = await handler.Handle(query, CancellationToken.None);
             result.Should().HaveCount(1);

@@ -37,6 +37,7 @@ namespace LearnStore.Infrastructure.Identity
                     ConcurrencyStamp= "72AF9E5F-F92C-4BB1-949A-98302820ADB3"
                 }
             );
+           
         }
     }
 }

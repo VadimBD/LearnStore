@@ -9,7 +9,7 @@ namespace LearnStore.Application.Validators.SellerValidators
     {
         public DeleteSellerCommandValidator()
         {
-            RuleFor(s => s.SellerId).GreaterThan(0);
+            RuleFor(s => s.SellerId).NotEmpty();
         }
     }
 }

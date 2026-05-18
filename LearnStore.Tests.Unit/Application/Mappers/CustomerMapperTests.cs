@@ -54,7 +54,7 @@
             // Arrange
             var customer = new Customer()
             {
-                Id = 1,
+                Id = "1",
                 Name = "John Doe",
                 EmailAddress = "john.doe@example.com",
                 PhoneNumber = "123-456-7890",
@@ -94,7 +94,7 @@
             // Arrange
             var customerDto = new CustomerDto()
             {
-                Id = 1,
+                Id = "1",
                 Name = "John Doe",
                 EmailAddress = "john.doe@example.com",
                 PhoneNumber = "123-456-7890",

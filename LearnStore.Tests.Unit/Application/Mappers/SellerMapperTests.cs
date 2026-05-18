@@ -30,7 +30,9 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Id = seller.Id,
                 Name = seller.Name,
                 EmailAddress = seller.EmailAddress,
-                PhoneNumber = seller.PhoneNumber
+                PhoneNumber = seller.PhoneNumber,
+                AccountBalance = seller.AccountBalance
+
             };
             // Act
             var result = mapper.ToDto(seller);
@@ -57,7 +59,8 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Id = sellerDto.Id,
                 Name = sellerDto.Name,
                 EmailAddress = sellerDto.EmailAddress,
-                PhoneNumber = sellerDto.PhoneNumber
+                PhoneNumber = sellerDto.PhoneNumber,
+                AccountBalance = sellerDto.AccountBalance
             };
             // Act
             var result = mapper.ToDomain(sellerDto);

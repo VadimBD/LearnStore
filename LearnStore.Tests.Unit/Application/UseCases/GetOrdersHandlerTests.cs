@@ -22,7 +22,7 @@
             var mapper = Substitute.For<IMapper<Order, OrderDto>>();
             var handler = new GetOrdersHandler(orderRepository, mapper);
             var orderId = Guid.NewGuid();
-            var customerId = 1;
+            var customerId = "1";
             var query = new GetOrdersQuery
             {
                 OrderId = orderId,

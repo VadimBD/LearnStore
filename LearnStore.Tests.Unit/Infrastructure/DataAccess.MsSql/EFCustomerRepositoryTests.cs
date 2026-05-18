@@ -21,17 +21,17 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var customer1 = new Customer { Id = 1, Name = "Customer 1", EmailAddress = "test", PhoneNumber = "+232144124" };
-            var customer2 = new Customer { Id = 2, Name = "Customer 2", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer1 = new Customer { Id = "1", Name = "Customer 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer2 = new Customer { Id = "2", Name = "Customer 2", EmailAddress = "test", PhoneNumber = "+232144124" };
             context.Customers.Add(customer1);
             context.Customers.Add(customer2);
             context.SaveChanges();
 
             var context2 = new AppDbContext(options);
             var repository = new EFCustomerRepository(context2);
-            var updatedCustomer = new Customer { Id = 1, Name = "Updated Customer 1", EmailAddress = "updated@test", PhoneNumber = "+232144124" };
+            var updatedCustomer = new Customer { Id = "1", Name = "Updated Customer 1", EmailAddress = "updated@test", PhoneNumber = "+232144124" };
             await repository.SaveCustomerAsync(updatedCustomer, CancellationToken.None);
-            var savedCustomer = await context2.Customers.FindAsync(1);
+            var savedCustomer = await context2.Customers.FindAsync("1");
             savedCustomer.Should().NotBeNull();
             savedCustomer!.Name.Should().Be("Updated Customer 1");
         }
@@ -58,7 +58,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFCustomerRepository(context); 
-            var customer = new Customer { Id = 1, Name = null!, EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer = new Customer { Id = "1", Name = null!, EmailAddress = "test", PhoneNumber = "+232144124" };
             Func<Task> act = () => repository.SaveCustomerAsync(customer, CancellationToken.None);
             await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("Name");
 
@@ -70,7 +70,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFCustomerRepository(context);
-            var customer = new Customer { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = null! };
+            var customer = new Customer { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = null! };
             Func<Task> act = () => repository.SaveCustomerAsync(customer, CancellationToken.None);
             await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("PhoneNumber");
         }
@@ -81,7 +81,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFCustomerRepository(context);
-            var customer = new Customer { Id = 1, Name = "Seller 1", EmailAddress = null!, PhoneNumber = "+232144124" };
+            var customer = new Customer { Id = "1", Name = "Seller 1", EmailAddress = null!, PhoneNumber = "+232144124" };
             Func<Task> act = () => repository.SaveCustomerAsync(customer, CancellationToken.None);
             await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("EmailAddress");
         }
@@ -91,13 +91,13 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var customer1 = new Customer { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
-            var customer2 = new Customer { Id = 2, Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer1 = new Customer { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer2 = new Customer { Id = "2", Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
             context.Customers.Add(customer1);
             context.Customers.Add(customer2);
             context.SaveChanges();
             var repository = new EFCustomerRepository(context);
-            var criteria = new CustomerSearchCriteria { Id = 2 };
+            var criteria = new CustomerSearchCriteria { Id = "2" };
 
             var result = await repository.GetCustomersAsync(criteria, CancellationToken.None);
             result.Should().NotBeNull();
@@ -109,11 +109,11 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var customer = new Customer { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer = new Customer { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
             context.Customers.Add(customer);
             context.SaveChanges();
             var repository = new EFCustomerRepository(context);
-            var criteria = new CustomerSearchCriteria { Id = 2 };
+            var criteria = new CustomerSearchCriteria { Id = "2" };
             var result = await repository.GetCustomersAsync(criteria, CancellationToken.None);
             result.Should().BeEmpty();
         }
@@ -133,8 +133,8 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var customer1 = new Customer { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
-            var customer2 = new Customer { Id = 2, Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer1 = new Customer { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer2 = new Customer { Id = "2", Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
             context.Customers.Add(customer1);
             context.Customers.Add(customer2);
             context.SaveChanges();
@@ -151,8 +151,8 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
-            var customer1 = new Customer { Id = 1, Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
-            var customer2 = new Customer { Id = 2, Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer1 = new Customer { Id = "1", Name = "Seller 1", EmailAddress = "test", PhoneNumber = "+232144124" };
+            var customer2 = new Customer { Id = "2", Name = "Seller 2", EmailAddress = "test", PhoneNumber = "+232144124" };
             context.Customers.Add(customer1);
             context.Customers.Add(customer2);
             context.SaveChanges();

@@ -24,7 +24,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Id = Guid.Empty,
                 Items = [new() { Id=1}],
-                Customer = new() { Id = 10 },
+                Customer = new() { Id = "10" },
                 Payments = [new() { Id = Guid.NewGuid()}]
             };
             // Act
@@ -42,7 +42,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Id = Guid.NewGuid(),
                 Items = [new() { Id=1}],
-                Customer = new() { Id = 10 },
+                Customer = new() { Id = "10" },
                 Payments = [new() { Id = Guid.NewGuid()}]
             };
             // Act
@@ -60,7 +60,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Id = Guid.NewGuid(),
                 Items = [],
-                Customer = new() { Id = 10 },
+                Customer = new() { Id = "10" },
                 Payments = [new() { Id = Guid.NewGuid()}]
             };
             // Act
@@ -96,7 +96,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Id = Guid.NewGuid(),
                 Items = [new() { Id=1}],
-                Customer = new() { Id = 10 },
+                Customer = new() { Id = "10" },
                 Payments = null!
             };
             // Act
@@ -114,7 +114,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             {
                 Id = Guid.NewGuid(),
                 Items = [],
-                Customer = new() { Id = 10 },
+                Customer = new() { Id = "10" },
                 Payments = [new() { Id = Guid.NewGuid()}]
             };
             // Act

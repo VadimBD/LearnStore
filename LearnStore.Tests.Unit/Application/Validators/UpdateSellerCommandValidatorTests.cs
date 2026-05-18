@@ -22,7 +22,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = string.Empty,
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -40,7 +40,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -58,7 +58,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = _faker.Name.FullName(),
                 EmailAddress = "invalid-email",
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -70,13 +70,13 @@ namespace LearnStore.Tests.Unit.Application.Validators
             result.Errors.Should().ContainSingle(e => e.PropertyName == "EmailAddress");
         }
         [Fact]
-        public void Validate_WhenIdIsZeroOrNegative_ReturnsValidationErrors()
+        public void Validate_WhenIdIsEmpty_ReturnsValidationErrors()
         {
             // Arrange
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 0,
+                Id = string.Empty,
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -94,7 +94,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "02345"
@@ -112,7 +112,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = string.Empty
@@ -130,7 +130,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = _faker.Name.FullName(),
                 EmailAddress = string.Empty,
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -149,7 +149,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + new string('1', 21) // Assuming max length is 20
@@ -167,7 +167,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = "   ",
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -185,7 +185,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = _faker.Name.FullName(),
                 EmailAddress = "   ",
                 PhoneNumber = "+380" + _faker.Random.ReplaceNumbers("#########")
@@ -203,7 +203,7 @@ namespace LearnStore.Tests.Unit.Application.Validators
             var validator = new UpdateSellerCommandValidator();
             var command = new UpdateSellerCommand()
             {
-                Id = 10,
+                Id = "10",
                 Name = _faker.Name.FullName(),
                 EmailAddress = _faker.Internet.Email(),
                 PhoneNumber = "   "
