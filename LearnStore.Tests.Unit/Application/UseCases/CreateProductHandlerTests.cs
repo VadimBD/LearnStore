@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using LearnStore.Application.Commands.ProductCommands;
 using LearnStore.Application.UseCases;
 using NSubstitute.ExceptionExtensions;
 using System;

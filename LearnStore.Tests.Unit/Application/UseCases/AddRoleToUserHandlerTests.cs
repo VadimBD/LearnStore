@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using LearnStore.Application.Commands.AddCommands;
+using LearnStore.Application.Commands.AuthCommands;
 using NSubstitute.ExceptionExtensions;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 

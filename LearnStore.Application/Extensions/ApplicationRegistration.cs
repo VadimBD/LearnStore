@@ -1,4 +1,4 @@
-﻿using LearnStore.Application.Validators;
+﻿using LearnStore.Application.Validators.AuthorValidators;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -19,8 +19,7 @@ namespace LearnStore.Application.Extensions
             services.AddSingleton<IMapper<Payment, PaymentDto>, PaymentMapper>();
             services.AddSingleton<IMapper<ProductCategory, ProductCategoryDto>, ProductCategoryMapper>();
             services.AddSingleton<IMapper<Seller, SellerDto>, SellerMapper>();
-            
-
+            services.AddSingleton<IMapperRegistry, MapperRegistry>();
         }
     }
 }

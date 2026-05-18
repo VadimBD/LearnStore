@@ -11,11 +11,11 @@ namespace LearnStore.Application.Mappers
         private IMapper<Payment,PaymentDto> _paymentMapper;
         private IMapper<Customer,CustomerDto> _customerMapper;
 
-        public OrderMapper(IEnumerable<IMapper> mappers) 
+        public OrderMapper(IMapperRegistry mapperRegistry) 
         { 
-            _customerMapper= mappers.OfType<IMapper<Customer, CustomerDto>>().FirstOrDefault() ?? throw new ArgumentException("Customer mapper not found", nameof(mappers));
-            _orderItemMapper= mappers.OfType<IMapper<OrderItem, OrderItemDto>>().FirstOrDefault() ?? throw new ArgumentException("OrderItem mapper not found", nameof(mappers));
-            _paymentMapper= mappers.OfType<IMapper<Payment, PaymentDto>>().FirstOrDefault() ?? throw new ArgumentException("Payment mapper not found", nameof(mappers));
+            _customerMapper= mapperRegistry.Get<Customer, CustomerDto>();
+            _orderItemMapper= mapperRegistry.Get<OrderItem, OrderItemDto>();
+            _paymentMapper= mapperRegistry.Get<Payment, PaymentDto>();
         }
 
         public Order ToDomain(OrderDto orderDto)

@@ -10,9 +10,9 @@ namespace LearnStore.Infrastructure.Identity
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly IJwtTokenGenerator? _jwtTokenGenerator;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public IdentityAuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IJwtTokenGenerator jwtTokenGenerator, RoleManager<IdentityRole> roleManager)
+        public IdentityAuthService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IJwtTokenGenerator? jwtTokenGenerator = null)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,8 +33,10 @@ namespace LearnStore.Infrastructure.Identity
             await _userManager.AddToRoleAsync(identityUser, role);
             return new RoleOperationResult { Success = true, RoleName = role, UserId = userId, CurrentRoles = await _userManager.GetRolesAsync(identityUser) };
         }
-        public Task<string> GenerateJwtTokenAsync(UserDto user, CancellationToken cancellationToken)
+        public  Task<string> GenerateJwtTokenAsync(UserDto user, CancellationToken cancellationToken)
         {
+            if (_jwtTokenGenerator == null)
+                throw new InvalidOperationException("JWT token generator is not configured.");
             return Task.FromResult(_jwtTokenGenerator.GenerateToken(user));
         }
         public async Task<AuthResult> LoginAsync(UserDto user, string password, CancellationToken cancellationToken)
@@ -51,7 +53,7 @@ namespace LearnStore.Infrastructure.Identity
             await _signInManager.SignOutAsync();
             var signInResult = await _signInManager.PasswordSignInAsync(identityUser, password, false, false);
 
-            return signInResult.Succeeded ? new AuthResult { IsSuccess = true, UserId = identityUser.Id } : new AuthResult { IsSuccess = false, Error = "Invalid password." };
+            return signInResult.Succeeded ? new AuthResult { IsSuccess = true, UserId = identityUser.Id,Roles= [.. (await _userManager.GetRolesAsync(identityUser))] } : new AuthResult { IsSuccess = false, Error = "Invalid password." };
         }
         public async Task LogoutAsync(CancellationToken cancellationToken) => await _signInManager.SignOutAsync();
         public async Task<AuthResult> RegisterAsync(UserDto user, string password, CancellationToken cancellationToken)

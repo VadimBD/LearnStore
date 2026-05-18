@@ -11,5 +11,6 @@ namespace LearnStore.Application.Common
         public string? Token { get; init; }
         public string? UserId { get; init; }
         public List<string> Roles { get; init; } = [];
+
     }
 }

@@ -20,7 +20,10 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
 
         public async Task<IEnumerable<Order>> GetOrdersAsync(OrderSearchCriteria criteria, CancellationToken cancellationToken)
         {
-            var query = _context.Orders.Include(o => o.Customer).AsEnumerable(); 
+            var query = _context.Orders.Include(o => o.Customer)
+                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                .Include(o => o.Payments)
+                .AsEnumerable(); 
 
             if (criteria.OrderId.HasValue)
                 query = query.Where(o => o.Id == criteria.OrderId.Value);

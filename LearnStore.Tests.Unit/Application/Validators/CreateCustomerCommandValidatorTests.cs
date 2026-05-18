@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LearnStore.Application.Commands.CustomerCommands;
+using LearnStore.Application.Validators.CustomerValidators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

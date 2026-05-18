@@ -1,10 +1,53 @@
 ﻿
+using LearnStore.Application.Commands.OrderCommands;
 using NSubstitute.ExceptionExtensions;
 
 namespace LearnStore.Tests.Unit.Application.UseCases
 {
     public class UpdateOrderHandlerTests
     {
+        private IMapperRegistry CreateRegistry()
+        {
+            return CreateRegistry(null!);
+        }
+
+        private IMapperRegistry CreateRegistry(Action<Dictionary<Type, IMapper>> configureMappers)
+        {
+            var mappers = CreateMappers();
+            configureMappers?.Invoke(mappers);
+            var registry = Substitute.For<IMapperRegistry>();
+
+            registry.Get<Customer, CustomerDto>().Returns(mappers[typeof(IMapper<Customer, CustomerDto>)]);
+            registry.Get<Payment, PaymentDto>().Returns(mappers[typeof(IMapper<Payment, PaymentDto>)]);
+
+            registry.Get<OrderItem, OrderItemDto>().Returns(mappers[typeof(IMapper<OrderItem, OrderItemDto>)]);
+
+            return registry;
+        }
+
+        private Dictionary<Type, IMapper> CreateMappers()
+        {
+            var mappers = new Dictionary<Type, IMapper>();
+            var cuastomerMapper = Substitute.For<IMapper<Customer, CustomerDto>>();
+            cuastomerMapper.ToDomain(Arg.Any<CustomerDto>()).Returns(new Customer());
+            cuastomerMapper.ToDto(Arg.Any<Customer>()).Returns(new CustomerDto());
+            mappers[typeof(IMapper<Customer, CustomerDto>)] = cuastomerMapper;
+
+
+
+            var orderItemMapper = Substitute.For<IMapper<OrderItem, OrderItemDto>>();
+            orderItemMapper.ToDomain(Arg.Any<OrderItemDto>()).Returns(new OrderItem());
+            orderItemMapper.ToDto(Arg.Any<OrderItem>()).Returns(new OrderItemDto());
+            mappers[typeof(IMapper<OrderItem, OrderItemDto>)] = orderItemMapper;
+
+
+            var paymentMapper = Substitute.For<IMapper<Payment, PaymentDto>>();
+            paymentMapper.ToDomain(Arg.Any<PaymentDto>()).Returns(new Payment());
+            paymentMapper.ToDto(Arg.Any<Payment>()).Returns(new PaymentDto());
+            mappers[typeof(IMapper<Payment, PaymentDto>)] = paymentMapper;
+
+            return mappers;
+        }
         private readonly Fixture _fixture = new();
         private List<IMapper> GetMappers()
         {
@@ -44,9 +87,9 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<CancellationToken>()).
                 Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));
 
-            var mappers = GetMappers();
+            var registry = CreateRegistry();
 
-            var handler = new UpdateOrderHandler(orderRepository, validator, mappers);
+            var handler = new UpdateOrderHandler(orderRepository, validator, registry);
             Func<Task> act = () => handler.Handle(null!, CancellationToken.None);
             await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("command");
         }
@@ -59,9 +102,9 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             validator.ValidateAsync(Arg.Any<IValidationContext>(),
                 Arg.Any<CancellationToken>()).
                 Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));
-            var mappers = GetMappers();
+            var registry = CreateRegistry();
 
-            var handler = new UpdateOrderHandler(orderRepository, validator, mappers);
+            var handler = new UpdateOrderHandler(orderRepository, validator, registry);
             var command = new UpdateOrderCommand()
             {
                 Id = Guid.NewGuid(),
@@ -82,8 +125,8 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<IValidationContext>(),
                 Arg.Any<CancellationToken>()).
                 Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));
-            var mappers = GetMappers();
-            var handler = new UpdateOrderHandler(orderRepository, validator, mappers);
+            var registry = CreateRegistry();
+            var handler = new UpdateOrderHandler(orderRepository, validator, registry);
             var command = new UpdateOrderCommand()
             {
                 Id = Guid.NewGuid(),
@@ -116,8 +159,8 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<CancellationToken>())
                 .ThrowsAsync(new FluentValidation.ValidationException(validationFailures));
 
-            var mappers = GetMappers();
-            var handler = new UpdateOrderHandler(orederRepository, validator, mappers);
+            var registry = CreateRegistry();
+            var handler = new UpdateOrderHandler(orederRepository, validator, registry);
 
             var command = new UpdateOrderCommand()
             {
@@ -143,8 +186,8 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<IValidationContext>(),
                 Arg.Any<CancellationToken>()).
                 Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));
-            var mappers = GetMappers();
-            var handler = new UpdateOrderHandler(orderRepository, validator, mappers);
+            var registry = CreateRegistry();
+            var handler = new UpdateOrderHandler(orderRepository, validator, registry);
             var command = new UpdateOrderCommand()
             {
                 Id = Guid.NewGuid(),

@@ -10,28 +10,56 @@ namespace LearnStore.Tests.Unit.Application.Mappers
 {
     public class OrderMapperTests
     {
-       
 
-        private IEnumerable<IMapper> CreateMappers()
+        private IMapperRegistry CreateRegistry()
         {
+            return CreateRegistry(null!);
+        }
+
+        private IMapperRegistry CreateRegistry(Action<Dictionary<Type, IMapper>> configureMappers)
+        {
+            var mappers = CreateMappers();
+            configureMappers?.Invoke(mappers);
+            var registry = Substitute.For<IMapperRegistry>();
+
+            registry.Get<Customer, CustomerDto>().Returns(mappers[typeof(IMapper<Customer, CustomerDto>)]);
+            registry.Get<Payment, PaymentDto>().Returns(mappers[typeof(IMapper<Payment, PaymentDto>)]);
+
+            registry.Get<OrderItem, OrderItemDto>().Returns(mappers[typeof(IMapper<OrderItem, OrderItemDto>)]);
+
+            return registry;
+        }
+
+        private Dictionary<Type, IMapper> CreateMappers()
+        {
+            var mappers = new Dictionary<Type, IMapper>();
+            var cuastomerMapper = Substitute.For<IMapper<Customer, CustomerDto>>();
+            cuastomerMapper.ToDomain(Arg.Any<CustomerDto>()).Returns(new Customer());
+            cuastomerMapper.ToDto(Arg.Any<Customer>()).Returns(new CustomerDto());
+            mappers[typeof(IMapper<Customer, CustomerDto>)] = cuastomerMapper;
+
+            
+
             var orderItemMapper = Substitute.For<IMapper<OrderItem, OrderItemDto>>();
-            var customerMapper = Substitute.For<IMapper<Customer, CustomerDto>>();
+            orderItemMapper.ToDomain(Arg.Any<OrderItemDto>()).Returns(new OrderItem());
+            orderItemMapper.ToDto(Arg.Any<OrderItem>()).Returns(new OrderItemDto());
+            mappers[typeof(IMapper<OrderItem, OrderItemDto>)] = orderItemMapper;
+
+
             var paymentMapper = Substitute.For<IMapper<Payment, PaymentDto>>();
-            return [orderItemMapper,customerMapper,paymentMapper];
+            paymentMapper.ToDomain(Arg.Any<PaymentDto>()).Returns(new Payment());
+            paymentMapper.ToDto(Arg.Any<Payment>()).Returns(new PaymentDto());
+            mappers[typeof(IMapper<Payment, PaymentDto>)] = paymentMapper;
+
+            return mappers;
         }
 
         [Fact]
         public void ToDto_WhenOrderIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            List<IMapper> mappers = new() 
-            {
-                Substitute.For<IMapper<OrderItem, OrderItemDto>>(),
-                Substitute.For<IMapper<Customer, CustomerDto>>(), 
-                Substitute.For<IMapper<Payment, PaymentDto>>() 
-            };
-            var mapper = new OrderMapper(mappers);
-
+            var registry = CreateRegistry();
+            var mapper = new OrderMapper(registry);
             // Act
             Action action = () => mapper.ToDto(null!);
             // Assert
@@ -66,15 +94,15 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Customer =new CustomerDto() {Id=1},
             };
 
-            var mappers = CreateMappers();
-            var customerMapper= mappers.OfType<IMapper<Customer, CustomerDto>>().First();
+            var registry = CreateRegistry();
+            var customerMapper= registry.Get<Customer, CustomerDto>();
             customerMapper.ToDto(Arg.Any<Customer>()).Returns(expectedDto.Customer);
 
-            var orderItemMapper = mappers.OfType<IMapper<OrderItem, OrderItemDto>>().First();
+            var orderItemMapper = registry.Get<OrderItem, OrderItemDto>();
             orderItemMapper.ToDto(Arg.Any<OrderItem>()).Returns(expectedDto.Items.First());
-            var paymentMapper = mappers.OfType<IMapper<Payment, PaymentDto>>().First();
+            var paymentMapper = registry.Get<Payment, PaymentDto>();
             paymentMapper.ToDto(Arg.Any<Payment>()).Returns(expectedDto.Payments.First());
-            var mapper = new OrderMapper(mappers);
+            var mapper = new OrderMapper(registry);
 
             // Act
             var result = mapper.ToDto(order);
@@ -87,8 +115,8 @@ namespace LearnStore.Tests.Unit.Application.Mappers
         [Fact]
         public void ToDomain_WhenOrderDtoIsNull_ThrowsArgumentNullException()
         {
-            var mappers = CreateMappers();
-            var mapper = new OrderMapper(mappers);
+            var registry = CreateRegistry();
+            var mapper = new OrderMapper(registry);
             // Act
             Action action = () => mapper.ToDomain(null!);
             // Assert
@@ -98,8 +126,8 @@ namespace LearnStore.Tests.Unit.Application.Mappers
         public void ToDomain_WhenOrderDtoIsValid_ReturnsexpectedDomain()
         {
 
-            var mappers = CreateMappers();
-            var mapper = new OrderMapper(mappers);
+            var registry = CreateRegistry();
+            var mapper = new OrderMapper(registry);
 
             // Arrange
             OrderDto orderDto = new()
@@ -125,12 +153,12 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Customer = new Customer() { Id = 1 },
             };
             // Act
-            var customerMapper = mappers.OfType<IMapper<Customer, CustomerDto>>().First();
+            var customerMapper = registry.Get<Customer, CustomerDto>();
             customerMapper.ToDomain(Arg.Any<CustomerDto>()).Returns(expectedDomain.Customer);
 
-            var orderItemMapper = mappers.OfType<IMapper<OrderItem, OrderItemDto>>().First();
+            var orderItemMapper = registry.Get<OrderItem, OrderItemDto>();
             orderItemMapper.ToDomain(Arg.Any<OrderItemDto>()).Returns(expectedDomain.Items.First());
-            var paymentMapper = mappers.OfType<IMapper<Payment, PaymentDto>>().First();
+            var paymentMapper = registry.Get<Payment, PaymentDto>();
             paymentMapper.ToDomain(Arg.Any<PaymentDto>()).Returns(expectedDomain.Payments.First());
 
             var result = mapper.ToDomain(orderDto);

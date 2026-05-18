@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LearnStore.Application.Commands.AuthorCommands;
+using LearnStore.Application.Validators.AuthorValidators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

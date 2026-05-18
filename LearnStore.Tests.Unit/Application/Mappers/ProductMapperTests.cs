@@ -9,22 +9,59 @@ namespace LearnStore.Tests.Unit.Application.Mappers
 {
     public class ProductMapperTests
     {
-        private readonly Faker _faker = new();
-       
-
-        private IEnumerable<IMapper> CreateMappers()
+        
+        private IMapperRegistry CreateRegistry()
         {
-            var authorMapper = Substitute.For<IMapper<Author,AuthorDto>>();
-            var sellerMapper = Substitute.For<IMapper<Seller,SellerDto>>();
-            var categoryMapper = Substitute.For<IMapper<ProductCategory,ProductCategoryDto>>();
-            return [authorMapper, sellerMapper, categoryMapper];
+            return CreateRegistry(null!);
+        }
+
+        private IMapperRegistry CreateRegistry(Action<Dictionary<Type, IMapper>> configureMappers)
+        {
+            var mappers = CreateMappers();
+            configureMappers?.Invoke(mappers);
+            var registry = Substitute.For<IMapperRegistry>();
+
+            registry.Get<Author, AuthorDto>().Returns(mappers[typeof(IMapper<Author, AuthorDto>)]);
+            registry.Get<Seller, SellerDto>().Returns(mappers[typeof(IMapper<Seller, SellerDto>)]);
+
+            registry.Get<OrderItem, OrderItemDto>().Returns(mappers[typeof(IMapper<OrderItem, OrderItemDto>)]);
+
+            return registry;
+        }
+
+        private Dictionary<Type, IMapper> CreateMappers()
+        {
+            var mappers = new Dictionary<Type, IMapper>();
+
+            var authorMapper = Substitute.For<IMapper<Author, AuthorDto>>();
+            authorMapper.ToDomain(Arg.Any<AuthorDto>()).Returns(new Author());
+            authorMapper.ToDto(Arg.Any<Author>()).Returns(new AuthorDto());
+            mappers[typeof(IMapper<Author, AuthorDto>)] = authorMapper;
+
+            var sellerMapper = Substitute.For<IMapper<Seller, SellerDto>>();
+            sellerMapper.ToDomain(Arg.Any<SellerDto>()).Returns(new Seller());
+            sellerMapper.ToDto(Arg.Any<Seller>()).Returns(new SellerDto());
+            mappers[typeof(IMapper<Seller, SellerDto>)] = sellerMapper;
+
+            var categoryMapper = Substitute.For<IMapper<ProductCategory, ProductCategoryDto>>();
+            categoryMapper.ToDomain(Arg.Any<ProductCategoryDto>()).Returns(new ProductCategory());
+            categoryMapper.ToDto(Arg.Any<ProductCategory>()).Returns(new ProductCategoryDto());
+            mappers[typeof(IMapper<ProductCategory, ProductCategoryDto>)] = categoryMapper;
+
+            var orderItemMapper = Substitute.For<IMapper<OrderItem, OrderItemDto>>();
+            orderItemMapper.ToDomain(Arg.Any<OrderItemDto>()).Returns(new OrderItem());
+            orderItemMapper.ToDto(Arg.Any<OrderItem>()).Returns(new OrderItemDto());
+            mappers[typeof(IMapper<OrderItem, OrderItemDto>)] = orderItemMapper;
+
+            return mappers;
         }
 
         [Fact]
         public void ToDto_WhenProductIsNull_ThrowsArgumentNullException()
         {
-            var mappers = CreateMappers();
-            var mapper = new ProductMapper(mappers);
+           
+            var registry = CreateRegistry();
+            var mapper = new ProductMapper(registry);
             // Act
             Action action = () => mapper.ToDto(null!);
             // Assert
@@ -60,14 +97,14 @@ namespace LearnStore.Tests.Unit.Application.Mappers
             };
             // Act
 
-            var mappers = CreateMappers();
-            var authorMapper = mappers.OfType<IMapper<Author, AuthorDto>>().First();
+            var registry = CreateRegistry();
+            var authorMapper = registry.Get<Author, AuthorDto>();
             authorMapper.ToDto(product.Author).Returns(expectedDto.Author);
-            var sellerMapper = mappers.OfType<IMapper<Seller, SellerDto>>().First();
+            var sellerMapper = registry.Get<Seller, SellerDto>();
             sellerMapper.ToDto(product.Seller).Returns(expectedDto.Seller);
-            var categoryMapper = mappers.OfType<IMapper<ProductCategory, ProductCategoryDto>>().First();
+            var categoryMapper = registry.Get<ProductCategory, ProductCategoryDto>();
             categoryMapper.ToDto(product.Category).Returns(expectedDto.Category);
-            var mapper = new ProductMapper(mappers);
+            var mapper = new ProductMapper(registry);
 
             var result = mapper.ToDto(product);
             // Assert
@@ -79,8 +116,8 @@ namespace LearnStore.Tests.Unit.Application.Mappers
         [Fact]
         public void ToDomain_WhenProductDtoIsNull_ThrowsArgumentNullException()
         {
-            var mappers = CreateMappers();
-            var mapper = new ProductMapper(mappers); ;
+            var registry = CreateRegistry();
+            var mapper = new ProductMapper(registry);
             // Act
             Action action = () => mapper.ToDomain(null!);
             // Assert
@@ -116,13 +153,13 @@ namespace LearnStore.Tests.Unit.Application.Mappers
                 Price = productDto.Price
             };
             // Act
-            var mappers = CreateMappers();
-            var mapper = new ProductMapper(mappers);
-            var authorMapper = mappers.OfType<IMapper<Author, AuthorDto>>().First();
+            var registry = CreateRegistry();
+            var mapper = new ProductMapper(registry);
+            var authorMapper = registry.Get<Author, AuthorDto>();
             authorMapper.ToDomain(productDto.Author).Returns(expectedDomain.Author);
-            var sellerMapper = mappers.OfType<IMapper<Seller, SellerDto>>().First();
+            var sellerMapper = registry.Get<Seller, SellerDto>();
             sellerMapper.ToDomain(productDto.Seller).Returns(expectedDomain.Seller);
-            var categoryMapper = mappers.OfType<IMapper<ProductCategory, ProductCategoryDto>>().First();
+            var categoryMapper = registry.Get<ProductCategory, ProductCategoryDto>();
             categoryMapper.ToDomain(productDto.Category).Returns(expectedDomain.Category);
             var result = mapper.ToDomain(productDto);
             // Assert

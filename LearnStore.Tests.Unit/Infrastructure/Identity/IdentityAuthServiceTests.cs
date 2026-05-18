@@ -82,7 +82,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> act = () => service.LoginAsync(null!, "password", CancellationToken.None);
             
@@ -96,7 +96,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> actNull = () => service.LoginAsync(new UserDto { Email = "Email", Name = "Name" }, null!, CancellationToken.None);
             Func<Task> actEmpty = () => service.LoginAsync(new UserDto { Email = "Email", Name = "Name" }, string.Empty, CancellationToken.None);
@@ -112,7 +112,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> actNull = () => service.LoginAsync(new UserDto { Email = null!, Name = null! }, "Password", CancellationToken.None);
             Func<Task> actEmpty = () => service.LoginAsync(new UserDto { Email = string.Empty, Name = string.Empty }, "Password", CancellationToken.None);
@@ -130,7 +130,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.LoginAsync(new UserDto { Email = "Email", Name = "Name" }, "Password", CancellationToken.None);
             
@@ -153,7 +153,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
                 .Returns(Task.FromResult(SignInResult.Failed));
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.LoginAsync(new UserDto { Email = "Email", Name = "Name" }, "Password", CancellationToken.None);
             
@@ -166,7 +166,9 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
         [Fact]
         public async Task LoginAsync_WhenValidCredentials_ReturnsSuccessAuthResult()
         {
-            var userManager = CreateUserManager();
+            var userStore = Substitute.For<IUserRoleStore<IdentityUser>>();
+            userStore.GetRolesAsync(Arg.Any<IdentityUser>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult((IList<string>)new List<string> { "Role1", "Role2" }));
+            var userManager = CreateUserManager(userStore);
             var user = new IdentityUser { UserName = "Name", Email = "Email", Id = "user-id" };
             userManager.FindByEmailAsync(Arg.Any<string>()).Returns(Task.FromResult<IdentityUser?>(user));
             userManager.FindByNameAsync(Arg.Any<string>()).Returns(Task.FromResult<IdentityUser?>(user));
@@ -175,7 +177,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
                 .Returns(Task.FromResult(SignInResult.Success));
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var resultEmail = await service.LoginAsync(new UserDto { Email = "Email", Name = string.Empty }, "Password", CancellationToken.None);
             var resultName = await service.LoginAsync(new UserDto { Email = string.Empty, Name = "Name" }, "Password", CancellationToken.None);
@@ -196,7 +198,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> act = () => service.RegisterAsync(null!, "password", CancellationToken.None);
             
@@ -210,7 +212,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> actNull = () => service.RegisterAsync(new UserDto { Email = "Email", Name = "Name" }, null!, CancellationToken.None);
             Func<Task> actEmpty = () => service.RegisterAsync(new UserDto { Email = "Email", Name = "Name" }, string.Empty, CancellationToken.None);
@@ -227,7 +229,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> actNull = () => service.RegisterAsync(new UserDto { Email = null!, Name = null! }, "Password", CancellationToken.None);
             Func<Task> actEmpty = () => service.RegisterAsync(new UserDto { Email = string.Empty, Name = string.Empty }, "Password", CancellationToken.None);
@@ -245,7 +247,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.RegisterAsync(new UserDto { Email = "Email", Name = "Name" }, "Password", CancellationToken.None);
             
@@ -264,7 +266,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.RegisterAsync(new UserDto { Email = "Email", Name = "Name" }, "Password", CancellationToken.None);
             
@@ -280,7 +282,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> actNull = () => service.AddRoleToUserAsync(null!, "Role", CancellationToken.None);
             Func<Task> actEmpty = () => service.AddRoleToUserAsync(string.Empty, "Role", CancellationToken.None);
@@ -296,7 +298,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> actNull = () => service.AddRoleToUserAsync("user-id", null!, CancellationToken.None);
             Func<Task> actEmpty = () => service.AddRoleToUserAsync("user-id", string.Empty, CancellationToken.None);
@@ -314,7 +316,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.AddRoleToUserAsync("user-id", "Role", CancellationToken.None);
             
@@ -332,7 +334,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var store = Substitute.For<IRoleStore<IdentityRole>>();
             store.FindByNameAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<IdentityRole?>(null));
             var roleManager = CreateRoleManager(store);
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.AddRoleToUserAsync("user-id", "Role", CancellationToken.None);
             
@@ -353,7 +355,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var store = Substitute.For<IRoleStore<IdentityRole>>();
             var roleManager = CreateRoleManager(store);
             userManager.IsInRoleAsync(Arg.Any<IdentityUser>(), Arg.Any<string>()).Returns(Task.FromResult(true));
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.AddRoleToUserAsync("user-id", "Role", CancellationToken.None);
             
@@ -375,7 +377,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var store = Substitute.For<IRoleStore<IdentityRole>>();
             store.FindByNameAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<IdentityRole?>(new IdentityRole() { Id = "1", Name = "Role" }));
             var roleManager = CreateRoleManager(store);
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.AddRoleToUserAsync("user-id", "Role", CancellationToken.None);
             
@@ -392,7 +394,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> actNull = () => service.RemoveRoleFromUserAsync(null!, "Role", CancellationToken.None);
             Func<Task> actEmpty = () => service.RemoveRoleFromUserAsync(string.Empty, "Role", CancellationToken.None);
@@ -408,7 +410,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             Func<Task> actNull = () => service.RemoveRoleFromUserAsync("user-id", null!, CancellationToken.None);
             Func<Task> actEmpty = () => service.RemoveRoleFromUserAsync("user-id", string.Empty, CancellationToken.None);
@@ -426,7 +428,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var signInManager = CreateSignInManager();
             var generator = Substitute.For<IJwtTokenGenerator>();
             var roleManager = CreateRoleManager();
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.RemoveRoleFromUserAsync("user-id", "Role", CancellationToken.None);
             
@@ -444,7 +446,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var store = Substitute.For<IRoleStore<IdentityRole>>();
             store.FindByNameAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<IdentityRole?>(null));
             var roleManager = CreateRoleManager(store);
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.RemoveRoleFromUserAsync("user-id", "Role", CancellationToken.None);
             
@@ -465,7 +467,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var store = Substitute.For<IRoleStore<IdentityRole>>();
             store.FindByNameAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<IdentityRole?>(new IdentityRole() { Id = "1", Name = "Role" }));
             var roleManager = CreateRoleManager(store);
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.RemoveRoleFromUserAsync("user-id", "Role", CancellationToken.None);
             
@@ -487,7 +489,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.Identity
             var store = Substitute.For<IRoleStore<IdentityRole>>();
             var roleManager = CreateRoleManager(store);
             userManager.IsInRoleAsync(Arg.Any<IdentityUser>(), Arg.Any<string>()).Returns(Task.FromResult(true));
-            var service = new IdentityAuthService(userManager, signInManager, generator, roleManager);
+            var service = new IdentityAuthService(userManager, signInManager, roleManager, generator);
             
             var result = await service.RemoveRoleFromUserAsync("user-id", "Role", CancellationToken.None);
             

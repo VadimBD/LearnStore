@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LearnStore.Application.Commands.ProductCategoryCommands;
+using LearnStore.Application.Validators.ProductCategoryValidators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;

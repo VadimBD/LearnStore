@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LearnStore.Application.Commands.OrderCommands;
+using LearnStore.Application.Validators.OrderValidators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

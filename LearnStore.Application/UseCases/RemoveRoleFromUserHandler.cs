@@ -1,4 +1,4 @@
-﻿using LearnStore.Application.Commands.DeleteCommands;
+﻿using LearnStore.Application.Commands.AuthCommands;
 using LearnStore.Application.Common;
 using System;
 using System.Collections.Generic;

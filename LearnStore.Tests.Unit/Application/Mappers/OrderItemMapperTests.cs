@@ -3,8 +3,6 @@ namespace LearnStore.Tests.Unit.Application.Mappers
 {
     public class OrderItemMapperTests
     {
-        private readonly Faker _faker = new();
-       
         [Fact]
         public void ToDto_WhenOrderItemIsNull_ThrowsArgumentNullException()
         {

@@ -13,11 +13,11 @@ namespace LearnStore.Application.Mappers
         private readonly IMapper<Author,AuthorDto> _authorMapper;
         private readonly IMapper<Seller,SellerDto> _sellerMapper;
         private readonly IMapper<ProductCategory,ProductCategoryDto> _productCategoryMapper;
-        public ProductMapper(IEnumerable<IMapper> mappers)
+        public ProductMapper(IMapperRegistry mapperRegistry)
         {   
-            _authorMapper= mappers.OfType<IMapper<Author, AuthorDto>>().FirstOrDefault() ?? throw new ArgumentException("Author mapper not found", nameof(mappers));
-            _sellerMapper= mappers.OfType<IMapper<Seller, SellerDto>>().FirstOrDefault() ?? throw new ArgumentException("Seller mapper not found", nameof(mappers));
-            _productCategoryMapper= mappers.OfType<IMapper<ProductCategory, ProductCategoryDto>>().FirstOrDefault() ?? throw new ArgumentException("ProductCategory mapper not found", nameof(mappers));
+            _authorMapper= mapperRegistry.Get<Author, AuthorDto>();
+            _sellerMapper= mapperRegistry.Get<Seller, SellerDto>();
+            _productCategoryMapper= mapperRegistry.Get<ProductCategory, ProductCategoryDto>();
         }
 
         public ProductDto ToDto(Product product)

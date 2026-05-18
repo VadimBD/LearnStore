@@ -1,7 +1,6 @@
-﻿using LearnStore.Application.Commands.AddCommands;
-using LearnStore.Application.Commands.DeleteCommands;
-using LearnStore.Application.Validators.CreateValidators;
-using LearnStore.Application.Validators.DeleteValidators;
+﻿
+using LearnStore.Application.Commands.AuthCommands;
+using LearnStore.Application.Validators.AuthValidators;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -20,6 +20,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
         { 
             base.OnModelCreating(builder);
             builder.Entity<Customer>().HasMany(c=>c.PurchasedProducts).WithMany();
+            builder.Entity<Order>().HasMany(o=>o.Items).WithOne().HasForeignKey("OrderId").OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

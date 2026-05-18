@@ -9,9 +9,9 @@ namespace LearnStore.Application.Mappers
     public class CustomerMapper: IMapper<Customer, CustomerDto>
     {
         private IMapper<Product, ProductDto> _productMapper;
-        public CustomerMapper(IEnumerable<IMapper> mappers)
+        public CustomerMapper(IMapperRegistry mapperRegistry)
         {
-            _productMapper = mappers.OfType<IMapper<Product, ProductDto>>().FirstOrDefault() ?? throw new ArgumentException("Product mapper not found", nameof(mappers));
+            _productMapper= mapperRegistry.Get<Product, ProductDto>();
         }
         public Customer ToDomain(CustomerDto customerDto)
         {

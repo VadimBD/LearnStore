@@ -3,6 +3,7 @@ using LearnStore.Infrastructure.Auth;
 using LearnStore.Infrastructure.DataAccess.MsSql;
 using LearnStore.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -17,7 +18,7 @@ namespace LearnStore.Infrastructure.Extensions
         public static void AddMsSqlDataAccess(this IServiceCollection services, IConfiguration configuration) 
         {
             ArgumentNullException.ThrowIfNull(configuration, nameof(configuration));
-            var connectionString = configuration.GetConnectionString("LearnStoreMigration") ?? throw new InvalidOperationException("Conection string 'LearnStoreMigration' not found.");
+            var connectionString = configuration.GetConnectionString("LearnStoreApp") ?? throw new InvalidOperationException("Conection string 'LearnStoreMigration' not found.");
             
             services.AddDbContext<AppDbContext>((sp,options) =>
             {
@@ -52,7 +53,8 @@ namespace LearnStore.Infrastructure.Extensions
         public static void AddIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             ArgumentNullException.ThrowIfNull(configuration, nameof(configuration));
-            var connectionString = configuration.GetConnectionString("LearnStoreIdentityMigration") ?? throw new InvalidOperationException("Identity connection string not found.");
+            var connectionString = configuration.GetConnectionString("LearnStoreIdentity") ?? throw new InvalidOperationException("Identity connection string not found.");
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
             services.AddDbContext<AppIdentityDbContext>((sp, options) =>
             {
                 var builder = new SqlConnectionStringBuilder(connectionString);
@@ -70,7 +72,7 @@ namespace LearnStore.Infrastructure.Extensions
                 opt.ConnectionString = connectionString;
                 opt.MigrationUserName = GetConfigOrDefault(configuration, "IdentityMigrationUser:UserName", "learnStore_migrator");
                 opt.MigrationPasswordKey = GetConfigOrDefault(configuration, "IdentityMigrationUser:PasswordKey", "migrator_password");
-                opt.AppUserName = GetConfigOrDefault(configuration, "IdentityUser:UserName", "identitymigrator_password");
+                opt.AppUserName = GetConfigOrDefault(configuration, "IdentityUser:UserName", "learnStoreIdentity");
                 opt.AppPasswordKey = GetConfigOrDefault(configuration, "IdentityUser:PasswordKey", "identity_password");
             });
 

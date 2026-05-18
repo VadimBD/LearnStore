@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LearnStore.Application.Commands.PaymentCommands;
+using LearnStore.Application.Validators.PaymentValidators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

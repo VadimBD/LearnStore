@@ -1,4 +1,6 @@
-﻿namespace LearnStore.Application.UseCases
+﻿using LearnStore.Application.Commands.ProductCommands;
+
+namespace LearnStore.Application.UseCases
 {
     public class CreateProductHandler(IProductRepository ProductRepository, IValidator<CreateProductCommand> Validator, IEnumerable<IMapper> Mappes) : IRequestHandler<CreateProductCommand, Unit>
     {
