@@ -24,8 +24,8 @@ namespace LearnStore.Infrastructure.Migrations
 
             modelBuilder.Entity("CustomerProduct", b =>
                 {
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PurchasedProductsId")
                         .HasColumnType("int");
@@ -68,11 +68,8 @@ namespace LearnStore.Infrastructure.Migrations
 
             modelBuilder.Entity("LearnStore.Domain.Entities.Customer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -97,8 +94,9 @@ namespace LearnStore.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Inserted")
                         .HasColumnType("datetime2");
@@ -201,8 +199,8 @@ namespace LearnStore.Infrastructure.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SellerId")
-                        .HasColumnType("int");
+                    b.Property<string>("SellerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -236,11 +234,11 @@ namespace LearnStore.Infrastructure.Migrations
 
             modelBuilder.Entity("LearnStore.Domain.Entities.Seller", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<decimal>("AccountBalance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -289,7 +287,8 @@ namespace LearnStore.Infrastructure.Migrations
                 {
                     b.HasOne("LearnStore.Domain.Entities.Order", null)
                         .WithMany("Items")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("LearnStore.Domain.Entities.Product", "Product")
                         .WithMany()
