@@ -8,7 +8,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
                                                             .Include(o=>o.Payments).Include(o=>o.State);
         public async Task<Order> DeleteOrderAsync(Guid orderId, CancellationToken cancellationToken)
         {
-           var order = await _context.Orders.FindAsync(new object[] { orderId }, cancellationToken);
+            var order = await _context.Orders.FindAsync(new object[] { orderId }, cancellationToken);
             if (order is not null)
             {
                 _context.Orders.Remove(order);
@@ -115,5 +115,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
+
+       
     }
 }

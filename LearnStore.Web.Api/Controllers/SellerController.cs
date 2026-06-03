@@ -1,4 +1,5 @@
 ﻿using LearnStore.Application.Commands.SellerCommands;
+using LearnStore.Application.UseCases;
 using LearnStore.Web.Api.Models.Order;
 using LearnStore.Web.Api.Models.Seller;
 using Mapster;
@@ -28,6 +29,16 @@ namespace LearnStore.Web.Api.Controllers
             await Mediator.Send(command);
             return Ok("Seller updated successfully!");
         }
-    }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin,Seller")]
+        public async Task<ActionResult<SellerResponse>> Get([FromQuery] GetSellerRequest request)
+        {
+            var query = request.Adapt<GetSellerHandler>();
+            var seller = await Mediator.Send(query);
+            if (seller is null)
+                return NotFound();
+            return Ok(seller);
+        }
+    }
 }

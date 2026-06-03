@@ -10,12 +10,12 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
 
         
 
-        public Product? GetProduct(int productId)
+        public async Task<Product?> GetProductAsync(int productId, CancellationToken cancellationToken)
         {
-            return _context.Products.FirstOrDefault(p => p.Id == productId);
+            return await _context.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
         }
 
-        public IEnumerable<Product> GetProduct(ProductSearchCriteria criteria)
+        public async Task<IEnumerable<Product>> GetProductsAsync(ProductSearchCriteria criteria, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(criteria);
             IQueryable<Product> query = _context.Products;
@@ -31,7 +31,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
                 query = query.Where(p => p.Category != null && p.Category.Id == criteria.Category.Id);
             if (criteria.Price > 0)
                 query = query.Where(p => p.Price == criteria.Price);
-            return [.. query];
+            return await query.ToListAsync(cancellationToken);
         }
 
         public async Task SaveProductAsync(Product product, CancellationToken cancellationToken)

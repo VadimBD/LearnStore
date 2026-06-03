@@ -11,8 +11,8 @@ namespace LearnStore.Domain.Interfaces
         Task SaveProductAsync(Product product, CancellationToken cancellationToken);
 
         Task<DeleteProductResult> DeleteProductAsync(int productId, CancellationToken cancellationToken);
-        Product? GetProduct(int productId);
-        IEnumerable<Product> GetProduct(ProductSearchCriteria criteria);
+        Task<Product?> GetProductAsync(int productId, CancellationToken cancellationToken);
+        Task<IEnumerable<Product>> GetProductsAsync(ProductSearchCriteria criteria, CancellationToken cancellationToken);
 
 
         IEnumerable <ProductCategory> Categories { get; }

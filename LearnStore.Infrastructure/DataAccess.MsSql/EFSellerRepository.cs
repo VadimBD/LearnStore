@@ -7,7 +7,25 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
 
         public IEnumerable<Seller> Sellers =>_context.Sellers;
 
-        public async Task<IEnumerable<Seller>> GetSellerAsync(SellerSearchCriteria criteria, CancellationToken cancellationToken)
+        public async Task<DeleteSellerResult> DeleteSellerAsync(string sellerId, CancellationToken cancellationToken)
+        {
+            var seller = await _context.Sellers.FindAsync([sellerId], cancellationToken);
+            if (seller is null)
+                return new DeleteSellerResult() { Success = false, Message = "Seller not found" };
+            if (_context.Products.Any(p => p.Seller!.Id == sellerId))
+                return new DeleteSellerResult() { Success = false, Message = "Seller has products" };
+            _context.Sellers.Remove(seller);
+            await _context.SaveChangesAsync(cancellationToken);
+            return new DeleteSellerResult() { Success = true, Message = "Seller deleted successfully" };
+        }
+
+        public async Task<Seller?> GetSellerAsync(string sellerId, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(sellerId, nameof(sellerId));
+            return await _context.Sellers.FirstOrDefaultAsync(s => s.Id == sellerId, cancellationToken);
+        }
+
+        public async Task<IEnumerable<Seller>> GetSellersAsync(SellerSearchCriteria criteria, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(criteria, nameof(criteria));
             IQueryable<Seller> query = _context.Sellers.AsQueryable();

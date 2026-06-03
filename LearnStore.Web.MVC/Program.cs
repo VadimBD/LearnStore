@@ -20,6 +20,7 @@ else
 builder.Services.AddMsSqlDataAccess(builder.Configuration);
 builder.Services.AddIdentity(builder.Configuration);
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

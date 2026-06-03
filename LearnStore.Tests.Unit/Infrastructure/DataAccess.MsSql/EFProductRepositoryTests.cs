@@ -216,7 +216,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
         }
 
         [Fact]
-        private void GetProduct_WhenProductIdIsValid_ReturnsProduct()
+        private async Task GetProduct_WhenProductIdIsValid_ReturnsProduct()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -231,13 +231,13 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             context.SaveChanges();
 
             var repository = new EFProductRepository(context);
-            var result = repository.GetProduct(1);
+            var result = await repository.GetProductAsync(1, CancellationToken.None);
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(product);
         }
 
         [Fact]
-        private void GetProduct_WhenProductIdIsInvalid_ReturnsNull()
+        private async Task GetProduct_WhenProductIdIsInvalid_ReturnsNull()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -252,21 +252,21 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             context.SaveChanges();
 
             var repository = new EFProductRepository(context);
-            var result = repository.GetProduct(999);
+            var result = await repository.GetProductAsync(999, CancellationToken.None);
             result.Should().BeNull();
         }
 
         [Fact]
-        private void GetProducts_WhenProductCriteriaIsNull_ThrowsArgumentNullException()
+        private async Task GetProducts_WhenProductCriteriaIsNull_ThrowsArgumentNullException()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFProductRepository(context);
-            Action act = () => repository.GetProduct(null!);
-            act.Should().Throw<ArgumentNullException>().WithParameterName("criteria");
+            Func<Task<IEnumerable<Product>>> act = () => repository.GetProductsAsync(null!, CancellationToken.None);
+            await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("criteria");
         }
         [Fact]
-        private void GetProducts_ReturnsAllProducts_WhenCriteriaIsEmpty()
+        private async Task GetProducts_ReturnsAllProducts_WhenCriteriaIsEmpty()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -281,12 +281,12 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             context.Products.AddRange(product1, product2);
             context.SaveChanges();
             var repository = new EFProductRepository(context);
-            var result = repository.GetProduct(new ProductSearchCriteria());
+            var result = await repository.GetProductsAsync(new ProductSearchCriteria(), CancellationToken.None);
             result.Should().NotBeNull();
             result.Should().HaveCount(2);
         }
         [Fact]
-        private void GetProducts_WhenCriteriaIsValid_ReturnsProduct()
+        private async Task GetProducts_WhenCriteriaIsValid_ReturnsProduct()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
@@ -312,7 +312,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             context.SaveChanges();
             var repository = new EFProductRepository(context);
             var criteria = new ProductSearchCriteria { Name = "Product 2", Author = new() { Id=2} , Seller = new() { Id="2"}, Category=new() { Id=2} };
-            var result = repository.GetProduct(criteria);
+            var result = await repository.GetProductsAsync(criteria, CancellationToken.None);
             result.Should().NotBeNull();
             result.Should().HaveCount(1);
             result.Should().Contain(product2);

@@ -28,4 +28,9 @@
     <ProjectReference Include="..\LearnStore.Infrastructure\LearnStore.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Product\" />
+    <Folder Include="Views\Order\" />
+  </ItemGroup>
+
 </Project>

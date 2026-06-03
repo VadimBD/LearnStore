@@ -31,7 +31,7 @@ namespace LearnStore.Application.Mappers
             ArgumentNullException.ThrowIfNull(author, nameof(author));
             return new AuthorDto
             {
-               Id = author.Id,
+                Id = author.Id,
                 FirstName = author.FirstName,
                 LastName = author.LastName,
                 MiddleName = author.MiddleName,

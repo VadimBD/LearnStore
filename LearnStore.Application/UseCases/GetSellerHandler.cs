@@ -4,18 +4,16 @@ using System.Text;
 
 namespace LearnStore.Application.UseCases
 {
-    public class GetSellerHandler : IRequestHandler<GetSellerQuery, SellerDto?>
+    public class GetSellerHandler(ISellerRepository SellerRepository, IMapper<Seller, SellerDto> Mapper) : IRequestHandler<GetSellerQuery, SellerDto?>
     {
-        public Task<SellerDto?> Handle(GetSellerQuery request, CancellationToken cancellationToken)
+        public async Task<SellerDto?> Handle(GetSellerQuery request, CancellationToken cancellationToken)
         {
-            return Task.FromResult<SellerDto?>(new SellerDto
-            {
-                Id = request.Id,
-                Name = "John Doe",
-                EmailAddress = "johndoe@example.com",
-                PhoneNumber = "+334234656",
-                AccountBalance = 1000m
-            });
-           }
+            ArgumentNullException.ThrowIfNull(request, nameof(request));
+            if (request.Id == string.Empty)
+                throw new ArgumentException("SellerId cannot be empty.", nameof(request.Id));
+            var seller = (await SellerRepository.GetSellersAsync(new SellerSearchCriteria() { Id = request.Id }, cancellationToken)).FirstOrDefault();
+            return seller is null ? null : Mapper.ToDto(seller);
+        }
     }
 }
+

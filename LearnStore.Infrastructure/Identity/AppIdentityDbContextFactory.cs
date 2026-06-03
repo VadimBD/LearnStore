@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LearnStore.Infrastructure.Identity
 {
-    internal class AppIdentityDbContextFactory : IDesignTimeDbContextFactory<AppIdentityDbContext>
+    public class AppIdentityDbContextFactory : IDesignTimeDbContextFactory<AppIdentityDbContext>
     {
         private readonly IConfiguration _configuration;
         private readonly IPasswordProvider _passwordProvider;

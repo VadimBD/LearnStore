@@ -111,7 +111,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var repository = new EFSellerRepository(context);
             var criteria = new SellerSearchCriteria { Id = "2" };
 
-            var result = await repository.GetSellerAsync(criteria, CancellationToken.None);
+            var result = await repository.GetSellersAsync(criteria, CancellationToken.None);
             result.Should().NotBeNull();
             result.Should().Contain(seller2);
         }
@@ -128,7 +128,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var repository = new EFSellerRepository(context);
             var criteria = new SellerSearchCriteria { Id = "999" };
 
-            var result = await repository.GetSellerAsync(criteria, CancellationToken.None);
+            var result = await repository.GetSellersAsync(criteria, CancellationToken.None);
            
             result.Should().BeEmpty();
         }
@@ -139,7 +139,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             var options = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             using var context = new AppDbContext(options);
             var repository = new EFSellerRepository(context);
-            Func<Task> act = () => repository.GetSellerAsync(null!, CancellationToken.None);
+            Func<Task> act = () => repository.GetSellersAsync(null!, CancellationToken.None);
             await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("criteria");
         }
 
@@ -155,7 +155,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             context.SaveChanges();
             var repository = new EFSellerRepository(context);
             var criteria = new SellerSearchCriteria();
-            var result = await repository.GetSellerAsync(criteria, CancellationToken.None);
+            var result = await repository.GetSellersAsync(criteria, CancellationToken.None);
             result.Should().NotBeNull();
             result.Should().Contain(seller1);
             result.Should().Contain(seller2);
@@ -173,7 +173,7 @@ namespace LearnStore.Tests.Unit.Infrastructure.DataAccess.MsSql
             context.SaveChanges();
             var repository = new EFSellerRepository(context);
             var criteria = new SellerSearchCriteria { Name = "Seller 1", Id = "1" };
-            var result = await repository.GetSellerAsync(criteria, CancellationToken.None);
+            var result = await repository.GetSellersAsync(criteria, CancellationToken.None);
             result.Should().NotBeNull();
             result.Should().Contain(seller1);
         }

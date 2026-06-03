@@ -13,6 +13,6 @@ namespace LearnStore.Domain.Interfaces
         Task SaveOrderAsync(Order order, CancellationToken cancellationToken);
         Task<bool> UpdateOrderStageAsync(Guid orderId, OrderState newStage, CancellationToken cancellationToken);
         Task<Order> DeleteOrderAsync(Guid orderId, CancellationToken cancellationToken);
-      
+        
     }
 }

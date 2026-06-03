@@ -23,6 +23,22 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             return customer;
         }
 
+        public async Task<Customer> GetCustomerAsync(CustomerSearchCriteria criteria, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(criteria, nameof(criteria));
+            IQueryable<Customer> query = _context.Customers.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(criteria.Id))
+                query = query.Where(c => c.Id == criteria.Id);
+            if (!string.IsNullOrWhiteSpace(criteria.Name))
+                query = query.Where(c => c.Name.Contains(criteria.Name));
+            if (!string.IsNullOrWhiteSpace(criteria.EmailAddress))
+                query = query.Where(c => c.EmailAddress.Contains(criteria.EmailAddress));
+            if (!string.IsNullOrWhiteSpace(criteria.PhoneNumber))
+                query = query.Where(c => c.PhoneNumber.Contains(criteria.PhoneNumber));
+
+            return await query.FirstOrDefaultAsync(cancellationToken);
+        }
+
         public async Task<IEnumerable<Customer>> GetCustomersAsync(CustomerSearchCriteria criteria, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(criteria, nameof(criteria));
