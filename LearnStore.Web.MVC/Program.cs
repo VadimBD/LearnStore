@@ -1,11 +1,14 @@
+using LearnStore.Application.Extensions;
 using LearnStore.Infrastructure;
 using LearnStore.Infrastructure.DataAccess.MsSql;
+using LearnStore.Infrastructure.Extensions;
 using LearnStore.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using LearnStore.Application.Extensions;
-using LearnStore.Infrastructure.Extensions;
+using System.Globalization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,9 +22,33 @@ else
     builder.Services.UseDockerSecrets();
 builder.Services.AddMsSqlDataAccess(builder.Configuration);
 builder.Services.AddIdentity(builder.Configuration);
+var supportedCultures = new[]
+{
+    new CultureInfo("en"),
+    new CultureInfo("uk")
+};
 
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture =
+        new Microsoft.AspNetCore.Localization.RequestCulture("uk");
+
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider()
+    };
+});
+
+builder.Services.AddLocalization();
+
+builder.Services.AddControllersWithViews().AddViewLocalization().AddDataAnnotationsLocalization();
 
 var app = builder.Build();
+var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

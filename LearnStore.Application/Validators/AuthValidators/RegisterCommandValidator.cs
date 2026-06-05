@@ -9,9 +9,9 @@ namespace LearnStore.Application.Validators.AuthValidators
     {
         public RegisterCommandValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().When(x => string.IsNullOrEmpty(x.Email)).WithMessage("Name is required.");
-            RuleFor(x => x.Email).NotEmpty().When(x => string.IsNullOrEmpty(x.Name)).WithMessage("Email is required.");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.");
+            RuleFor(x => x.Name).NotEmpty().When(x => string.IsNullOrEmpty(x.Email)).WithMessage("NameIsRequired");
+            RuleFor(x => x.Email).NotEmpty().When(x => string.IsNullOrEmpty(x.Name)).WithMessage("EmailIsRequired");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("PasswordIsRequired");
         }
     }
 }

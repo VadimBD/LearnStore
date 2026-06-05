@@ -9,8 +9,8 @@ namespace LearnStore.Application.Validators.AuthValidators
     {
         public LoginCommandValidator()
         {
-            RuleFor(x => x).Must(x => !string.IsNullOrEmpty(x.Name) || !string.IsNullOrEmpty(x.Email)).WithMessage("Either Name or Email must be provided.");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Password must be provided.");
+            RuleFor(x => x).Must(x => !string.IsNullOrEmpty(x.Name) || !string.IsNullOrEmpty(x.Email)).WithMessage("NameOrEmailRequired");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("PasswordMustBeProvided");
         }
     }
 }

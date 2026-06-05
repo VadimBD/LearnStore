@@ -36,6 +36,7 @@ namespace LearnStore.Infrastructure.Extensions
             services.AddScoped<IOrderRepository, EFOrderRepository>();
             services.AddScoped<IProductRepository, EFProductRepository>();
             services.AddScoped<ISellerRepository, EFSellerRepository>();
+            services.AddScoped<IAuthorRepository, EFAuthorRepository>();
             services.TryAddSingleton<IPasswordProvider, PasswordProvider>();
 
             services.Configure<DatabaseInitializerOptions<AppDbContext>>(opt =>

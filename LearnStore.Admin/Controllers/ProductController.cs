@@ -34,8 +34,6 @@ namespace LearnStore.Admin.Controllers
 
         }
 
-        [HttpGet("{id}")]
-
 
         [HttpGet]
         public IActionResult Create()
@@ -60,7 +58,7 @@ namespace LearnStore.Admin.Controllers
             await _mediator.Send(query);
             return RedirectToAction("Index");
         }
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var query = new GetProductQuery(id);
@@ -70,7 +68,7 @@ namespace LearnStore.Admin.Controllers
             return View(product);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var query = new GetProductQuery(id);

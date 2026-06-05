@@ -1,34 +1,34 @@
 ﻿@model LearnStore.Web.MVC.Models.LoginViewModel
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = SharedLocalizer["LogInTitle"];
 }
 
 <h2>@ViewData["Title"]</h2>
 
 <form asp-action="Login" method="post">
     <div class="form-group">
-        <label asp-for="Email"></label>
+        <label asp-for="Email">@WebAppLocalizer["LoginLbEmail"]</label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Password"></label>
+        <label asp-for="Password"> @WebAppLocalizer["LoginLbPassword"]</label>
         <input asp-for="Password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
     <input type="hidden" asp-for="ReturnUrl" />
-    <button type="submit" class="btn btn-primary">Log in</button>
+    <button type="submit" class="btn btn-primary">@SharedLocalizer["LoginBtn"]</button>
 </form>
 
 <a asp-controller="Account"
    asp-action="RegisterCustomer"
    class="btn btn-primary">
-    Register As Customer
+    @WebAppLocalizer["RegisterAsCustomer"]
 </a>
 <a asp-controller="Account"
    asp-action="RegisterSeller"
    class="btn btn-primary">
-    Register As Seller
+    @WebAppLocalizer["RegisterAsSeller"]
 </a>
 
 @section Scripts {

@@ -1,22 +1,28 @@
 ﻿using LearnStore.Application.Commands.ProductCommands;
 using LearnStore.Application.DTO;
 using LearnStore.Application.Queries;
+using LearnStore.Localization.Resources;
 using LearnStore.Web.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Localization;
 
 namespace LearnStore.Web.MVC.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController: Controller
     {
         private readonly IMediator _mediator;
+        private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
+        private readonly IStringLocalizer<WebAppResource> _webAppLocalizer;
 
-        public ProductController(IMediator mediator)
+        public ProductController(IMediator mediator ,IStringLocalizer<SharedResource> SharedLocalizer, IStringLocalizer<WebAppResource> WebAppLocalizer)
         {
             _mediator = mediator;
+            _sharedLocalizer = SharedLocalizer;
+            _webAppLocalizer = WebAppLocalizer;
         }
 
         [HttpGet]
@@ -81,7 +87,7 @@ namespace LearnStore.Web.MVC.Controllers
             var product = products.FirstOrDefault(p => p.Id == id);
             if (product is null)
             {
-                ModelState.AddModelError(string.Empty, "The product does not belong to you.");
+                ModelState.AddModelError(string.Empty, _webAppLocalizer["ProductNotOwnedByUser"]);
                 return View();
             }
             var productViewModel = new ProductViewModel()
@@ -109,7 +115,7 @@ namespace LearnStore.Web.MVC.Controllers
 
             if (!products.Any(p => p.Id == productViewModel.Id))
             {
-                ModelState.AddModelError(string.Empty, "The product does not belong to you.");
+                ModelState.AddModelError(string.Empty, _webAppLocalizer["ProductNotOwnedByUser"]);
                 return View();
             }
             var command = new UpdateProductCommand()

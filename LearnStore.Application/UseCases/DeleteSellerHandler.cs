@@ -8,7 +8,7 @@ namespace LearnStore.Application.UseCases
 {
     public class DeleteSellerHandler(ISellerRepository SellerRepository, IMapper<Seller, SellerDto> Mapper) : IRequestHandler<DeleteSellerCommand, SellerDto?>
     {
-        public Task<SellerDto?> Handle(DeleteSellerCommand command, CancellationToken cancellationToken)
+        public async Task<SellerDto?> Handle(DeleteSellerCommand command, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(command, nameof(command));
 

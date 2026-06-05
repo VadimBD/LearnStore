@@ -18,6 +18,7 @@
     <ProjectReference Include="..\LearnStore.Application\LearnStore.Application.csproj" />
     <ProjectReference Include="..\LearnStore.Domain\LearnStore.Domain.csproj" />
     <ProjectReference Include="..\LearnStore.Infrastructure\LearnStore.Infrastructure.csproj" />
+    <ProjectReference Include="..\LearnStore.Localization\LearnStore.Localization.csproj" />
   </ItemGroup>
 
 </Project>

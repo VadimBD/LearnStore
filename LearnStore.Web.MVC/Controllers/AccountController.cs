@@ -1,11 +1,14 @@
 ﻿using LearnStore.Application.Commands.AuthCommands;
+
+using LearnStore.Localization.Resources;
 using LearnStore.Web.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace LearnStore.Web.MVC.Controllers
 {
-    public class AccountController(IMediator Mediator) : Controller
+    public class AccountController(IMediator Mediator,IStringLocalizer<SharedResource> SharedLocalizer,IStringLocalizer<WebAppResource> WebAppLocalizer) : Controller
     {
 
         [HttpGet]
@@ -22,22 +25,30 @@ namespace LearnStore.Web.MVC.Controllers
 
             var command = new LoginCommand
             {
-                
+
                 Email = model.Email,
                 Password = model.Password,
+
             };
-            var loginResult = await Mediator.Send(command);
-
-            if (loginResult.IsSuccess)
+            try
             {
-                if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-                    return Redirect(model.ReturnUrl);
-
-                return RedirectToAction("Index", "Home");
+                var loginResult = await Mediator.Send(command);
+                if (!loginResult.IsSuccess)
+                {
+                    ModelState.AddModelError(string.Empty, WebAppLocalizer["InvalidLogin"]);
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(SharedLocalizer[ex.Message]);
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View(model);
+            if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                return Redirect(model.ReturnUrl);
+
+            return RedirectToAction("Index", "Home");
+
         }
 
         [HttpGet]
@@ -65,7 +76,7 @@ namespace LearnStore.Web.MVC.Controllers
 
             if (!registerResult.IsSuccess)
             {
-                ModelState.AddModelError(string.Empty, registerResult.Error ?? "An error occurred while registering.");
+                ModelState.AddModelError(string.Empty, registerResult.Error ?? WebAppLocalizer["AuthRegistrationFailed"]);
                 return View(model);
             }
             var loginCommand = new LoginCommand
@@ -78,7 +89,7 @@ namespace LearnStore.Web.MVC.Controllers
             var loginResult = await Mediator.Send(loginCommand);
             if (!loginResult.IsSuccess)
             {
-                ModelState.AddModelError(string.Empty, loginResult.Error ?? "An error occurred while logging in.");
+                ModelState.AddModelError(string.Empty, loginResult.Error ?? WebAppLocalizer["AuthLoginFailed"]);
                 return View(model);
             }
             return RedirectToAction("Index", "Home");
@@ -109,7 +120,7 @@ namespace LearnStore.Web.MVC.Controllers
 
             if (!registerResult.IsSuccess)
             {
-                ModelState.AddModelError(string.Empty, registerResult.Error ?? "An error occurred while registering.");
+                ModelState.AddModelError(string.Empty, registerResult.Error ?? WebAppLocalizer["AuthRegistrationFailed"]);
                 return View(model);
             }
             var loginCommand = new LoginCommand
@@ -122,7 +133,7 @@ namespace LearnStore.Web.MVC.Controllers
             var loginResult = await Mediator.Send(loginCommand);
             if (!loginResult.IsSuccess)
             {
-                ModelState.AddModelError(string.Empty, loginResult.Error ?? "An error occurred while logging in.");
+                ModelState.AddModelError(string.Empty, loginResult.Error ?? WebAppLocalizer["AuthLoginFailed"]);
                 return View(model);
             }
             return RedirectToAction("Index", "Home");

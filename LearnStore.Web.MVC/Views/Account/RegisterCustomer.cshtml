@@ -1,6 +1,6 @@
 ﻿@model LearnStore.Web.MVC.Models.RegisterViewModel
 @{
-    ViewData["Title"] = "Register Customer";
+    ViewData["Title"] = WebAppLocalizer["RegisterAsCustomer"];
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -8,26 +8,26 @@
 <form asp-action="RegisterCustomer" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="Email"></label>
+        <label asp-for="Email">@WebAppLocalizer["RegisterLbEmail"]</label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Name"></label>
+        <label asp-for="Name">@WebAppLocalizer["RegisterLbName"]</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Password"></label>
+        <label asp-for="Password">@WebAppLocalizer["RegisterLbPassword"]</label>
         <input asp-for="Password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="ConfirmPassword"></label>
+        <label asp-for="ConfirmPassword">@WebAppLocalizer["RegisterLbConfirmPassword"]</label>
         <input asp-for="ConfirmPassword" class="form-control" />
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">@WebAppLocalizer["RegisterBtn"]</button>
 </form>
 
 @section Scripts {

@@ -1,22 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LearnStore.Localization.Resources;
+using System.ComponentModel.DataAnnotations;
 
 namespace LearnStore.Web.MVC.Models
 {
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "EmailRequired")]
+        [EmailAddress(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "InvalidEmail")]
         public string Email { get; set; } = string.Empty;
         
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "NameRequired")]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "PasswordRequired")]
         [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "PasswordsDoNotMatch")]
         public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

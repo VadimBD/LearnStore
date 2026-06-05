@@ -9,8 +9,8 @@ namespace LearnStore.Application.Validators.AuthValidators
     {
         public AddRoleToUserCommandValidator() 
         {
-            RuleFor(x => x.UserId).NotEmpty().WithMessage("UserId is required.");
-            RuleFor(x => x.Role).NotEmpty().WithMessage("Role is required.");
+            RuleFor(x => x.UserId).NotEmpty().WithMessage("UserIdIsRequired");
+            RuleFor(x => x.Role).NotEmpty().WithMessage("RoleIsRequired");
         }
     }
 }
