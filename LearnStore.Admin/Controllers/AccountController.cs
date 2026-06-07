@@ -26,7 +26,7 @@ namespace LearnStore.Admin.Controllers
             var command = new LoginCommand
             {
 
-                Email = model.Email,
+                Name = model.Name,
                 Password = model.Password,
             };
             var loginResult = await Mediator.Send(command);

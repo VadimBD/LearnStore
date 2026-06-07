@@ -1,0 +1,39 @@
+@using LearnStore.Application.DTO
+@model IEnumerable<OrderItemDto>
+
+<table class="table table-sm mb-0">
+    <thead>
+        <tr>
+            <th>@AdminLocalizer["ProductLb"]</th>
+            <th>@AdminLocalizer["PriceLb"]</th>
+            <th>@AdminLocalizer["QuantityLb"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model?.Any() ?? true)
+        {
+            <tr>
+                <td colspan="3" class="text-muted">@AdminLocalizer["NoItemsInOrder"]</td>
+            </tr>
+        }
+        else
+        {
+            var index = 0;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" name="Order.Items[@index].Id" value="@item.Id" />
+                        <input type="hidden" name="Order.Items[@index].Product.Id" value="@item.Product?.Id" />
+                        @item.Product?.Name
+                    </td>
+                    <td>@item.PriceAtOrderTime.ToString("C")</td>
+                    <td>
+                        <input type="number" name="Order.Items[@index].Quantity" value="@item.Quantity" min="1" class="form-control form-control-sm" style="width:6rem;" />
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,40 @@
+@model LoginViewModel
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-3">@AdminLocalizer["Login"]</h4>
+
+                    <form asp-action="Login" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <input asp-for="ReturnUrl" type="hidden" />
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">@AdminLocalizer["Name"]</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">@AdminLocalizer["Password"]</label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <button type="submit" class="btn btn-primary">@AdminLocalizer["Login"]</button>
+                            <a asp-action="RegisterAdmin" asp-controller="Account" class="btn btn-link">@AdminLocalizer["RegisterAdmin"]</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")

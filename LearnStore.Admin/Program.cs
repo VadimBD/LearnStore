@@ -40,6 +40,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new CookieRequestCultureProvider(),
     };
 });
+builder.Services.AddLocalization();
 
 var app = builder.Build();
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;

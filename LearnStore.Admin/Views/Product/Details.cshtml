@@ -1,0 +1,45 @@
+@using LearnStore.Application.DTO
+@model ProductDto
+
+@{
+    ViewData["Title"] = AdminLocalizer["ProductDetailsTitle"];
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">@SharedLocalizer["HomeBtn"]</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index">@AdminLocalizer["ProductsLb"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-12 col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">@Model.Name</h2>
+                <dl class="row">
+                    <dt class="col-sm-3">@AdminLocalizer["IdLb"]</dt>
+                    <dd class="col-sm-9">@Model.Id</dd>
+
+                    <dt class="col-sm-3">@AdminLocalizer["PriceLb"]</dt>
+                    <dd class="col-sm-9">@Model.Price.ToString("C")</dd>
+
+                    <dt class="col-sm-3">@AdminLocalizer["AuthorLb"]</dt>
+                    <dd class="col-sm-9">@Model.Author?.FirstName @Model.Author?.LastName</dd>
+
+                    <dt class="col-sm-3">@AdminLocalizer["CategoryLb"]</dt>
+                    <dd class="col-sm-9">@Model.Category?.Name</dd>
+
+                    <dt class="col-sm-3">@AdminLocalizer["SellerLb"]</dt>
+                    <dd class="col-sm-9">@Model.Seller?.Name</dd>
+
+                    <dt class="col-sm-3">@AdminLocalizer["IsActiveLb"]</dt>
+                    <dd class="col-sm-9">@(Model.IsActive?AdminLocalizer["YesLb"]:AdminLocalizer["NoLb"])</dd>
+                </dl>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">@AdminLocalizer["EditBtn"]</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">@AdminLocalizer["BackBtn"]</a>
+            </div>
+        </div>
+    </div>
+</div>

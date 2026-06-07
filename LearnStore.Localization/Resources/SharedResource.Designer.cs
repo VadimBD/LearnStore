@@ -61,6 +61,15 @@ namespace LearnStore.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Покупець з такою електронною адресою вже існує. .
+        /// </summary>
+        public static string CustomerEmailAlreadyExists {
+            get {
+                return ResourceManager.GetString("CustomerEmailAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Редагувати.
         /// </summary>
         public static string EditBtn {
@@ -156,6 +165,15 @@ namespace LearnStore.Localization.Resources {
         public static string RoleIsRequired {
             get {
                 return ResourceManager.GetString("RoleIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Продавець з такою електронною адресою вже існує..
+        /// </summary>
+        public static string SellerEmailAlreadyExists {
+            get {
+                return ResourceManager.GetString("SellerEmailAlreadyExists", resourceCulture);
             }
         }
         

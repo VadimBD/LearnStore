@@ -29,9 +29,4 @@
     <ProjectReference Include="..\LearnStore.Localization\LearnStore.Localization.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Product\" />
-    <Folder Include="Views\Order\" />
-  </ItemGroup>
-
 </Project>

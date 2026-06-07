@@ -1,0 +1,122 @@
+@using LearnStore.Application.DTO
+@model IEnumerable<SellerDto>
+
+@{
+    ViewData["Title"] = AdminLocalizer["SellersLb"];
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">@SharedLocalizer["HomeBtn"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+    <h1 class="h3">@ViewData["Title"]</h1>
+    <div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus me-1"></i>
+            @AdminLocalizer["AddSellerBtn"]
+        </a>
+    </div>
+</div>
+
+<section class="mb-4">
+    <form asp-action="Index" method="get" class="row g-2">
+        <div class="col-12 col-md-6">
+            <label class="form-label">@AdminLocalizer["NameLb"]</label>
+            <input name="Name" class="form-control" />
+        </div>
+        <div class="col-12 col-md-6 d-flex align-items-end gap-2">
+            <button type="submit" class="btn btn-outline-primary">@AdminLocalizer["SearchBtn"]</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">@AdminLocalizer["ResetBtn"]</a>
+        </div>
+    </form>
+</section>
+
+<section>
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Id</th>
+                            <th>@AdminLocalizer["NameLb"]</th>
+                            <th>@AdminLocalizer["EmailLb"]</th>
+                            <th>@AdminLocalizer["PhoneNumberLb"]</th>
+                            <th>@AdminLocalizer["AccountBalanceLb"]</th>
+                            <th>@SharedLocalizer["ActionsLb"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model?.Any() ?? true)
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center p-3 text-muted">@AdminLocalizer["NoSellersFound"]</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var s in Model)
+                            {
+                                <tr>
+                                    <td>@s.Id</td>
+                                    <td>@s.Name</td>
+                                    <td>@s.EmailAddress</td>
+                                    <td>@s.PhoneNumber</td>
+                                    <td>@s.AccountBalance.ToString("C")</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary">@AdminLocalizer["EditBtn"]</a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@s.Id">@AdminLocalizer["DeleteBtn"]</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">@AdminLocalizer["DeleteSellerConfirmTitle"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="deleteForm" method="post" action="#">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <p>@AdminLocalizer["DeleteSellerConfirmMessage"]</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@AdminLocalizer["CancelBtn"]</button>
+                    <button type="submit" class="btn btn-danger">@AdminLocalizer["DeleteBtn"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            var deleteModal = document.getElementById('deleteModal');
+            if (!deleteModal) return;
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var id = button.getAttribute('data-id');
+                var form = document.getElementById('deleteForm');
+                form.action = '/Seller/' + id;
+            });
+        })();
+    </script>
+}
