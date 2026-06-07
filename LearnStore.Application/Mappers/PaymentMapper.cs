@@ -15,7 +15,8 @@ namespace LearnStore.Application.Mappers
                 Id = paymentDto.Id,
                 Amount = paymentDto.Amount,
                 PaymentDate = paymentDto.PaymentDate,
-
+                Status = paymentDto.Status,
+                TransactionId = paymentDto.TransactionId
             };
         }
 
@@ -32,6 +33,8 @@ namespace LearnStore.Application.Mappers
                 Id = payment.Id,
                 Amount = payment.Amount,
                 PaymentDate = payment.PaymentDate,
+                Status = payment.Status,
+                TransactionId = payment.TransactionId
             };
         }
 

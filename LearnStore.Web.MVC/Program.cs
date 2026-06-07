@@ -3,6 +3,8 @@ using LearnStore.Infrastructure;
 using LearnStore.Infrastructure.DataAccess.MsSql;
 using LearnStore.Infrastructure.Extensions;
 using LearnStore.Infrastructure.Interfaces;
+using LearnStore.Web.MVC.interfaces;
+using LearnStore.Web.MVC.Sevices;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -22,6 +24,8 @@ else
     builder.Services.UseDockerSecrets();
 builder.Services.AddMsSqlDataAccess(builder.Configuration);
 builder.Services.AddIdentity(builder.Configuration);
+
+builder.Services.AddSingleton<ISignatureValidator, HmacSignatureValidator>();
 var supportedCultures = new[]
 {
     new CultureInfo("en"),

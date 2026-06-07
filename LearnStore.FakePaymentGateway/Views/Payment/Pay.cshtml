@@ -1,0 +1,15 @@
+﻿@model PayViewModel
+
+<h2>Оплата заказа @Model.OrderId</h2>
+<p>Сумма: @Model.Amount грн</p>
+
+<form method="post" action="/Pay">
+    <input type="hidden" name="orderId" value="@Model.OrderId" />
+    <input type="hidden" name="amount" value="@Model.Amount" />
+    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+    <input type="hidden" name="notifyUrl" value="@Model.NotifyUrl" />
+
+    <button type="submit" name="status" value="Success">✅ Успешно</button>
+    <button type="submit" name="status" value="Failed">❌ Ошибка</button>
+    <button type="submit" name="status" value="Cancelled">🚫 Отмена</button>
+</form>

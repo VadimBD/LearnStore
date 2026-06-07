@@ -11,7 +11,8 @@ namespace LearnStore.Application.Validators.PaymentValidators
         public CreatePaymentCommandValidator()
         {
             RuleFor(p => p!.OrderId).NotEmpty();
-            RuleFor(p => p!.Amount).GreaterThan(0);
+            RuleFor(p => p!.Status).IsInEnum();
+            RuleFor(p => p!.TransactionId).NotEmpty();
         }
     }
 }

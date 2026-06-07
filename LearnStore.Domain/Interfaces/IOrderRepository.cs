@@ -9,6 +9,7 @@ namespace LearnStore.Domain.Interfaces
 {
     public interface IOrderRepository
     {
+        Task<Order?> GetOrderAsync(Guid orderId, CancellationToken cancellationToken);
         Task<IEnumerable<Order>> GetOrdersAsync(OrderSearchCriteria criteria, CancellationToken cancellationToken);
         Task SaveOrderAsync(Order order, CancellationToken cancellationToken);
         Task<bool> UpdateOrderStageAsync(Guid orderId, OrderState newStage, CancellationToken cancellationToken);

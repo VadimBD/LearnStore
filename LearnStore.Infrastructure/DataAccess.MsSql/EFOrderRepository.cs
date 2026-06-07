@@ -4,8 +4,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
     public class EFOrderRepository (AppDbContext Context): IOrderRepository
     {
         private readonly AppDbContext _context = Context ?? throw new ArgumentNullException(nameof(Context));
-        public IEnumerable<Order> Orders => _context.Orders.Include(o=>o.Customer).Include(o=>o.Items)
-                                                            .Include(o=>o.Payments).Include(o=>o.State);
+        
         public async Task<Order> DeleteOrderAsync(Guid orderId, CancellationToken cancellationToken)
         {
             var order = await _context.Orders.FindAsync(new object[] { orderId }, cancellationToken);
@@ -18,6 +17,13 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             return order;
         }
 
+        public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken cancellationToken)
+        {
+            return await _context.Orders.Include(o => o.Customer)
+                                        .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                                        .Include(o => o.Payments)
+                                        .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+        }
         public async Task<IEnumerable<Order>> GetOrdersAsync(OrderSearchCriteria criteria, CancellationToken cancellationToken)
         {
             var query = _context.Orders.Include(o => o.Customer)

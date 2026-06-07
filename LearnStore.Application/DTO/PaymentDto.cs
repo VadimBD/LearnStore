@@ -9,5 +9,7 @@ namespace LearnStore.Application.DTO
         public Guid Id { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
+        public PaymentStatus Status { get; set; }
+        public string TransactionId { get; set; } = string.Empty;
     }
 }

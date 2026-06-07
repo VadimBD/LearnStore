@@ -15,6 +15,7 @@
   <Project Path="LearnStore.Application/LearnStore.Application.csproj" Id="0b26f8aa-b2e8-4b6d-8fd3-54398de7a751" />
   <Project Path="LearnStore.Database.Migrations/LearnStore.Database.Migrations.csproj" Id="6eb4c557-1025-43f7-a155-904c69eed1bd" />
   <Project Path="LearnStore.Domain/LearnStore.Domain.csproj" />
+  <Project Path="LearnStore.FakePaymentGateway/LearnStore.FakePaymentGateway.csproj" Id="e88c5af8-e1fa-4d18-a93f-6ad468b119f7" />
   <Project Path="LearnStore.Infrastructure/LearnStore.Infrastructure.csproj" Id="11f7ae32-f3c5-448a-8017-f3916b404d42" />
   <Project Path="LearnStore.Localization/LearnStore.Localization.csproj" Id="0222b0ec-e704-4ae0-8b2a-1427553f7dae" />
   <Project Path="LearnStore.Tests.Unit/LearnStore.Tests.Unit.csproj" Id="df2d457c-85c1-4b8a-b983-f0af9d725572" />
