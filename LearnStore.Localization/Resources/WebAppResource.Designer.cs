@@ -70,11 +70,47 @@ namespace LearnStore.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Додати товар.
+        /// </summary>
+        public static string AddProduct {
+            get {
+                return ResourceManager.GetString("AddProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Додати товар.
+        /// </summary>
+        public static string AddProductBtn {
+            get {
+                return ResourceManager.GetString("AddProductBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Під час входу сталася помилка..
         /// </summary>
         public static string AuthLoginFailed {
             get {
                 return ResourceManager.GetString("AuthLoginFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Автор.
+        /// </summary>
+        public static string Author {
+            get {
+                return ResourceManager.GetString("Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Автор є обов&apos;язковим..
+        /// </summary>
+        public static string AuthorIdRequired {
+            get {
+                return ResourceManager.GetString("AuthorIdRequired", resourceCulture);
             }
         }
         
@@ -97,6 +133,24 @@ namespace LearnStore.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Скасувати.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Категорія.
+        /// </summary>
+        public static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Категорія є обов&apos;язковою..
         /// </summary>
         public static string CategoryIdRequired {
@@ -106,11 +160,38 @@ namespace LearnStore.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Дочірні товари.
+        /// </summary>
+        public static string ChildProducts {
+            get {
+                return ResourceManager.GetString("ChildProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Очистити.
         /// </summary>
         public static string ClearSearchBtn {
             get {
                 return ResourceManager.GetString("ClearSearchBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Створити.
+        /// </summary>
+        public static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Опис.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -133,6 +214,15 @@ namespace LearnStore.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Файл.
+        /// </summary>
+        public static string FileLabel {
+            get {
+                return ResourceManager.GetString("FileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Невірний формат електронної пошти..
         /// </summary>
         public static string InvalidEmail {
@@ -147,6 +237,15 @@ namespace LearnStore.Localization.Resources {
         public static string InvalidLogin {
             get {
                 return ResourceManager.GetString("InvalidLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Введено некоректний номер телефону..
+        /// </summary>
+        public static string InvalidPhoneNumber {
+            get {
+                return ResourceManager.GetString("InvalidPhoneNumber", resourceCulture);
             }
         }
         
@@ -187,11 +286,38 @@ namespace LearnStore.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Мій кабінет.
+        /// </summary>
+        public static string MyAccountBtn {
+            get {
+                return ResourceManager.GetString("MyAccountBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Назва.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле імені є обов&apos;язковим..
         /// </summary>
         public static string NameRequired {
             get {
                 return ResourceManager.GetString("NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Товарів немає.
+        /// </summary>
+        public static string NoProductsAvailable {
+            get {
+                return ResourceManager.GetString("NoProductsAvailable", resourceCulture);
             }
         }
         
@@ -210,6 +336,15 @@ namespace LearnStore.Localization.Resources {
         public static string PasswordsDoNotMatch {
             get {
                 return ResourceManager.GetString("PasswordsDoNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Номер телефону є обов&apos;язковим..
+        /// </summary>
+        public static string PhoneNumberRequired {
+            get {
+                return ResourceManager.GetString("PhoneNumberRequired", resourceCulture);
             }
         }
         
@@ -313,11 +448,29 @@ namespace LearnStore.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Номер телефону.
+        /// </summary>
+        public static string RegisterLbPhone {
+            get {
+                return ResourceManager.GetString("RegisterLbPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пошук серед придбаних товарів.
         /// </summary>
         public static string SearchPurchasedProductsLb {
             get {
                 return ResourceManager.GetString("SearchPurchasedProductsLb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Файл є обов&apos;язковим..
+        /// </summary>
+        public static string UploadFileRequired {
+            get {
+                return ResourceManager.GetString("UploadFileRequired", resourceCulture);
             }
         }
         

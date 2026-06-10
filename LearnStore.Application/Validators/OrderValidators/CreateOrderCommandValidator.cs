@@ -20,7 +20,6 @@ namespace LearnStore.Application.Validators.OrderValidators
             {
                 item.NotNull().ChildRules(orderItem =>
                 {
-                    orderItem.RuleFor(i => i!.Id).NotEmpty();
                     orderItem.RuleFor(i => i!.Product).NotNull().ChildRules(product =>
                     {
                         product.RuleFor(p => p!.Id).NotEmpty();

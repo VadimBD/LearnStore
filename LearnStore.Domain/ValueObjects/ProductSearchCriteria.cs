@@ -12,5 +12,6 @@ namespace LearnStore.Domain.ValueObjects
         public Seller? Seller { get; set; }
         public ProductCategory? Category { get; set; }
         public decimal Price { get; set; }
+        public bool? IsActive { get; set; }
     }
 }

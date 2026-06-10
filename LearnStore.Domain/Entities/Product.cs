@@ -14,6 +14,8 @@ namespace LearnStore.Domain.Entities
         public Author? Author { get; set; }
         public Seller?  Seller { get; set; }
         public ICollection<Product> ChildProducts { get; set; }= [];
+        public string FileName { get; set; }       
+        public string FileStorageName { get; set; }  
 
         public ProductCategory? Category { get; set; }
 

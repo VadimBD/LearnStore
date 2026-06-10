@@ -2,17 +2,17 @@
 
 namespace LearnStore.Application.UseCases
 {
-    public class CreateProductHandler(IProductRepository ProductRepository, IValidator<CreateProductCommand> Validator, IEnumerable<IMapper> Mappes) : IRequestHandler<CreateProductCommand, Unit>
+    public class CreateProductHandler(IProductRepository ProductRepository, IValidator<CreateProductCommand> Validator, IMapperRegistry mapperRegistry) : IRequestHandler<CreateProductCommand, Unit>
     {
         public async Task<Unit> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(command, nameof(command));
             await Validator.ValidateAndThrowAsync(command, cancellationToken);
 
-            var productMapper = Mappes.OfType< IMapper<Product,ProductDto>>().First();
-            var authorMapper = Mappes.OfType<IMapper<Author,AuthorDto>>().First();
-            var sellerMapper = Mappes.OfType<IMapper<Seller,SellerDto>>().First();
-            var categoryMapper = Mappes.OfType<IMapper<ProductCategory,ProductCategoryDto>>().First();
+            var productMapper = mapperRegistry.Get< Product, ProductDto>();
+            var authorMapper = mapperRegistry.Get<Author, AuthorDto>();
+            var sellerMapper = mapperRegistry.Get<Seller, SellerDto>();
+            var categoryMapper = mapperRegistry.Get<ProductCategory, ProductCategoryDto>();
 
             var product = new Product()
             {
@@ -22,6 +22,8 @@ namespace LearnStore.Application.UseCases
                 Seller = sellerMapper.ToDomain(command.Seller!),
                 ChildProducts = command.ChildProducts.Select(cp => productMapper.ToDomain(cp)).ToList(),
                 Category = categoryMapper.ToDomain(command.Category!),
+                FileName = command.FileName,
+                FileStorageName= command.FileStorageName,
                 IsActive = command.IsActive,
                 Price = command.Price
             };

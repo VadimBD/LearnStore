@@ -11,9 +11,11 @@ namespace LearnStore.Domain.Interfaces
     {
         Task<Order?> GetOrderAsync(Guid orderId, CancellationToken cancellationToken);
         Task<IEnumerable<Order>> GetOrdersAsync(OrderSearchCriteria criteria, CancellationToken cancellationToken);
-        Task SaveOrderAsync(Order order, CancellationToken cancellationToken);
+        Task<Order> SaveOrderAsync(Order order, CancellationToken cancellationToken);
         Task<bool> UpdateOrderStageAsync(Guid orderId, OrderState newStage, CancellationToken cancellationToken);
         Task<Order> DeleteOrderAsync(Guid orderId, CancellationToken cancellationToken);
-        
+        Task<Order?> GetOrderNoTrackingAsync(Guid orderId, CancellationToken cancellationToken);
+        Task AddPaymentToOrderAsync(Guid orderId, Payment payment, CancellationToken cancellationToken);
+
     }
 }

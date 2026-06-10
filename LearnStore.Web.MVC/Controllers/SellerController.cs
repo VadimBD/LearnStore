@@ -4,6 +4,7 @@ using LearnStore.Web.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LearnStore.Web.MVC.Controllers
 {
@@ -49,7 +50,7 @@ namespace LearnStore.Web.MVC.Controllers
 
         public string GetCurrentUserId()
         {
-            return User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? string.Empty;
+            return User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("User ID not found.");
         }
     }
 }

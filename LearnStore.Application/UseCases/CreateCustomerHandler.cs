@@ -21,6 +21,7 @@ namespace LearnStore.Application.UseCases
             {
                 Customer customer = new Customer()
                 {
+                    Id=command.Id,
                     Name = command.Name,
                     EmailAddress = command.EmailAddress,
                     PhoneNumber = command.PhoneNumber

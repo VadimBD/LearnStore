@@ -26,7 +26,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
         public async Task<Customer> GetCustomerAsync(CustomerSearchCriteria criteria, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(criteria, nameof(criteria));
-            IQueryable<Customer> query = _context.Customers.AsQueryable();
+            IQueryable<Customer> query = _context.Customers.Include(c=> c.PurchasedProducts).AsQueryable();
             if (!string.IsNullOrWhiteSpace(criteria.Id))
                 query = query.Where(c => c.Id == criteria.Id);
             if (!string.IsNullOrWhiteSpace(criteria.Name))
@@ -70,6 +70,42 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             else
             {
                 _context.Entry(existingCustomer).CurrentValues.SetValues(customer);
+                UpdateCustomerProducts(existingCustomer,customer);
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        private void  UpdateCustomerProducts(Customer existedCustomer, Customer updatedCustomer)
+        {
+            foreach (var product in updatedCustomer.PurchasedProducts)
+            {
+                if (!existedCustomer.PurchasedProducts.Any(p => p.Id == product.Id))
+                {
+                    existedCustomer.PurchasedProducts.Add(product);
+                    _context.Attach(product);
+                }
+            }
+            var productsToRemove = existedCustomer.PurchasedProducts.Where(p => !updatedCustomer.PurchasedProducts.Any(up=>up.Id==p.Id)).ToList();
+            foreach (var product in productsToRemove) { 
+            existedCustomer.PurchasedProducts.Remove(product);
+            }
+        }
+
+        public async Task UpdatePurchasedProductsAsync(string customerId, IEnumerable<Product> products, CancellationToken cancellationToken)
+        {
+            var customer = await _context.Customers.Include(c=> c.PurchasedProducts).FirstOrDefaultAsync(c => c.Id == customerId, cancellationToken);
+            if (customer is null)
+                throw new Exception("Customet not found.");
+            foreach (var product in products)
+            {
+                if (!customer.PurchasedProducts.Any(p => p.Id == product.Id))
+                {
+                    customer.PurchasedProducts.Add(product);
+                }
+            }
+            var productsToRemove = customer.PurchasedProducts.Where(p => !products.Any(up => up.Id == p.Id)).ToList();
+            foreach (var product in productsToRemove)
+            {
+                customer.PurchasedProducts.Remove(product);
             }
             await _context.SaveChangesAsync(cancellationToken);
         }

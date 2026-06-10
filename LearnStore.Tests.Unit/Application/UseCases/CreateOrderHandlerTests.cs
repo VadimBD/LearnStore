@@ -27,6 +27,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         public async Task Handle_WhenComandNull_ThrowsArgumentNullException()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
+            var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
             validator.ValidateAsync(Arg.Any<IValidationContext>(),
                 Arg.Any<CancellationToken>()).
@@ -37,7 +38,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             Substitute.For<IMapper<Customer,CustomerDto>>()
             };
 
-            var handler = new CreateOrderHandler(orderRepository, validator, mappers);
+            var handler = new CreateOrderHandler(orderRepository, validator, mappers, productRepository);
             Func<Task> act = () => handler.Handle(null!, CancellationToken.None);
 
             await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("command");
@@ -47,6 +48,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         public async Task Handle_WhenCustomerNull_ThrowsArgumentNullException()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
+            var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
             validator.ValidateAsync(Arg.Any<IValidationContext>(),
                 Arg.Any<CancellationToken>()).
@@ -57,7 +59,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             Substitute.For<IMapper<Customer,CustomerDto>>()
             };
 
-            var handler = new CreateOrderHandler(orderRepository, validator, mappers);
+            var handler = new CreateOrderHandler(orderRepository, validator, mappers, productRepository);
             var command = new CreateOrderCommand
             {
                 Customer = null!,
@@ -71,6 +73,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         public async Task Handle_WhenCommandIsNotNull_CallsValidationRules()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
+            var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
             validator.ValidateAsync(
                 Arg.Any<IValidationContext>(),
@@ -81,7 +84,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
 
             var customerMapper = Substitute.For<IMapper<Customer, CustomerDto>>();
 
-            var handler = new CreateOrderHandler(orderRepository, validator, GetMappers());
+            var handler = new CreateOrderHandler(orderRepository, validator, GetMappers(), productRepository);
             var command = new CreateOrderCommand
             {
                 Customer = new CustomerDto { Id = "1" },
@@ -108,6 +111,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         public async Task Handle_WhenCommandIsNotNull_ThrowsValidationExceptionX()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
+            var productRepository = Substitute.For<IProductRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
 
             var validationFailures = new List<ValidationFailure>
@@ -121,7 +125,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                Arg.Any<CancellationToken>()).
               ThrowsAsync(new FluentValidation.ValidationException(validationFailures));
 
-            var handler = new CreateOrderHandler(orderRepository, validator, GetMappers());
+            var handler = new CreateOrderHandler(orderRepository, validator, GetMappers(), productRepository);
 
             var command = new CreateOrderCommand
             {
@@ -149,6 +153,9 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         public  async Task Handle_WhenCommandIsValid_ReturnsOrderId()
         {
             var orderRepository = Substitute.For<IOrderRepository>();
+            var productRepository = Substitute.For<IProductRepository>();
+            productRepository.GetProductAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(new Product { Price = 10m }));
             var expectedId = Guid.NewGuid();
             orderRepository
                 .When(x => x.SaveOrderAsync(Arg.Any<Order>(), CancellationToken.None))
@@ -164,7 +171,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
                 Arg.Any<CancellationToken>()).
                 Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));
             
-            var handler = new CreateOrderHandler(orderRepository, validator, GetMappers());
+            var handler = new CreateOrderHandler(orderRepository, validator, GetMappers(), productRepository);
 
             var command = new CreateOrderCommand
             {
@@ -185,7 +192,7 @@ namespace LearnStore.Tests.Unit.Application.UseCases
             result.Should().NotBe(Guid.Empty);
 
             await orderRepository.Received(1).SaveOrderAsync(
-                Arg.Is<Order>(o => o.Id == result),
+                Arg.Is<Order>(o => o.Id == result.Id),
                 Arg.Any<CancellationToken>());
         }
         
@@ -194,12 +201,13 @@ namespace LearnStore.Tests.Unit.Application.UseCases
         {
             var orderRepository = Substitute.For<IOrderRepository>();
             var validator = Substitute.For<IValidator<CreateOrderCommand>>();
+            var productRepository = Substitute.For<IProductRepository>();
             validator.ValidateAsync(
                 Arg.Any<IValidationContext>(),
                 Arg.Any<CancellationToken>()).
                 Returns(Task.FromResult(new FluentValidation.Results.ValidationResult()));
 
-            var handler = new CreateOrderHandler(orderRepository, validator, GetMappers());
+            var handler = new CreateOrderHandler(orderRepository, validator, GetMappers(), productRepository);
 
             var command = new CreateOrderCommand
             {

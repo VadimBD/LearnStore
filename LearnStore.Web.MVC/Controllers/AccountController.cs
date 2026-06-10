@@ -1,5 +1,6 @@
 ﻿using LearnStore.Application.Commands.AuthCommands;
-
+using LearnStore.Application.Commands.CustomerCommands;
+using LearnStore.Application.Commands.SellerCommands;
 using LearnStore.Localization.Resources;
 using LearnStore.Web.MVC.Models;
 using MediatR;
@@ -74,11 +75,20 @@ namespace LearnStore.Web.MVC.Controllers
             };
             var registerResult = await Mediator.Send(registerCommand);
 
+
             if (!registerResult.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, registerResult.Error ?? WebAppLocalizer["AuthRegistrationFailed"]);
                 return View(model);
             }
+            var creteCustomerCommand = new CreateCustomerCommand
+            {
+                Id = registerResult.UserId,
+                Name = model.Name,
+                EmailAddress = model.Email,
+                PhoneNumber=model.PhoneNumber
+            };
+            await Mediator.Send(creteCustomerCommand);
             var loginCommand = new LoginCommand
             {
                 Name = model.Name,
@@ -123,6 +133,14 @@ namespace LearnStore.Web.MVC.Controllers
                 ModelState.AddModelError(string.Empty, registerResult.Error ?? WebAppLocalizer["AuthRegistrationFailed"]);
                 return View(model);
             }
+            var creteCustomerCommand = new CreateSellerCommand
+            {
+                Id = registerResult.UserId,
+                Name = model.Name,
+                EmailAddress = model.Email,
+                PhoneNumber = model.PhoneNumber
+            };
+            await Mediator.Send(creteCustomerCommand);
             var loginCommand = new LoginCommand
             {
                 Name = model.Name,

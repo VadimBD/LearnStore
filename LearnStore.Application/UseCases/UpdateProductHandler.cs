@@ -5,17 +5,17 @@ using System.Text;
 
 namespace LearnStore.Application.UseCases
 {
-    public class UpdateProductHandler (IProductRepository ProductRepository,IValidator<UpdateProductCommand> validator,IEnumerable<IMapper> Mappers): IRequestHandler<UpdateProductCommand, Unit>
+    public class UpdateProductHandler (IProductRepository ProductRepository,IValidator<UpdateProductCommand> validator,IMapperRegistry mapperRegistry): IRequestHandler<UpdateProductCommand, Unit>
     {
         public async Task<Unit> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(command, nameof(command));
             await validator.ValidateAndThrowAsync(command, cancellationToken);
 
-            var productMapper = Mappers.OfType<IMapper<Product,ProductDto>>().First();
-            var authorMapper = Mappers.OfType<IMapper<Author,AuthorDto>>().First();
-            var sellerMapper = Mappers.OfType<IMapper<Seller,SellerDto>>().First();
-            var categoryMapper = Mappers.OfType<IMapper<ProductCategory,ProductCategoryDto>> ().First();
+            var productMapper = mapperRegistry.Get<Product, ProductDto>();
+            var authorMapper = mapperRegistry.Get<Author, AuthorDto>();
+            var sellerMapper = mapperRegistry.Get<Seller, SellerDto>();
+            var categoryMapper = mapperRegistry.Get<ProductCategory, ProductCategoryDto>();
 
             var product = new Product()
             {

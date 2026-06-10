@@ -4,6 +4,7 @@ using LearnStore.Infrastructure.DataAccess.MsSql;
 using LearnStore.Infrastructure.Extensions;
 using LearnStore.Infrastructure.Interfaces;
 using LearnStore.Web.MVC.interfaces;
+using LearnStore.Web.MVC.Models;
 using LearnStore.Web.MVC.Sevices;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ else
     builder.Services.UseDockerSecrets();
 builder.Services.AddMsSqlDataAccess(builder.Configuration);
 builder.Services.AddIdentity(builder.Configuration);
+//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 
 builder.Services.AddSingleton<ISignatureValidator, HmacSignatureValidator>();
 var supportedCultures = new[]
@@ -50,6 +53,22 @@ builder.Services.AddLocalization();
 
 builder.Services.AddControllersWithViews().AddViewLocalization().AddDataAnnotationsLocalization();
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddFileStorageServices();
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+
+    options.LoginPath = "/Account/Login";
+    options.SlidingExpiration = true;
+});
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
+
 var app = builder.Build();
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);
@@ -65,6 +84,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -74,9 +95,8 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-if(!app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
     ApplyDatabaseMigrations(app);
-
 
 app.Run();
 

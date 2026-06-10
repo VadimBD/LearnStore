@@ -147,6 +147,9 @@
   <data name="InvalidLogin" xml:space="preserve">
     <value>Incorrect login or password.</value>
   </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Invalid phone number.</value>
+  </data>
   <data name="LoginLbEmail" xml:space="preserve">
     <value>E-mail</value>
   </data>
@@ -168,11 +171,53 @@
   <data name="PasswordsDoNotMatch" xml:space="preserve">
     <value>Passwords do not match.</value>
   </data>
+  <data name="PhoneNumberRequired" xml:space="preserve">
+    <value>Phone number is required.</value>
+  </data>
   <data name="PriceRequired" xml:space="preserve">
     <value>Price is required.</value>
   </data>
   <data name="ProductDetailsBtn" xml:space="preserve">
     <value>Details</value>
+  </data>
+  <data name="AddProductBtn" xml:space="preserve">
+    <value>Add product</value>
+  </data>
+  <data name="AddProduct" xml:space="preserve">
+    <value>Add product</value>
+  </data>
+  <data name="FileLabel" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="ChildProducts" xml:space="preserve">
+    <value>Child products</value>
+  </data>
+  <data name="NoProductsAvailable" xml:space="preserve">
+    <value>No products available</value>
+  </data>
+  <data name="AuthorIdRequired" xml:space="preserve">
+    <value>Author is required.</value>
+  </data>
+  <data name="UploadFileRequired" xml:space="preserve">
+    <value>File is required.</value>
   </data>
   <data name="ProductNotOwnedByUser" xml:space="preserve">
     <value>The product does not belong to you</value>
@@ -201,10 +246,16 @@
   <data name="RegisterLbPassword" xml:space="preserve">
     <value>Enter password</value>
   </data>
+  <data name="RegisterLbPhone" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
   <data name="SearchPurchasedProductsLb" xml:space="preserve">
     <value>Search purchased products</value>
   </data>
   <data name="WithdrawBalanceBtn" xml:space="preserve">
     <value>Withdraw balance</value>
+  </data>
+  <data name="MyAccountBtn" xml:space="preserve">
+    <value>My account</value>
   </data>
 </root>

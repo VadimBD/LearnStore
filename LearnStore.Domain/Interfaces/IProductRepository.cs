@@ -14,8 +14,7 @@ namespace LearnStore.Domain.Interfaces
         Task<Product?> GetProductAsync(int productId, CancellationToken cancellationToken);
         Task<IEnumerable<Product>> GetProductsAsync(ProductSearchCriteria criteria, CancellationToken cancellationToken);
 
-
         IEnumerable <ProductCategory> Categories { get; }
-
+        Task<Product?> GetProductNoTrackingAsync(int productId, CancellationToken cancellationToken);
     }
 }

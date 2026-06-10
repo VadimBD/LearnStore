@@ -17,18 +17,19 @@ namespace LearnStore.Application.UseCases
             ArgumentNullException.ThrowIfNull(command.PhoneNumber, nameof(command.PhoneNumber));
 
             await Validator.ValidateAndThrowAsync(command, cancellationToken);
-            var existingSeller = await SellerRepository.GetSellersAsync( new SellerSearchCriteria { EmailAddress = command.EmailAddress }, cancellationToken);
-            if(existingSeller != null)
+            var sellers = await SellerRepository.GetSellersAsync( new SellerSearchCriteria { EmailAddress = command.EmailAddress }, cancellationToken);
+            if(sellers.Any())
             {
                 throw new InvalidOperationException("SellerEmailAlreadyExists");
             }
             var seller = new Seller
-           {
+            {
+                Id = command.Id,
                Name = command.Name,
-               EmailAddress = command.EmailAddress,
-               PhoneNumber = command.PhoneNumber,
-               AccountBalance = command.AccountBalance
-           };
+                EmailAddress = command.EmailAddress,
+                PhoneNumber = command.PhoneNumber,
+                AccountBalance = command.AccountBalance
+            };
             await SellerRepository.SaveSellerAsync(seller, cancellationToken);
             return Unit.Value;
 

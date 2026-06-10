@@ -14,6 +14,8 @@ namespace LearnStore.Application.UseCases
             await ValidationRules.ValidateAndThrowAsync(request, cancellationToken);
 
             var result = await AuthService.RegisterAsync(new UserDto { Name = request.Name, Email = request.Email }, request.Password, cancellationToken);
+            foreach (var role in request.Roles)
+                await AuthService.AddRoleToUserAsync(result.UserId, role, cancellationToken);
             return new()
             {
                 IsSuccess = result.IsSuccess,

@@ -1,5 +1,9 @@
 ﻿using LearnStore.Application.DTO;
+using LearnStore.Application.UseCases;
+using LearnStore.Domain.Entities;
 using LearnStore.Localization.Resources;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
 namespace LearnStore.Web.MVC.Models
@@ -7,22 +11,14 @@ namespace LearnStore.Web.MVC.Models
     public class ProductViewModel
     {
 
-        public int Id { get; set; }
-        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "NameRequired")]
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "AuthorIdRequired")]
-        public int AuthorId { get; set; }
-        
-        public string? SellerId { get; set; }
-        public ICollection<int> ChildProducts { get; set; } = [];
+        public ProductDto Product { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "CategoryIdRequired")]
-        public int? CategoryId { get; set; }
-        
-        public bool IsActive { get; set; }=true;
+        public IEnumerable<AuthorDto> Authors { get; set; } = [];
+        public IEnumerable<SelectListItem> AuthorsSLI { get => Authors.Select(a => new SelectListItem ($"{a.FirstName} {a.MiddleName} {a.LastName}" , a.Id.ToString()) ) ; }
+        public IEnumerable<ProductCategoryDto> Categories { get; set; } = [];
+        public IEnumerable<SelectListItem> CategoriesSlI { get => Categories.Select(c => new SelectListItem(c.Name, c.Id.ToString())); }
 
-        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "PriceRequired")]
-        public decimal Price { get; set; }
+        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "UploadFileRequired")]
+        public IFormFile File { get; set; }
     }
 }

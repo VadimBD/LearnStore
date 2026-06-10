@@ -32,6 +32,8 @@ namespace LearnStore.Application.Mappers
                 Seller = product.Seller is not null ? _sellerMapper.ToDto(product.Seller) : null,
                 Category=product.Category is not null ? _productCategoryMapper.ToDto(product.Category) : null,
                 ChildProducts = [..product.ChildProducts.Select(p=>ToDto(p))], 
+                FileName = product.FileName,
+                FileStorageName = product.FileStorageName,
                 IsActive = product.IsActive,
                 Price = product.Price
             };
@@ -50,6 +52,8 @@ namespace LearnStore.Application.Mappers
                 Seller = productDto.Seller is not null ? _sellerMapper.ToDomain(productDto.Seller) : null,
                 Category = productDto.Category is not null ? _productCategoryMapper.ToDomain(productDto.Category) : null,
                 ChildProducts = [..productDto.ChildProducts.Select(p=>ToDomain(p))],
+                FileName = productDto.FileName,
+                FileStorageName = productDto.FileStorageName,
                 IsActive = productDto.IsActive,
                 Price = productDto.Price
             };

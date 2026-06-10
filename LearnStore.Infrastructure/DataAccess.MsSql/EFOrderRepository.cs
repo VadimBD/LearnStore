@@ -16,18 +16,32 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             }
             return order;
         }
-
+        public async Task<Order?> GetOrderNoTrackingAsync(Guid orderId, CancellationToken cancellationToken)
+        {
+            return await _context.Orders.AsNoTracking().Include(o => o.Customer)
+                                        .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category).Include(o => o.Items)
+                                        .ThenInclude(i => i.Product)
+                                        .ThenInclude(p => p.Seller).Include(o => o.Items)
+                                        .ThenInclude(i => i.Product).ThenInclude(p => p.Author)
+                                        .Include(o => o.Payments)
+                                        .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+        }
         public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken cancellationToken)
         {
             return await _context.Orders.Include(o => o.Customer)
-                                        .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                                        .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category).Include(o => o.Items)
+                                        .ThenInclude(i => i.Product)
+                                        .ThenInclude(p => p.Seller).Include(o => o.Items)
+                                        .ThenInclude(i => i.Product).ThenInclude(p=>p.Author)
                                         .Include(o => o.Payments)
                                         .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
         }
         public async Task<IEnumerable<Order>> GetOrdersAsync(OrderSearchCriteria criteria, CancellationToken cancellationToken)
         {
             var query = _context.Orders.Include(o => o.Customer)
-                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category)
+                .Include(o => o.Items).ThenInclude(i => i.Product).ThenInclude(p => p.Category).Include(o => o.Items).ThenInclude(i => i.Product)
+                                        .ThenInclude(p => p.Seller).Include(o => o.Items)
+                                        .ThenInclude(i => i.Product).ThenInclude(p => p.Author)
                 .Include(o => o.Payments)
                 .AsEnumerable(); 
 
@@ -40,21 +54,25 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
             return query.ToList();
         }
 
-        public async Task SaveOrderAsync(Order order, CancellationToken cancellationToken)
+        public async Task<Order> SaveOrderAsync(Order order, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(order, nameof(order));
             ArgumentNullException.ThrowIfNull(order.Customer, nameof(order.Customer));
             ArgumentNullException.ThrowIfNull(order.Items, nameof(order.Items));
            
             ArgumentNullException.ThrowIfNull(order.Payments, nameof(order.Payments));
-            
+       
             _context.Attach(order.Customer);
-            
 
             foreach (var item in order.Items)
             {
-                _context.Attach(item.Product);
+                if (!_context.ChangeTracker.Entries<Product>().Any(e => e.Entity.Id == item.Product.Id))
+                {
+                    _context.Attach(item.Product);
+                }
             }
+
+
 
             var existingOrder = await _context.Orders .Include(o => o.Customer).Include(o => o.Items).Include(o => o.Payments).FirstOrDefaultAsync(o => o.Id == order.Id, cancellationToken);
 
@@ -68,6 +86,7 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
                     UpdateOrderItems(existingOrder, order);
             }
             await _context.SaveChangesAsync(cancellationToken);
+            return existingOrder ?? order;
         }
         private void UpdateOrderItems(Order existingOrder, Order updatedOrder)
         {
@@ -120,6 +139,16 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
            
             await _context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+        public async Task AddPaymentToOrderAsync(Guid orderId, Payment payment, CancellationToken cancellationToken)
+        {
+            var order = _context.Orders.Include(o => o.Payments).FirstOrDefault(o => o.Id == orderId);
+            order.Payments.Add(payment);
+            if(order is null)
+                throw new ArgumentNullException(nameof(order));
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
        

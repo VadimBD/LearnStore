@@ -2,6 +2,7 @@
 using LearnStore.Infrastructure.Auth;
 using LearnStore.Infrastructure.DataAccess.MsSql;
 using LearnStore.Infrastructure.Identity;
+using LearnStore.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
@@ -32,11 +33,11 @@ namespace LearnStore.Infrastructure.Extensions
                 options.UseSqlServer(builder.ConnectionString);
             });
            
-            services.AddScoped<ICustomerRepository,EFCustomerRepository>();
-            services.AddScoped<IOrderRepository, EFOrderRepository>();
-            services.AddScoped<IProductRepository, EFProductRepository>();
-            services.AddScoped<ISellerRepository, EFSellerRepository>();
-            services.AddScoped<IAuthorRepository, EFAuthorRepository>();
+            services.AddTransient<ICustomerRepository,EFCustomerRepository>();
+            services.AddTransient<IOrderRepository, EFOrderRepository>();
+            services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddTransient<ISellerRepository, EFSellerRepository>();
+            services.AddTransient<IAuthorRepository, EFAuthorRepository>();
             services.TryAddSingleton<IPasswordProvider, PasswordProvider>();
 
             services.Configure<DatabaseInitializerOptions<AppDbContext>>(opt =>
@@ -81,6 +82,7 @@ namespace LearnStore.Infrastructure.Extensions
             services.AddTransient<IDatabaseInitializer<AppIdentityDbContext>, DatabaseInitializer<AppIdentityDbContext>>();
             services.AddSingleton<IDesignTimeDbContextFactory<AppIdentityDbContext>, AppIdentityDbContextFactory>();
             services.TryAddSingleton<IPasswordProvider, PasswordProvider>();
+
         }
 
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
@@ -116,6 +118,11 @@ namespace LearnStore.Infrastructure.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key))
                 };
             });
+        }
+
+        public static void AddFileStorageServices(this IServiceCollection services)
+        {
+            services.AddSingleton<IFileStorageService, FileStorageService>();
         }
         public static void UseWindowsUserSecrets<TMarker>(this IServiceCollection services, IConfigurationBuilder configuration) where TMarker : class
         {

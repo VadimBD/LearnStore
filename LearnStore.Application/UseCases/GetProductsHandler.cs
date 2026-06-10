@@ -17,7 +17,8 @@ namespace LearnStore.Application.UseCases
                 Author=new Author { Id = query.AuthorId },
                 Seller = new Seller { Id = query.SellerId },
                 Category = new ProductCategory { Id = query.CategoryId },
-                Price = query.Price
+                Price = query.Price,
+                IsActive=query.IsActive,
             };  
             
             var products = await ProductRepository.GetProductsAsync(criteria, cancellationToken);

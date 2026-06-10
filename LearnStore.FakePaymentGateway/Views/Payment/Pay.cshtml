@@ -1,15 +1,15 @@
 ﻿@model PayViewModel
 
-<h2>Оплата заказа @Model.OrderId</h2>
-<p>Сумма: @Model.Amount грн</p>
-
-<form method="post" action="/Pay">
+<h2>Оплата замовлення @Model.OrderId</h2>
+<p>Сума: @Model.Amount грн</p>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post" asp-action="Pay">
     <input type="hidden" name="orderId" value="@Model.OrderId" />
     <input type="hidden" name="amount" value="@Model.Amount" />
     <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
     <input type="hidden" name="notifyUrl" value="@Model.NotifyUrl" />
 
-    <button type="submit" name="status" value="Success">✅ Успешно</button>
-    <button type="submit" name="status" value="Failed">❌ Ошибка</button>
-    <button type="submit" name="status" value="Cancelled">🚫 Отмена</button>
+    <button type="submit" name="status" value="Success">✅ Успішно</button>
+    <button type="submit" name="status" value="Failed">❌ Помилка</button>
+    <button type="submit" name="status" value="Cancelled">🚫 Скасування</button>
 </form>

@@ -1,6 +1,9 @@
-﻿using LearnStore.Application.Commands.ProductCommands;
+﻿using LearnStore.Application.Commands;
+using LearnStore.Application.Commands.ProductCommands;
 using LearnStore.Application.DTO;
 using LearnStore.Application.Queries;
+using LearnStore.Domain.Entities;
+using LearnStore.Domain.ValueObjects;
 using LearnStore.Localization.Resources;
 using LearnStore.Web.MVC.Models;
 using MediatR;
@@ -9,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Localization;
+using System.Security.Claims;
 
 namespace LearnStore.Web.MVC.Controllers
 {
@@ -26,6 +30,7 @@ namespace LearnStore.Web.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Index()
         {
             var query = new GetProductsQuery();
@@ -34,11 +39,11 @@ namespace LearnStore.Web.MVC.Controllers
             return View(products);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Details(int id)
+        [HttpGet]
+        public async Task< IActionResult> Details(int id)
         {
             var query = new GetProductQuery(id);
-            var product = _mediator.Send(query).Result;
+            var product = await _mediator.Send(query);
 
             if (product is null)
                 return NotFound();
@@ -47,10 +52,18 @@ namespace LearnStore.Web.MVC.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin,Seller")]
-        public IActionResult AddProduct()
+        public async Task<IActionResult> AddProduct()
         {
-            var productViewModel = new ProductViewModel();
-            return View(productViewModel);
+            var getAuthorsQuery= new GetAuthorsQuery();
+           
+            var getProductCategoriesQuery = new GetProductCategoriesQuery();
+            var productViewModel = new ProductViewModel()
+            {
+                Authors = await _mediator.Send(getAuthorsQuery),
+                Categories=await _mediator.Send(getProductCategoriesQuery),
+                Product=new()
+            };
+            return View("Edit",productViewModel);
         }
 
         [HttpPost]
@@ -61,21 +74,54 @@ namespace LearnStore.Web.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(productViewModel);
 
-            var id = GetCurrentUserId();
+            var sellerId = GetCurrentUserId();
+            using var stream = productViewModel.File.OpenReadStream();
+            var saveFileCommand = new SaveFileCommand()
+            {
+                FileStream = stream,
+                OriginalName = productViewModel.File.FileName,
+                SellerId = sellerId,
+            };
+            
+            var savedFileInfo = await _mediator.Send(saveFileCommand);
+
             var command = new CreateProductCommand()
             {
-                Name = productViewModel.Name,
-                Description = productViewModel.Description,
-                Author = new AuthorDto() { Id = productViewModel.AuthorId },
-                Category = new ProductCategoryDto() { Id = productViewModel.CategoryId!.Value },
-                IsActive = productViewModel.IsActive,
-                Price = productViewModel.Price,
-                Seller = new SellerDto() { Id = GetCurrentUserId() },
-                ChildProducts = productViewModel.ChildProducts.Select(cp => new ProductDto() { Id = cp }).ToList()
+               Name=productViewModel.Product.Name,
+               Description = productViewModel.Product.Description,
+               Author=productViewModel.Product.Author,
+               Seller=new SellerDto() { Id=sellerId},
+               Category=productViewModel.Product.Category,
+               ChildProducts=productViewModel.Product.ChildProducts,
+               Price=productViewModel.Product.Price,
+               FileName=savedFileInfo.OriginalName,
+               FileStorageName=savedFileInfo.StorageName,
+               IsActive=productViewModel.Product.IsActive,
             };
             await _mediator.Send(command);
 
             return RedirectToAction("Products", "Seller");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            var query=new GetProductsQuery() { 
+            IsActive=true
+            };
+            var products = await _mediator.Send(query);
+            var vm= new ProductListViewModel(){Products= products};
+            return View(vm);
+        }
+
+        [HttpGet("{id}")]
+        [Authorize]
+        [Route("DocumentView")]
+        public async Task<IActionResult> DocumentView(int id)
+        {
+            var product=await _mediator.Send(new GetProductQuery(id));
+            var fileStream = await _mediator.Send(new ReadFileQuery(product.FileStorageName, product.Seller.Id));
+            return View (fileStream);
         }
 
         [HttpGet("{id}")]
@@ -92,14 +138,14 @@ namespace LearnStore.Web.MVC.Controllers
             }
             var productViewModel = new ProductViewModel()
             {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                AuthorId = product.Author!.Id,
-                CategoryId = product.Category!.Id,
-                IsActive = product.IsActive,
-                Price = product.Price,
-                ChildProducts = product.ChildProducts.Select(cp => cp.Id).ToList()
+                //Id = product.Id,
+                //Name = product.Name,
+                //Description = product.Description,
+                //AuthorId = product.Author!.Id,
+                //CategoryId = product.Category!.Id,
+                //IsActive = product.IsActive,
+                //Price = product.Price,
+                //ChildProducts = product.ChildProducts.Select(cp => cp.Id).ToList()
             };
             return View(productViewModel);
         }
@@ -113,22 +159,22 @@ namespace LearnStore.Web.MVC.Controllers
             var query = new GetProductsQuery() { SellerId = GetCurrentUserId() };
             var products = _mediator.Send(query).Result;
 
-            if (!products.Any(p => p.Id == productViewModel.Id))
+            if (!products.Any(p => p.Id == productViewModel.Product.Id))
             {
                 ModelState.AddModelError(string.Empty, _webAppLocalizer["ProductNotOwnedByUser"]);
                 return View();
             }
             var command = new UpdateProductCommand()
             {
-                Id = productViewModel.Id,
-                Name = productViewModel.Name,
-                Description = productViewModel.Description,
-                Author = new AuthorDto() { Id = productViewModel.AuthorId },
-                Category = new ProductCategoryDto() { Id = productViewModel.CategoryId!.Value },
-                IsActive = productViewModel.IsActive,
-                Price = productViewModel.Price,
-                Seller = new SellerDto() { Id = GetCurrentUserId() },
-                ChildProducts = productViewModel.ChildProducts.Select(cp => new ProductDto() { Id = cp }).ToList()
+                //Id = productViewModel.Id,
+                //Name = productViewModel.Name,
+                //Description = productViewModel.Description,
+                //Author = new AuthorDto() { Id = productViewModel.AuthorId },
+                //Category = new ProductCategoryDto() { Id = productViewModel.CategoryId!.Value },
+                //IsActive = productViewModel.IsActive,
+                //Price = productViewModel.Price,
+                //Seller = new SellerDto() { Id = GetCurrentUserId() },
+                //ChildProducts = productViewModel.ChildProducts.Select(cp => new ProductDto() { Id = cp }).ToList()
             };
 
             await _mediator.Send(command);
@@ -137,7 +183,7 @@ namespace LearnStore.Web.MVC.Controllers
 
         public string GetCurrentUserId()
         {
-            return User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? string.Empty;
+            return User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("User ID not found.");
         }
     }
 }

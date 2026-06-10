@@ -147,6 +147,9 @@
   <data name="InvalidLogin" xml:space="preserve">
     <value>Невірний логін або пароль.</value>
   </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Введено некоректний номер телефону.</value>
+  </data>
   <data name="LoginLbEmail" xml:space="preserve">
     <value>Ел. пошта</value>
   </data>
@@ -168,11 +171,53 @@
   <data name="PasswordsDoNotMatch" xml:space="preserve">
     <value>Паролі не збігаються.</value>
   </data>
+  <data name="PhoneNumberRequired" xml:space="preserve">
+    <value>Номер телефону є обов'язковим.</value>
+  </data>
   <data name="PriceRequired" xml:space="preserve">
     <value>Ціна є обов'язковою.</value>
   </data>
   <data name="ProductDetailsBtn" xml:space="preserve">
     <value>Детальніше</value>
+  </data>
+  <data name="AddProductBtn" xml:space="preserve">
+    <value>Додати товар</value>
+  </data>
+  <data name="AddProduct" xml:space="preserve">
+    <value>Додати товар</value>
+  </data>
+  <data name="FileLabel" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Скасувати</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Створити</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Назва</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Опис</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Автор</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Категорія</value>
+  </data>
+  <data name="ChildProducts" xml:space="preserve">
+    <value>Дочірні товари</value>
+  </data>
+  <data name="NoProductsAvailable" xml:space="preserve">
+    <value>Товарів немає</value>
+  </data>
+  <data name="AuthorIdRequired" xml:space="preserve">
+    <value>Автор є обов'язковим.</value>
+  </data>
+  <data name="UploadFileRequired" xml:space="preserve">
+    <value>Файл є обов'язковим.</value>
   </data>
   <data name="ProductNotOwnedByUser" xml:space="preserve">
     <value>Цей продукт вам не належить.</value>
@@ -201,10 +246,16 @@
   <data name="RegisterLbPassword" xml:space="preserve">
     <value>Введіть пароль</value>
   </data>
+  <data name="RegisterLbPhone" xml:space="preserve">
+    <value>Номер телефону</value>
+  </data>
   <data name="SearchPurchasedProductsLb" xml:space="preserve">
     <value>Пошук серед придбаних товарів</value>
   </data>
   <data name="WithdrawBalanceBtn" xml:space="preserve">
     <value>Вивести кошти</value>
+  </data>
+  <data name="MyAccountBtn" xml:space="preserve">
+    <value>Мій кабінет</value>
   </data>
 </root>

@@ -9,7 +9,7 @@ namespace LearnStore.Application.Queries
         public string SellerId { get; init; }
         public int CategoryId { get; init; }
         public int AuthorId { get; init; }
-        public bool IsActive { get; init; }
+        public bool? IsActive { get; init; }
         public decimal Price { get; init; }
 
         public string ProductName { get; init; }

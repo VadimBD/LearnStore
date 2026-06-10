@@ -1,0 +1,190 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using System.Linq
+@model System.IO.Stream
+
+@{
+    // Ensure stream is at beginning
+    if (Model is null)
+    {
+        <text>File stream is empty.</text>
+    }
+
+    byte[] fileBytes;
+    try
+    {
+        if (Model.CanSeek)
+            Model.Position = 0;
+
+        using (var ms = new System.IO.MemoryStream())
+        {
+            Model.CopyTo(ms);
+            fileBytes = ms.ToArray();
+        }
+    }
+    catch
+    {
+        fileBytes = Array.Empty<byte>();
+    }
+
+    string MimeType()
+    {
+        if (fileBytes.Length >= 4)
+        {
+            // PDF: %PDF
+            if (fileBytes[0] == 0x25 && fileBytes[1] == 0x50 && fileBytes[2] == 0x44 && fileBytes[3] == 0x46)
+                return "application/pdf";
+            // PNG: 89 50 4E 47
+            if (fileBytes[0] == 0x89 && fileBytes[1] == 0x50 && fileBytes[2] == 0x4E && fileBytes[3] == 0x47)
+                return "image/png";
+            // JPG/JPEG: FF D8 FF
+            if (fileBytes[0] == 0xFF && fileBytes[1] == 0xD8 && fileBytes[2] == 0xFF)
+                return "image/jpeg";
+            // GIF: GIF8
+            if (fileBytes[0] == 0x47 && fileBytes[1] == 0x49 && fileBytes[2] == 0x46 && fileBytes[3] == 0x38)
+                return "image/gif";
+            // PK (zip / docx / xlsx) : 50 4B 03 04
+            if (fileBytes[0] == 0x50 && fileBytes[1] == 0x4B)
+                return "application/zip";
+        }
+
+    // Attempt to detect text (basic heuristic) with encoding support (UTF-8, CP1251)
+    string DecodeSample(System.Byte[] bytes)
+    {
+        // Try UTF-8 first
+        var utf = System.Text.Encoding.UTF8.GetString(bytes.Take(Math.Min(512, bytes.Length)).ToArray());
+        if (!utf.Contains('\uFFFD') && utf.TrimStart().StartsWith("<"))
+            return utf;
+
+        // Try CP1251 (Cyrillic) if available
+        try
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            var cp1251 = System.Text.Encoding.GetEncoding(1251);
+            var cp = cp1251.GetString(bytes.Take(Math.Min(512, bytes.Length)).ToArray());
+            if (cp.TrimStart().StartsWith("<"))
+                return cp;
+        }
+        catch
+        {
+            // ignore
+        }
+
+        // fallback to utf sample for plain-text heuristics
+        return utf;
+    }
+
+    var sample = DecodeSample(fileBytes);
+    if (sample.TrimStart().StartsWith("<"))
+        return "text/html";
+    // fallback to plain text if looks textual (including Cyrillic range)
+    if (sample.All(c => c == '\r' || c == '\n' || (c >= 32 && c <= 127) || (c >= '\u0400' && c <= '\u04FF')))
+        return "text/plain";
+
+        return "application/octet-stream";
+    }
+
+    var mime = MimeType();
+
+    System.Text.Encoding DetectEncoding(byte[] bytes)
+    {
+        try
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        }
+        catch { }
+
+        // Try UTF-8
+        var utf = System.Text.Encoding.UTF8;
+        var sampleUtf = utf.GetString(bytes.Take(Math.Min(512, bytes.Length)).ToArray());
+        if (!sampleUtf.Contains('\uFFFD'))
+            return utf;
+
+        // Try CP1251 (Cyrillic)
+        try
+        {
+            var cp1251 = System.Text.Encoding.GetEncoding(1251);
+            var sampleCp = cp1251.GetString(bytes.Take(Math.Min(512, bytes.Length)).ToArray());
+            if (!sampleCp.Contains('\uFFFD'))
+                return cp1251;
+        }
+        catch { }
+
+        return utf;
+    }
+
+    var encoding = DetectEncoding(fileBytes);
+    var decodedText = fileBytes.Length > 0 ? encoding.GetString(fileBytes) : string.Empty;
+    var base64 = fileBytes.Length > 0 ? Convert.ToBase64String(fileBytes) : string.Empty;
+    string dataUrl;
+    if (fileBytes.Length == 0)
+    {
+        dataUrl = string.Empty;
+    }
+    else if (mime.StartsWith("text/"))
+    {
+        // include charset when embedding text as data URL
+        dataUrl = $"data:{mime};charset={encoding.WebName};base64,{base64}";
+    }
+    else
+    {
+        dataUrl = $"data:{mime};base64,{base64}";
+    }
+}
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Document view</h5>
+                    @if (string.IsNullOrEmpty(dataUrl))
+                    {
+                        <div class="alert alert-warning">No file available to display.</div>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+                            @if (mime == "application/pdf")
+                            {
+                                <div class="ratio ratio-4x3">
+                                    <iframe src="@dataUrl" frameborder="0"></iframe>
+                                </div>
+                            }
+                            else if (mime.StartsWith("image/"))
+                            {
+                                <img src="@dataUrl" class="img-fluid rounded" alt="Document image" />
+                            }
+                            else if (mime == "text/html")
+                            {
+                                <div class="border rounded" style="min-height:300px;">
+                                    @* Use data URL with proper charset so browser renders HTML correctly (including Cyrillic) *@
+                                    <div class="ratio ratio-4x3">
+                                        <iframe src="@dataUrl" frameborder="0"></iframe>
+                                    </div>
+                                </div>
+                            }
+                            else if (mime.StartsWith("text/"))
+                            {
+                                <pre class="p-3 bg-light rounded" style="white-space:pre-wrap;">@decodedText</pre>
+                            }
+                            else
+                            {
+                                <div class="alert alert-secondary">This file type (@mime) can't be previewed in the browser. Use the download button below.</div>
+                            }
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-primary" href="@dataUrl" download="document">Download</a>
+                            <a class="btn btn-outline-secondary" href="" onclick="location.reload();return false;">Refresh</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,4 @@
+
 @model LearnStore.Application.DTO.ProductDto
 
 <div class="container mt-4">
@@ -41,13 +42,23 @@
                 </div>
             }
 
-            <div class="d-flex justify-content-end">
-                @if (User.IsInRole("Admin") || User.IsInRole("Seller"))
-                {
-                    <a asp-action="EditProduct" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary me-2">@WebAppLocalizer["Edit"]</a>
-                }
-                <a asp-action="Index" class="btn btn-sm btn-secondary">@WebAppLocalizer["BackToList"]</a>
-            </div>
+            <footer class="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <a asp-action="Index" class="btn btn-sm btn-secondary">@WebAppLocalizer["BackToList"]</a>
+                </div>
+
+                <div>
+                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-cart-plus-fill me-2"></i>
+                            @WebAppLocalizer["AddToCart"]
+                        </button>
+                    </form>
+                </div>
+            </footer>
         </div>
     </div>
 </div>

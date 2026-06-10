@@ -1,4 +1,6 @@
 ﻿
+using System.Net.Quic;
+
 namespace LearnStore.Infrastructure.DataAccess.MsSql
 {
     public class EFProductRepository(AppDbContext Context) : IProductRepository
@@ -12,25 +14,27 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
 
         public async Task<Product?> GetProductAsync(int productId, CancellationToken cancellationToken)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
+            return await _context.Products.Include(p=>p.Author).Include(p=>p.Seller).Include(p=>p.Category).FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
         }
 
         public async Task<IEnumerable<Product>> GetProductsAsync(ProductSearchCriteria criteria, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(criteria);
-            IQueryable<Product> query = _context.Products;
+            IQueryable<Product> query = _context.Products.Include(p => p.Author).Include(p => p.Seller).Include(p => p.Category);
             if (criteria.ProductId > 0)
                 query = query.Where(p => p.Id == criteria.ProductId);
             if (!string.IsNullOrWhiteSpace(criteria.Name))
                 query = query.Where(p => p.Name.Contains(criteria.Name));
-            if (criteria.Author != null)
+            if (criteria.Author.Id >0)
                 query = query.Where(p => p.Author != null && p.Author.Id == criteria.Author.Id);
-            if (criteria.Seller != null)
+            if (criteria.Seller.Id is not null)
                 query = query.Where(p => p.Seller != null && p.Seller.Id == criteria.Seller.Id);
-            if (criteria.Category != null)
+            if (criteria.Category.Id >0)
                 query = query.Where(p => p.Category != null && p.Category.Id == criteria.Category.Id);
             if (criteria.Price > 0)
                 query = query.Where(p => p.Price == criteria.Price);
+            if(criteria.IsActive != null)
+                query=query.Where(p=>p.IsActive == criteria.IsActive);
             return await query.ToListAsync(cancellationToken);
         }
 
@@ -114,7 +118,11 @@ namespace LearnStore.Infrastructure.DataAccess.MsSql
                 existingProduct.ChildProducts.Remove(child);
         }
 
-
-     
+        public async Task<Product?> GetProductNoTrackingAsync(int productId, CancellationToken cancellationToken)
+        {
+            return await _context.Products
+        .AsNoTracking()
+        .FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
+        }
     }
 }

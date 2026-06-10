@@ -13,7 +13,8 @@ namespace LearnStore.Application.DTO
         public AuthorDto? Author { get; set; }
         public SellerDto? Seller { get; set; }
         public ICollection<ProductDto> ChildProducts { get; set; } = [];
-
+        public string? FileName { get; set; }
+        public string? FileStorageName { get; set; } 
         public ProductCategoryDto? Category { get; set; }
 
         public bool IsActive { get; set; }

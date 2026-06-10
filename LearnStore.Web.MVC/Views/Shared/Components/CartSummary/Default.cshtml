@@ -1,0 +1,17 @@
+﻿@model Cart
+
+<div class="nav-item">
+    <a class="btn btn-sm btn-outline-primary d-flex align-items-center"
+       asp-controller="Cart"
+       asp-action="Index"
+       asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)"
+       aria-label="View cart">
+        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        @if (Model.Lines.Count() > 0)
+        {
+            <span class="visually-hidden">@Model.Lines.Count() @("items in cart")</span>
+            <span class="ms-2 d-none d-md-inline">@Model.ComputeTotalValue().ToString("c")</span>
+            <span class="badge bg-danger ms-2">@Model.Lines.Count()</span>
+        }
+    </a>
+</div>

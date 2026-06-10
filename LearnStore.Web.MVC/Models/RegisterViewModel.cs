@@ -8,7 +8,11 @@ namespace LearnStore.Web.MVC.Models
         [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "EmailRequired")]
         [EmailAddress(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "InvalidEmail")]
         public string Email { get; set; } = string.Empty;
-        
+
+        [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "PhoneNumberRequired")]
+        [Phone(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "InvalidPhoneNumber")]
+        public string PhoneNumber { get; set; } = string.Empty;
+
         [Required(ErrorMessageResourceType = typeof(WebAppResource), ErrorMessageResourceName = "NameRequired")]
         public string Name { get; set; } = string.Empty;
 

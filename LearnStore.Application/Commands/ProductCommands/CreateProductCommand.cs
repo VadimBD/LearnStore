@@ -12,6 +12,8 @@ namespace LearnStore.Application.Commands.ProductCommands
         public SellerDto? Seller { get; set; }
         public ICollection<ProductDto> ChildProducts { get; set; } = [];
         public ProductCategoryDto? Category { get; set; }
+        public string FileName { get; set; }= string.Empty;
+        public string FileStorageName { get; set; }=string.Empty;
         public bool IsActive { get; set; }
         public decimal Price { get; set; }
 

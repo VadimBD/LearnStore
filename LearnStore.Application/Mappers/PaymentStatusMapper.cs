@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace LearnStore.Application.Mappers
@@ -10,10 +11,10 @@ namespace LearnStore.Application.Mappers
         {
             return providerStatus.ToLowerInvariant() switch
             {
-                "Success" => PaymentStatus.Success,
-                "Failed" => PaymentStatus.Failed,
-                "Pending" => PaymentStatus.Pending,
-                "Cancelled" => PaymentStatus.Cancelled
+                "success" => PaymentStatus.Success,
+                "failed" => PaymentStatus.Failed,
+                "pending" => PaymentStatus.Pending,
+                "cancelled" => PaymentStatus.Cancelled
             };
         }
     }

@@ -12,5 +12,6 @@ namespace LearnStore.Domain.Interfaces
         Task<IEnumerable<Customer>> GetCustomersAsync(CustomerSearchCriteria criteria, CancellationToken cancellationToken);
         Task  SaveCustomerAsync(Customer customer, CancellationToken cancellationToken);
         Task<Customer> DeleteCustomerAsync(Guid customerId, CancellationToken cancellationToken);
+        Task UpdatePurchasedProductsAsync(string customerId, IEnumerable<Product> products, CancellationToken cancellationToken);
     }
 }

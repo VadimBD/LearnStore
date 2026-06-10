@@ -1,0 +1,68 @@
+@model LearnStore.Web.MVC.Models.ProductViewModel
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">@WebAppLocalizer["AddProduct"]</h3>
+
+                    <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="@Model.Product.Name" class="form-label">@WebAppLocalizer["Name"]</label>
+                            <input asp-for="@Model.Product.Name" class="form-control" />
+                            <span asp-validation-for="@Model.Product.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="@Model.Product.Description" class="form-label">@WebAppLocalizer["Description"]</label>
+                            <textarea asp-for="@Model.Product.Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="@Model.Product.Description" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label asp-for="@Model.Product.Author.Id" class="form-label">@WebAppLocalizer["Author"]</label>
+                            <select asp-for="@Model.Product.Author.Id" asp-items="@Model.AuthorsSLI" class="form-select"></select>
+                            <span asp-validation-for="@Model.Product.Author.Id" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="@Model.Product.Category.Id" class="form-label">@WebAppLocalizer["Category"]</label>
+                            <select asp-for="@Model.Product.Category.Id" asp-items="@Model.CategoriesSlI" class="form-select"></select>
+                            <span asp-validation-for="@Model.Product.Category.Id" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="@Model.Product.Price" class="form-label">@WebAppLocalizer["Price"]</label>
+                            <input asp-for="@Model.Product.Price" class="form-control" />
+                            <span asp-validation-for="@Model.Product.Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input   asp-for="@Model.Product.IsActive" class="form-check-input" />
+                            <label asp-for="@Model.Product.IsActive" class="form-check-label">@WebAppLocalizer["IsActive"]</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="File" class="form-label">@WebAppLocalizer["FileLabel"]</label>
+                            <input asp-for="File" type="file" class="form-control" accept=".pdf,.zip,.epub,.mobi,.jpg,.png" />
+                            <span asp-validation-for="File" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-3">
+                            <a asp-action="Index" asp-controller="Seller" class="btn btn-secondary me-2">@WebAppLocalizer["Cancel"]</a>
+                            <button type="submit" class="btn btn-primary">@WebAppLocalizer["Create"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")

@@ -6,8 +6,10 @@
     <File Path="deploy/deploy-admin.ps1" />
     <File Path="deploy/deploy-api.ps1" />
     <File Path="deploy/deploy-database-migrations.ps1" />
+    <File Path="deploy/deploy-fake-payment-gateway.ps1" />
     <File Path="deploy/deploy-sql.ps1" />
     <File Path="deploy/deploy-web-mvc.ps1" />
+    <File Path="deploy/fake-payment-gateway.yml" />
     <File Path="deploy/sql.yml" />
     <File Path="deploy/web-mvc.yml" />
   </Folder>

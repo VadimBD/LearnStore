@@ -13,19 +13,14 @@ namespace LearnStore.Application.UseCases
 
             await Validator.ValidateAndThrowAsync(command, cancellationToken);
 
-            var order =await OrderRepository.GetOrderAsync(command.OrderId, cancellationToken);
-
-            if (order is null)
-                throw new Exception("OrderNotFount");
-            order.Payments.Add(new ()
+            var payment =new Payment ()
             {
                 Amount = command.Amount,
                 Status = command.Status,
                 TransactionId = command.TransactionId,
                 PaymentDate = DateTime.UtcNow
-            });
-
-            await OrderRepository.SaveOrderAsync(order, cancellationToken);
+            };
+            await OrderRepository.AddPaymentToOrderAsync(command.OrderId, payment, cancellationToken);
             return Unit.Value;
         }
     }
