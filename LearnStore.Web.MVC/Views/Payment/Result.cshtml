@@ -1,0 +1,28 @@
+@model string
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<LearnStore.Localization.Resources.WebAppResource> WebAppLocalizer
+
+@{
+    ViewData["Title"] = WebAppLocalizer["PaymentResultTitle"] ?? "Payment result";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-3">@ViewData["Title"]</h2>
+                    <div class="mb-4">
+                        <div class="alert alert-info" role="alert">@Model</div>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-2 flex-wrap">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">@WebAppLocalizer["BackToHomeBtn"]</a>
+                        <a asp-controller="Order" asp-action="Orders" class="btn btn-primary">@WebAppLocalizer["ViewMyOrdersBtn"]</a>
+                        <a asp-controller="Seller" asp-action="Index" class="btn btn-success">@WebAppLocalizer["ViewMyProductsBtn"]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

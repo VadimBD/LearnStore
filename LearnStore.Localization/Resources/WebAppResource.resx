@@ -258,4 +258,19 @@
   <data name="MyAccountBtn" xml:space="preserve">
     <value>Мій кабінет</value>
   </data>
+  <data name="PaymentResultTitle" xml:space="preserve">
+    <value>Результат оплати</value>
+  </data>
+  <data name="ViewMyOrdersBtn" xml:space="preserve">
+    <value>Мої замовлення</value>
+  </data>
+  <data name="ViewMyProductsBtn" xml:space="preserve">
+    <value>Мої товари</value>
+  </data>
+  <data name="OrderCompleteTitle" xml:space="preserve">
+    <value>Замовлення оформлено</value>
+  </data>
+  <data name="OrderCompleteMessage" xml:space="preserve">
+    <value>Дякуємо! Ваше замовлення успішно опрацьоване. Ви можете переглянути свої замовлення або повернутися до товарів.</value>
+  </data>
 </root>

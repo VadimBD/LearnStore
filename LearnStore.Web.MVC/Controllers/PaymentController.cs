@@ -61,13 +61,13 @@ namespace LearnStore.Web.MVC.Controllers
 
             if (payment.Status == PaymentStatus.Success) {
               
-                return RedirectToAction("Comlete", "Order");
+                return RedirectToAction("Complete", "Order");
             }
            
             else
                 return View("Result", WebAppLocalizer["PaymentFailed"]);
 
-            return View("Result", payment.Status);
+           
         }
     }
 }

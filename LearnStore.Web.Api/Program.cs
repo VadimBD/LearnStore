@@ -67,14 +67,10 @@ app.UseExceptionHandler(errorApp =>
     });
 
 });
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
+app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseAuthentication();
 
 app.UseHttpsRedirection();

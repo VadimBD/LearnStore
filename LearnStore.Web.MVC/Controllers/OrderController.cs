@@ -79,6 +79,11 @@ namespace LearnStore.Web.MVC.Controllers
             var orders = await _mediator.Send(query);
             return View(orders);
         }
+        [HttpGet]
+        public IActionResult Complete()
+        {
+            return View();
+        }
         public string GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("User ID not found.");
@@ -95,6 +100,7 @@ namespace LearnStore.Web.MVC.Controllers
             };
             return redirectUrlBilder.ToString();
         }
+
 
         
     }

@@ -9,6 +9,8 @@ services:
       - app_password
       - identity_password
       - identitymigrator_password
+      - FakePaymentGatewayKey
+      - JwtKey
     ports:
       - "5003:8080"
     deploy:
@@ -25,4 +27,8 @@ secrets:
   identity_password:
     external: true
   identitymigrator_password:
+    external: true
+  FakePaymentGatewayKey:
+    external: true
+  JwtKey:
     external: true
